@@ -32,7 +32,9 @@ Controller1_Board = 1;
 Controller2_Board = 2;
 Controller3_Board = 3;
 
-Tractor_Board1 = 1;
+Tractor_Board1 = 11;
+Tractor_Board2 = 12;
+Tractor_Board3 = 13;
 
 Trailer1_Board1 = 2;
 Trailer1_Board2 = 3;
@@ -196,11 +198,11 @@ TM_Type_bc2(end+1) = COMM;
 TM_Check_Trailer2Articulation = TM_COMM_Trailer2Articulation + COMM_duration;
 TM_Data_bc2(end+1) = TM_Check_Trailer2Articulation;
 TM_Type_bc2(end+1) = COMP;
-TM_COMM_Trailer3Articulation = TM_Check_Trailer2Articulation + COMP_duration;
-TM_Data_bc2(end+1) = TM_COMM_Trailer3Articulation;
-TM_Type_bc2(end+1) = COMM;
-TM_Check_Trailer3Articulation = TM_COMM_Trailer3Articulation + COMM_duration;
-TM_Data_bc2(end+1) = TM_Check_Trailer3Articulation;
+TM_InverseKinematics = TM_Check_Trailer2Articulation + COMP_duration;
+TM_Data_bc2(end+1) = TM_InverseKinematics;
+TM_Type_bc2(end+1) = COMP;
+TM_SteerControl = TM_InverseKinematics + COMP_duration;
+TM_Data_bc2(end+1) = TM_SteerControl;
 TM_Type_bc2(end+1) = COMP;
 
 
