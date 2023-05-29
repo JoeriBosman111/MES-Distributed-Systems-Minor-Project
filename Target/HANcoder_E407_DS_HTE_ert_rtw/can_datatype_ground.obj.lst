@@ -1,0 +1,37 @@
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 2
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"can_datatype_ground.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.global	CAN_DATATYPE_GROUND
+  19              		.section	.rodata.CAN_DATATYPE_GROUND,"a"
+  20              		.align	3
+  23              	CAN_DATATYPE_GROUND:
+  24 0000 00000000 		.space	24
+  24      00000000 
+  24      00000000 
+  24      00000000 
+  24      00000000 
+  25              		.text
+  26              	.Letext0:
+  27              		.file 1 "./rtwtypes.h"
+  28              		.file 2 "C:\\PROGRA~1\\MATLAB\\R2022a\\toolbox\\shared\\can\\src\\scanutil/can_message.h"
+  29              		.file 3 "can_datatype_ground.c"
+DEFINED SYMBOLS
+                            *ABS*:00000000 can_datatype_ground.c
+C:\Users\joeri\AppData\Local\Temp\ccAi8Vmi.s:23     .rodata.CAN_DATATYPE_GROUND:00000000 CAN_DATATYPE_GROUND
+C:\Users\joeri\AppData\Local\Temp\ccAi8Vmi.s:20     .rodata.CAN_DATATYPE_GROUND:00000000 $d
+
+NO UNDEFINED SYMBOLS

@@ -1,0 +1,23 @@
+    HANtuneOverride
+    
+        System_select
+    
+    RPM
+SI_FreeHeap
+SI_FreeStack
+EncCount
+RotorPos
+PosError
+PotVal
+MotorPWM
+RPMSetpoint
+RpmPIDOut
+RPMError
+PotDeg
+PosPIDOut
+SI_CPUload
+CANreceive
+EncReset
+DIRFault
+IN1
+IN2

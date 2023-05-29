@@ -1,0 +1,32 @@
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 2
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"HANcoder_Olimexino_data.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.global	rtConstP
+  18              		.section	.rodata.rtConstP,"a"
+  19              		.align	2
+  22              	rtConstP:
+  23 0000 0AD7A3A0 		.word	-1599875318
+  24              		.text
+  25              	.Letext0:
+  26              		.file 1 "rtwtypes.h"
+  27              		.file 2 "HANcoder_Olimexino.h"
+  28              		.file 3 "HANcoder_Olimexino_data.c"
+DEFINED SYMBOLS
+                            *ABS*:00000000 HANcoder_Olimexino_data.c
+C:\Users\joeri\AppData\Local\Temp\ccrOzudg.s:22     .rodata.rtConstP:00000000 rtConstP
+C:\Users\joeri\AppData\Local\Temp\ccrOzudg.s:19     .rodata.rtConstP:00000000 $d
+
+NO UNDEFINED SYMBOLS

@@ -1,0 +1,755 @@
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 2
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"HANcoder_E407.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.rodata.HANcoder_E407_step.str1.4,"aMS",%progbits,1
+  19              		.align	2
+  20              	.LC0:
+  21 0000 41707043 		.ascii	"AppCtrlTask\000"
+  21      74726C54 
+  21      61736B00 
+  22              		.section	.text.HANcoder_E407_step,"ax",%progbits
+  23              		.align	1
+  24              		.p2align 2,,3
+  25              		.global	HANcoder_E407_step
+  26              		.syntax unified
+  27              		.thumb
+  28              		.thumb_func
+  30              	HANcoder_E407_step:
+  31              	.LFB112:
+  32              		.file 1 "HANcoder_E407.c"
+   1:HANcoder_E407.c **** /*
+   2:HANcoder_E407.c ****  * Academic License - for use in teaching, academic research, and meeting
+   3:HANcoder_E407.c ****  * course requirements at degree granting institutions only.  Not for
+   4:HANcoder_E407.c ****  * government, commercial, or other organizational use.
+   5:HANcoder_E407.c ****  *
+   6:HANcoder_E407.c ****  * File: HANcoder_E407.c
+   7:HANcoder_E407.c ****  *
+   8:HANcoder_E407.c ****  * Code generated for Simulink model 'HANcoder_E407'.
+   9:HANcoder_E407.c ****  *
+  10:HANcoder_E407.c ****  * Model version                  : 1.83
+  11:HANcoder_E407.c ****  * Simulink Coder version         : 9.7 (R2022a) 13-Nov-2021
+  12:HANcoder_E407.c ****  * C/C++ source code generated on : Tue Feb  7 19:23:42 2023
+  13:HANcoder_E407.c ****  *
+  14:HANcoder_E407.c ****  * Target selection: ert.tlc
+  15:HANcoder_E407.c ****  * Embedded hardware selection: ARM Compatible->ARM Cortex
+  16:HANcoder_E407.c ****  * Code generation objectives: Unspecified
+  17:HANcoder_E407.c ****  * Validation result: Not run
+  18:HANcoder_E407.c ****  */
+  19:HANcoder_E407.c **** 
+  20:HANcoder_E407.c **** #include "HANcoder_E407.h"
+  21:HANcoder_E407.c **** #include "rtwtypes.h"
+  22:HANcoder_E407.c **** 
+  23:HANcoder_E407.c **** /* Exported block signals */
+  24:HANcoder_E407.c **** uint32_T SI_FreeHeap;                  /* '<S18>/Level-2 M-file S-Function' */
+  25:HANcoder_E407.c **** uint32_T SI_FreeStack;                 /* '<S19>/Level-2 M-file S-Function' */
+  26:HANcoder_E407.c **** uint8_T SI_CPUload;                    /* '<S17>/Level-2 M-file S-Function' */
+  27:HANcoder_E407.c **** boolean_T button_press;                /* '<S15>/Level-2 M-file S-Function' */
+  28:HANcoder_E407.c **** boolean_T LedValue;                    /* '<S2>/Data Type Conversion' */
+  29:HANcoder_E407.c **** 
+  30:HANcoder_E407.c **** /* Exported block parameters */
+  31:HANcoder_E407.c **** boolean_T HANtuneOverride = false;     /* Variable: HANtuneOverride
+  32:HANcoder_E407.c ****                                         * Referenced by: '<S2>/Constant'
+  33:HANcoder_E407.c ****                                         */
+  34:HANcoder_E407.c **** 
+  35:HANcoder_E407.c **** /* Block signals (default storage) */
+  36:HANcoder_E407.c **** BlockIO rtB;
+  37:HANcoder_E407.c **** 
+  38:HANcoder_E407.c **** /* Block states (default storage) */
+  39:HANcoder_E407.c **** D_Work rtDWork;
+  40:HANcoder_E407.c **** 
+  41:HANcoder_E407.c **** /* Real-time model */
+  42:HANcoder_E407.c **** static RT_MODEL rtM_;
+  43:HANcoder_E407.c **** RT_MODEL *const rtM = &rtM_;
+  44:HANcoder_E407.c **** static void rate_scheduler(void);
+  45:HANcoder_E407.c **** 
+  46:HANcoder_E407.c **** /*
+  47:HANcoder_E407.c ****  *         This function updates active task flag for each subrate.
+  48:HANcoder_E407.c ****  *         The function is called at model base rate, hence the
+  49:HANcoder_E407.c ****  *         generated code self-manages all its subrates.
+  50:HANcoder_E407.c ****  */
+  51:HANcoder_E407.c **** static void rate_scheduler(void)
+  52:HANcoder_E407.c **** {
+  53:HANcoder_E407.c ****   /* Compute which subrates run during the next base time step.  Subrates
+  54:HANcoder_E407.c ****    * are an integer multiple of the base rate counter.  Therefore, the subtask
+  55:HANcoder_E407.c ****    * counter is reset when it reaches its limit (zero means run).
+  56:HANcoder_E407.c ****    */
+  57:HANcoder_E407.c ****   (rtM->Timing.TaskCounters.TID[1])++;
+  58:HANcoder_E407.c ****   if ((rtM->Timing.TaskCounters.TID[1]) > 9) {/* Sample time: [0.1s, 0.0s] */
+  59:HANcoder_E407.c ****     rtM->Timing.TaskCounters.TID[1] = 0;
+  60:HANcoder_E407.c ****   }
+  61:HANcoder_E407.c **** 
+  62:HANcoder_E407.c ****   (rtM->Timing.TaskCounters.TID[2])++;
+  63:HANcoder_E407.c ****   if ((rtM->Timing.TaskCounters.TID[2]) > 19) {/* Sample time: [0.2s, 0.0s] */
+  64:HANcoder_E407.c ****     rtM->Timing.TaskCounters.TID[2] = 0;
+  65:HANcoder_E407.c ****   }
+  66:HANcoder_E407.c **** }
+  67:HANcoder_E407.c **** 
+  68:HANcoder_E407.c **** /* Model step function */
+  69:HANcoder_E407.c **** void HANcoder_E407_step(void)
+  70:HANcoder_E407.c **** {
+  33              		.loc 1 70 1 view -0
+  34              		.cfi_startproc
+  35              		@ args = 0, pretend = 0, frame = 0
+  36              		@ frame_needed = 0, uses_anonymous_args = 0
+  71:HANcoder_E407.c ****   uint8_T rtb_FixPtSum1;
+  37              		.loc 1 71 3 view .LVU1
+  72:HANcoder_E407.c ****   uint8_T rtb_FixPtSum1_b;
+  38              		.loc 1 72 3 view .LVU2
+  73:HANcoder_E407.c ****   uint8_T rtb_Output;
+  39              		.loc 1 73 3 view .LVU3
+  74:HANcoder_E407.c ****   boolean_T rtb_SampleTimeCrowBar;
+  40              		.loc 1 74 3 view .LVU4
+  75:HANcoder_E407.c ****   if (rtM->Timing.TaskCounters.TID[1] == 0) {
+  41              		.loc 1 75 3 view .LVU5
+  70:HANcoder_E407.c ****   uint8_T rtb_FixPtSum1;
+  42              		.loc 1 70 1 is_stmt 0 view .LVU6
+  43 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+  44              		.cfi_def_cfa_offset 24
+  45              		.cfi_offset 3, -24
+  46              		.cfi_offset 4, -20
+  47              		.cfi_offset 5, -16
+  48              		.cfi_offset 6, -12
+  49              		.cfi_offset 7, -8
+  50              		.cfi_offset 14, -4
+  51              		.loc 1 75 35 view .LVU7
+  52 0002 384C     		ldr	r4, .L22
+  53 0004 6378     		ldrb	r3, [r4, #1]	@ zero_extendqisi2
+  70:HANcoder_E407.c ****   uint8_T rtb_FixPtSum1;
+  54              		.loc 1 70 1 view .LVU8
+  55 0006 0026     		movs	r6, #0
+  56 0008 3546     		mov	r5, r6
+  57              		.loc 1 75 6 view .LVU9
+  58 000a 002B     		cmp	r3, #0
+  59 000c 49D1     		bne	.L2
+  76:HANcoder_E407.c ****     /* UnitDelay: '<S9>/Output' */
+  77:HANcoder_E407.c ****     rtb_Output = rtDWork.Output_DSTATE;
+  60              		.loc 1 77 5 is_stmt 1 view .LVU10
+  61              		.loc 1 77 16 is_stmt 0 view .LVU11
+  62 000e 364B     		ldr	r3, .L22+4
+  78:HANcoder_E407.c **** 
+  79:HANcoder_E407.c ****     /* Sum: '<S11>/FixPt Sum1' incorporates:
+  80:HANcoder_E407.c ****      *  Constant: '<S11>/FixPt Constant'
+  81:HANcoder_E407.c ****      *  UnitDelay: '<S9>/Output'
+  82:HANcoder_E407.c ****      */
+  83:HANcoder_E407.c ****     rtb_FixPtSum1 = (uint8_T)((uint32_T)rtDWork.Output_DSTATE + ((uint8_T)1U));
+  84:HANcoder_E407.c **** 
+  85:HANcoder_E407.c ****     /* Switch: '<S12>/FixPt Switch' incorporates:
+  86:HANcoder_E407.c ****      *  Constant: '<S12>/Constant'
+  87:HANcoder_E407.c ****      */
+  88:HANcoder_E407.c ****     if (rtb_FixPtSum1 > ((uint8_T)1U)) {
+  89:HANcoder_E407.c ****       rtb_FixPtSum1 = ((uint8_T)0U);
+  90:HANcoder_E407.c ****     }
+  91:HANcoder_E407.c **** 
+  92:HANcoder_E407.c ****     /* End of Switch: '<S12>/FixPt Switch' */
+  93:HANcoder_E407.c ****   }
+  94:HANcoder_E407.c **** 
+  95:HANcoder_E407.c ****   if (rtM->Timing.TaskCounters.TID[2] == 0) {
+  63              		.loc 1 95 35 view .LVU12
+  64 0010 A278     		ldrb	r2, [r4, #2]	@ zero_extendqisi2
+  77:HANcoder_E407.c **** 
+  65              		.loc 1 77 16 view .LVU13
+  66 0012 1F78     		ldrb	r7, [r3]	@ zero_extendqisi2
+  67              	.LVL0:
+  83:HANcoder_E407.c **** 
+  68              		.loc 1 83 5 is_stmt 1 view .LVU14
+  83:HANcoder_E407.c **** 
+  69              		.loc 1 83 19 is_stmt 0 view .LVU15
+  70 0014 7E1C     		adds	r6, r7, #1
+  71 0016 F6B2     		uxtb	r6, r6
+  72              	.LVL1:
+  88:HANcoder_E407.c ****       rtb_FixPtSum1 = ((uint8_T)0U);
+  73              		.loc 1 88 5 is_stmt 1 view .LVU16
+  89:HANcoder_E407.c ****     }
+  74              		.loc 1 89 21 is_stmt 0 view .LVU17
+  75 0018 022E     		cmp	r6, #2
+  76 001a 28BF     		it	cs
+  77 001c 2E46     		movcs	r6, r5
+  78              	.LVL2:
+  79              		.loc 1 95 3 is_stmt 1 view .LVU18
+  80              		.loc 1 95 6 is_stmt 0 view .LVU19
+  81 001e 3AB9     		cbnz	r2, .L17
+  96:HANcoder_E407.c ****     /* UnitDelay: '<S10>/Output' */
+  97:HANcoder_E407.c ****     rtB.Output = rtDWork.Output_DSTATE_k;
+  82              		.loc 1 97 5 is_stmt 1 view .LVU20
+  83              		.loc 1 97 25 is_stmt 0 view .LVU21
+  84 0020 5D78     		ldrb	r5, [r3, #1]	@ zero_extendqisi2
+  85              		.loc 1 97 16 view .LVU22
+  86 0022 324B     		ldr	r3, .L22+8
+  87 0024 1D70     		strb	r5, [r3]
+  98:HANcoder_E407.c **** 
+  99:HANcoder_E407.c ****     /* Sum: '<S13>/FixPt Sum1' incorporates:
+ 100:HANcoder_E407.c ****      *  Constant: '<S13>/FixPt Constant'
+ 101:HANcoder_E407.c ****      */
+ 102:HANcoder_E407.c ****     rtb_FixPtSum1_b = (uint8_T)((uint32_T)rtB.Output + ((uint8_T)1U));
+  88              		.loc 1 102 5 is_stmt 1 view .LVU23
+  89              		.loc 1 102 21 is_stmt 0 view .LVU24
+  90 0026 0135     		adds	r5, r5, #1
+  91 0028 EDB2     		uxtb	r5, r5
+  92              	.LVL3:
+ 103:HANcoder_E407.c **** 
+ 104:HANcoder_E407.c ****     /* Switch: '<S14>/FixPt Switch' incorporates:
+ 105:HANcoder_E407.c ****      *  Constant: '<S14>/Constant'
+ 106:HANcoder_E407.c ****      */
+ 107:HANcoder_E407.c ****     if (rtb_FixPtSum1_b > ((uint8_T)1U)) {
+  93              		.loc 1 107 5 is_stmt 1 view .LVU25
+ 108:HANcoder_E407.c ****       rtb_FixPtSum1_b = ((uint8_T)0U);
+  94              		.loc 1 108 23 is_stmt 0 view .LVU26
+  95 002a 022D     		cmp	r5, #2
+  96 002c 28BF     		it	cs
+  97 002e 0025     		movcs	r5, #0
+  98              	.LVL4:
+  99              	.L17:
+ 109:HANcoder_E407.c ****     }
+ 110:HANcoder_E407.c **** 
+ 111:HANcoder_E407.c ****     /* End of Switch: '<S14>/FixPt Switch' */
+ 112:HANcoder_E407.c ****   }
+ 113:HANcoder_E407.c **** 
+ 114:HANcoder_E407.c ****   if (rtM->Timing.TaskCounters.TID[1] == 0) {
+ 115:HANcoder_E407.c ****     /* M-S-Function: '<S15>/Level-2 M-file S-Function' */
+ 116:HANcoder_E407.c ****     /* read from digital input */
+ 117:HANcoder_E407.c ****     button_press = DiginGet(DIGIN_PORTA_PIN0);
+ 100              		.loc 1 117 5 is_stmt 1 view .LVU27
+ 101              		.loc 1 117 20 is_stmt 0 view .LVU28
+ 102 0030 4720     		movs	r0, #71
+ 103 0032 FFF7FEFF 		bl	DiginGet
+ 104              	.LVL5:
+ 118:HANcoder_E407.c **** 
+ 119:HANcoder_E407.c ****     /* Switch: '<S2>/Switch' incorporates:
+ 120:HANcoder_E407.c ****      *  Constant: '<S2>/Constant'
+ 121:HANcoder_E407.c ****      *  Logic: '<S2>/Logical Operator'
+ 122:HANcoder_E407.c ****      */
+ 123:HANcoder_E407.c ****     if (HANtuneOverride || button_press) {
+ 105              		.loc 1 123 9 view .LVU29
+ 106 0036 2E4B     		ldr	r3, .L22+12
+ 117:HANcoder_E407.c **** 
+ 107              		.loc 1 117 18 view .LVU30
+ 108 0038 2E4A     		ldr	r2, .L22+16
+ 109              		.loc 1 123 8 view .LVU31
+ 110 003a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 117:HANcoder_E407.c **** 
+ 111              		.loc 1 117 18 view .LVU32
+ 112 003c 1070     		strb	r0, [r2]
+ 113              		.loc 1 123 5 is_stmt 1 view .LVU33
+ 114              		.loc 1 123 8 is_stmt 0 view .LVU34
+ 115 003e 0343     		orrs	r3, r0, r3
+ 116 0040 47D0     		beq	.L5
+ 124:HANcoder_E407.c ****       /* DataTypeConversion: '<S2>/Data Type Conversion' */
+ 125:HANcoder_E407.c ****       LedValue = (rtb_Output != 0);
+ 117              		.loc 1 125 7 is_stmt 1 view .LVU35
+ 118              		.loc 1 125 30 is_stmt 0 view .LVU36
+ 119 0042 003F     		subs	r7, r7, #0
+ 120              		.loc 1 125 16 view .LVU37
+ 121 0044 2C4B     		ldr	r3, .L22+20
+ 122              		.loc 1 125 30 view .LVU38
+ 123 0046 18BF     		it	ne
+ 124 0048 0127     		movne	r7, #1
+ 125              	.LVL6:
+ 126              		.loc 1 125 30 view .LVU39
+ 127 004a 1F70     		strb	r7, [r3]
+ 128              	.LVL7:
+ 129              	.L6:
+ 126:HANcoder_E407.c ****     } else {
+ 127:HANcoder_E407.c ****       /* DataTypeConversion: '<S2>/Data Type Conversion' */
+ 128:HANcoder_E407.c ****       LedValue = (rtB.Output != 0);
+ 129:HANcoder_E407.c ****     }
+ 130:HANcoder_E407.c **** 
+ 131:HANcoder_E407.c ****     /* End of Switch: '<S2>/Switch' */
+ 132:HANcoder_E407.c ****   }
+ 133:HANcoder_E407.c **** 
+ 134:HANcoder_E407.c ****   /* Constant: '<S3>/SampleTimeCrowBar' */
+ 135:HANcoder_E407.c ****   rtb_SampleTimeCrowBar = true;
+ 130              		.loc 1 135 3 is_stmt 1 view .LVU40
+ 136:HANcoder_E407.c **** 
+ 137:HANcoder_E407.c ****   /* M-S-Function: '<S17>/Level-2 M-file S-Function' */
+ 138:HANcoder_E407.c ****   /* read the current CPU load */
+ 139:HANcoder_E407.c ****   SI_CPUload = OsGetCpuLoad();
+ 131              		.loc 1 139 3 view .LVU41
+ 132              		.loc 1 139 16 is_stmt 0 view .LVU42
+ 133 004c FFF7FEFF 		bl	OsGetCpuLoad
+ 134              	.LVL8:
+ 135              		.loc 1 139 14 view .LVU43
+ 136 0050 2A4B     		ldr	r3, .L22+24
+ 137 0052 1870     		strb	r0, [r3]
+ 140:HANcoder_E407.c **** 
+ 141:HANcoder_E407.c ****   /* M-S-Function: '<S18>/Level-2 M-file S-Function' */
+ 142:HANcoder_E407.c ****   /* read the free heap size */
+ 143:HANcoder_E407.c ****   SI_FreeHeap = OsGetFreeHeapSize();
+ 138              		.loc 1 143 3 is_stmt 1 view .LVU44
+ 139              		.loc 1 143 17 is_stmt 0 view .LVU45
+ 140 0054 FFF7FEFF 		bl	OsGetFreeHeapSize
+ 141              	.LVL9:
+ 142              		.loc 1 143 15 view .LVU46
+ 143 0058 294B     		ldr	r3, .L22+28
+ 144 005a 1860     		str	r0, [r3]
+ 144:HANcoder_E407.c **** 
+ 145:HANcoder_E407.c ****   /* M-S-Function: '<S19>/Level-2 M-file S-Function' */
+ 146:HANcoder_E407.c ****   /* read the task's free stack size */
+ 147:HANcoder_E407.c ****   SI_FreeStack = OsGetTaskFreeStackSize("AppCtrlTask");
+ 145              		.loc 1 147 3 is_stmt 1 view .LVU47
+ 146              		.loc 1 147 18 is_stmt 0 view .LVU48
+ 147 005c 2948     		ldr	r0, .L22+32
+ 148 005e FFF7FEFF 		bl	OsGetTaskFreeStackSize
+ 149              	.LVL10:
+ 150              		.loc 1 147 16 view .LVU49
+ 151 0062 294B     		ldr	r3, .L22+36
+ 152 0064 1860     		str	r0, [r3]
+ 148:HANcoder_E407.c ****   if (rtM->Timing.TaskCounters.TID[1] == 0) {
+ 153              		.loc 1 148 3 is_stmt 1 view .LVU50
+ 154              		.loc 1 148 35 is_stmt 0 view .LVU51
+ 155 0066 6378     		ldrb	r3, [r4, #1]	@ zero_extendqisi2
+ 156              		.loc 1 148 6 view .LVU52
+ 157 0068 43B9     		cbnz	r3, .L7
+ 149:HANcoder_E407.c ****     /* Update for M-S-Function: '<S16>/Level-2 M-file S-Function' */
+ 150:HANcoder_E407.c ****     /* update digital output */
+ 151:HANcoder_E407.c ****     if (LedValue == 0) {
+ 158              		.loc 1 151 5 is_stmt 1 view .LVU53
+ 159              		.loc 1 151 18 is_stmt 0 view .LVU54
+ 160 006a 234B     		ldr	r3, .L22+20
+ 161              		.loc 1 151 8 view .LVU55
+ 162 006c 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 163 006e 41BB     		cbnz	r1, .L8
+ 164              	.L20:
+ 152:HANcoder_E407.c ****       DigoutSet(DIGOUT_PORTC_PIN13, DIGOUT_LOW);
+ 153:HANcoder_E407.c ****     } else {
+ 154:HANcoder_E407.c ****       DigoutSet(DIGOUT_PORTC_PIN13, DIGOUT_HIGH);
+ 165              		.loc 1 154 7 view .LVU56
+ 166 0070 4720     		movs	r0, #71
+ 167 0072 FFF7FEFF 		bl	DigoutSet
+ 168              	.LVL11:
+ 155:HANcoder_E407.c ****     }
+ 156:HANcoder_E407.c **** 
+ 157:HANcoder_E407.c ****     /* Update for UnitDelay: '<S9>/Output' */
+ 158:HANcoder_E407.c ****     rtDWork.Output_DSTATE = rtb_FixPtSum1;
+ 169              		.loc 1 158 5 is_stmt 1 view .LVU57
+ 170              		.loc 1 158 27 is_stmt 0 view .LVU58
+ 171 0076 1C4A     		ldr	r2, .L22+4
+ 172              	.LBB4:
+ 173              	.LBB5:
+  57:HANcoder_E407.c ****   if ((rtM->Timing.TaskCounters.TID[1]) > 9) {/* Sample time: [0.1s, 0.0s] */
+ 174              		.loc 1 57 32 view .LVU59
+ 175 0078 6378     		ldrb	r3, [r4, #1]	@ zero_extendqisi2
+ 176              	.LBE5:
+ 177              	.LBE4:
+ 178              		.loc 1 158 27 view .LVU60
+ 179 007a 1670     		strb	r6, [r2]
+ 180              	.L7:
+ 159:HANcoder_E407.c ****   }
+ 160:HANcoder_E407.c **** 
+ 161:HANcoder_E407.c ****   if (rtM->Timing.TaskCounters.TID[2] == 0) {
+ 181              		.loc 1 161 3 is_stmt 1 view .LVU61
+ 182              		.loc 1 161 35 is_stmt 0 view .LVU62
+ 183 007c A278     		ldrb	r2, [r4, #2]	@ zero_extendqisi2
+ 184              		.loc 1 161 6 view .LVU63
+ 185 007e 12BB     		cbnz	r2, .L10
+ 162:HANcoder_E407.c ****     /* Update for UnitDelay: '<S10>/Output' */
+ 163:HANcoder_E407.c ****     rtDWork.Output_DSTATE_k = rtb_FixPtSum1_b;
+ 186              		.loc 1 163 5 is_stmt 1 view .LVU64
+ 187              	.LBB11:
+ 188              	.LBB6:
+  57:HANcoder_E407.c ****   if ((rtM->Timing.TaskCounters.TID[1]) > 9) {/* Sample time: [0.1s, 0.0s] */
+ 189              		.loc 1 57 36 is_stmt 0 view .LVU65
+ 190 0080 0133     		adds	r3, r3, #1
+ 191 0082 DBB2     		uxtb	r3, r3
+ 192              	.LBE6:
+ 193              	.LBE11:
+ 194              		.loc 1 163 29 view .LVU66
+ 195 0084 1849     		ldr	r1, .L22+4
+ 196              	.LBB12:
+ 197              	.LBB7:
+  57:HANcoder_E407.c ****   if ((rtM->Timing.TaskCounters.TID[1]) > 9) {/* Sample time: [0.1s, 0.0s] */
+ 198              		.loc 1 57 36 view .LVU67
+ 199 0086 6370     		strb	r3, [r4, #1]
+  58:HANcoder_E407.c ****     rtM->Timing.TaskCounters.TID[1] = 0;
+ 200              		.loc 1 58 6 view .LVU68
+ 201 0088 092B     		cmp	r3, #9
+ 202              	.LBE7:
+ 203              	.LBE12:
+ 204              		.loc 1 163 29 view .LVU69
+ 205 008a 4D70     		strb	r5, [r1, #1]
+ 164:HANcoder_E407.c ****   }
+ 165:HANcoder_E407.c **** 
+ 166:HANcoder_E407.c ****   rate_scheduler();
+ 206              		.loc 1 166 3 is_stmt 1 view .LVU70
+ 207              	.LBB13:
+ 208              	.LBI4:
+  51:HANcoder_E407.c **** {
+ 209              		.loc 1 51 13 view .LVU71
+ 210              	.LBB8:
+  57:HANcoder_E407.c ****   if ((rtM->Timing.TaskCounters.TID[1]) > 9) {/* Sample time: [0.1s, 0.0s] */
+ 211              		.loc 1 57 3 view .LVU72
+  58:HANcoder_E407.c ****     rtM->Timing.TaskCounters.TID[1] = 0;
+ 212              		.loc 1 58 3 view .LVU73
+  58:HANcoder_E407.c ****     rtM->Timing.TaskCounters.TID[1] = 0;
+ 213              		.loc 1 58 6 is_stmt 0 view .LVU74
+ 214 008c 16D9     		bls	.L11
+ 215              	.L13:
+  59:HANcoder_E407.c ****   }
+ 216              		.loc 1 59 5 is_stmt 1 view .LVU75
+  59:HANcoder_E407.c ****   }
+ 217              		.loc 1 59 37 is_stmt 0 view .LVU76
+ 218 008e 0023     		movs	r3, #0
+ 219 0090 6370     		strb	r3, [r4, #1]
+ 220              	.L12:
+  62:HANcoder_E407.c ****   if ((rtM->Timing.TaskCounters.TID[2]) > 19) {/* Sample time: [0.2s, 0.0s] */
+ 221              		.loc 1 62 3 is_stmt 1 view .LVU77
+  62:HANcoder_E407.c ****   if ((rtM->Timing.TaskCounters.TID[2]) > 19) {/* Sample time: [0.2s, 0.0s] */
+ 222              		.loc 1 62 36 is_stmt 0 view .LVU78
+ 223 0092 0132     		adds	r2, r2, #1
+ 224 0094 D2B2     		uxtb	r2, r2
+  63:HANcoder_E407.c ****     rtM->Timing.TaskCounters.TID[2] = 0;
+ 225              		.loc 1 63 3 is_stmt 1 view .LVU79
+  63:HANcoder_E407.c ****     rtM->Timing.TaskCounters.TID[2] = 0;
+ 226              		.loc 1 63 6 is_stmt 0 view .LVU80
+ 227 0096 132A     		cmp	r2, #19
+  64:HANcoder_E407.c ****   }
+ 228              		.loc 1 64 37 view .LVU81
+ 229 0098 8ABF     		itet	hi
+ 230 009a 0023     		movhi	r3, #0
+  62:HANcoder_E407.c ****   if ((rtM->Timing.TaskCounters.TID[2]) > 19) {/* Sample time: [0.2s, 0.0s] */
+ 231              		.loc 1 62 36 view .LVU82
+ 232 009c A270     		strbls	r2, [r4, #2]
+  64:HANcoder_E407.c ****   }
+ 233              		.loc 1 64 5 is_stmt 1 view .LVU83
+  64:HANcoder_E407.c ****   }
+ 234              		.loc 1 64 37 is_stmt 0 view .LVU84
+ 235 009e A370     		strbhi	r3, [r4, #2]
+ 236              	.LBE8:
+ 237              	.LBE13:
+ 167:HANcoder_E407.c **** }
+ 238              		.loc 1 167 1 view .LVU85
+ 239 00a0 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 240              	.LVL12:
+ 241              	.L2:
+  95:HANcoder_E407.c ****     /* UnitDelay: '<S10>/Output' */
+ 242              		.loc 1 95 3 is_stmt 1 view .LVU86
+  95:HANcoder_E407.c ****     /* UnitDelay: '<S10>/Output' */
+ 243              		.loc 1 95 35 is_stmt 0 view .LVU87
+ 244 00a2 A378     		ldrb	r3, [r4, #2]	@ zero_extendqisi2
+  95:HANcoder_E407.c ****     /* UnitDelay: '<S10>/Output' */
+ 245              		.loc 1 95 6 view .LVU88
+ 246 00a4 002B     		cmp	r3, #0
+ 247 00a6 D1D1     		bne	.L6
+  97:HANcoder_E407.c **** 
+ 248              		.loc 1 97 5 is_stmt 1 view .LVU89
+  97:HANcoder_E407.c **** 
+ 249              		.loc 1 97 25 is_stmt 0 view .LVU90
+ 250 00a8 0F4A     		ldr	r2, .L22+4
+  97:HANcoder_E407.c **** 
+ 251              		.loc 1 97 16 view .LVU91
+ 252 00aa 104B     		ldr	r3, .L22+8
+  97:HANcoder_E407.c **** 
+ 253              		.loc 1 97 25 view .LVU92
+ 254 00ac 5578     		ldrb	r5, [r2, #1]	@ zero_extendqisi2
+  97:HANcoder_E407.c **** 
+ 255              		.loc 1 97 16 view .LVU93
+ 256 00ae 1D70     		strb	r5, [r3]
+ 102:HANcoder_E407.c **** 
+ 257              		.loc 1 102 5 is_stmt 1 view .LVU94
+ 102:HANcoder_E407.c **** 
+ 258              		.loc 1 102 21 is_stmt 0 view .LVU95
+ 259 00b0 0135     		adds	r5, r5, #1
+ 260 00b2 EDB2     		uxtb	r5, r5
+ 261              	.LVL13:
+ 107:HANcoder_E407.c ****       rtb_FixPtSum1_b = ((uint8_T)0U);
+ 262              		.loc 1 107 5 is_stmt 1 view .LVU96
+ 108:HANcoder_E407.c ****     }
+ 263              		.loc 1 108 23 is_stmt 0 view .LVU97
+ 264 00b4 022D     		cmp	r5, #2
+ 265 00b6 28BF     		it	cs
+ 266 00b8 0025     		movcs	r5, #0
+ 267              	.LVL14:
+ 108:HANcoder_E407.c ****     }
+ 268              		.loc 1 108 23 view .LVU98
+ 269 00ba C7E7     		b	.L6
+ 270              	.LVL15:
+ 271              	.L11:
+ 272              	.LBB14:
+ 273              	.LBB9:
+  62:HANcoder_E407.c ****   if ((rtM->Timing.TaskCounters.TID[2]) > 19) {/* Sample time: [0.2s, 0.0s] */
+ 274              		.loc 1 62 3 is_stmt 1 view .LVU99
+  62:HANcoder_E407.c ****   if ((rtM->Timing.TaskCounters.TID[2]) > 19) {/* Sample time: [0.2s, 0.0s] */
+ 275              		.loc 1 62 36 is_stmt 0 view .LVU100
+ 276 00bc 0123     		movs	r3, #1
+ 277 00be A370     		strb	r3, [r4, #2]
+  63:HANcoder_E407.c ****     rtM->Timing.TaskCounters.TID[2] = 0;
+ 278              		.loc 1 63 3 is_stmt 1 view .LVU101
+ 279              	.LBE9:
+ 280              	.LBE14:
+ 281              		.loc 1 167 1 is_stmt 0 view .LVU102
+ 282 00c0 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 283              	.L8:
+ 154:HANcoder_E407.c ****     }
+ 284              		.loc 1 154 7 is_stmt 1 view .LVU103
+ 285 00c2 0121     		movs	r1, #1
+ 286 00c4 D4E7     		b	.L20
+ 287              	.L10:
+ 166:HANcoder_E407.c **** }
+ 288              		.loc 1 166 3 view .LVU104
+ 289              	.LBB15:
+  51:HANcoder_E407.c **** {
+ 290              		.loc 1 51 13 view .LVU105
+ 291              	.LBB10:
+  57:HANcoder_E407.c ****   if ((rtM->Timing.TaskCounters.TID[1]) > 9) {/* Sample time: [0.1s, 0.0s] */
+ 292              		.loc 1 57 3 view .LVU106
+  57:HANcoder_E407.c ****   if ((rtM->Timing.TaskCounters.TID[1]) > 9) {/* Sample time: [0.1s, 0.0s] */
+ 293              		.loc 1 57 36 is_stmt 0 view .LVU107
+ 294 00c6 0133     		adds	r3, r3, #1
+ 295 00c8 DBB2     		uxtb	r3, r3
+  58:HANcoder_E407.c ****     rtM->Timing.TaskCounters.TID[1] = 0;
+ 296              		.loc 1 58 6 view .LVU108
+ 297 00ca 092B     		cmp	r3, #9
+  57:HANcoder_E407.c ****   if ((rtM->Timing.TaskCounters.TID[1]) > 9) {/* Sample time: [0.1s, 0.0s] */
+ 298              		.loc 1 57 36 view .LVU109
+ 299 00cc 6370     		strb	r3, [r4, #1]
+  58:HANcoder_E407.c ****     rtM->Timing.TaskCounters.TID[1] = 0;
+ 300              		.loc 1 58 3 is_stmt 1 view .LVU110
+  58:HANcoder_E407.c ****     rtM->Timing.TaskCounters.TID[1] = 0;
+ 301              		.loc 1 58 6 is_stmt 0 view .LVU111
+ 302 00ce DED8     		bhi	.L13
+ 303 00d0 DFE7     		b	.L12
+ 304              	.LVL16:
+ 305              	.L5:
+  58:HANcoder_E407.c ****     rtM->Timing.TaskCounters.TID[1] = 0;
+ 306              		.loc 1 58 6 view .LVU112
+ 307              	.LBE10:
+ 308              	.LBE15:
+ 128:HANcoder_E407.c ****     }
+ 309              		.loc 1 128 7 is_stmt 1 view .LVU113
+ 128:HANcoder_E407.c ****     }
+ 310              		.loc 1 128 22 is_stmt 0 view .LVU114
+ 311 00d2 064B     		ldr	r3, .L22+8
+ 128:HANcoder_E407.c ****     }
+ 312              		.loc 1 128 16 view .LVU115
+ 313 00d4 084A     		ldr	r2, .L22+20
+ 128:HANcoder_E407.c ****     }
+ 314              		.loc 1 128 30 view .LVU116
+ 315 00d6 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 316 00d8 003B     		subs	r3, r3, #0
+ 317 00da 18BF     		it	ne
+ 318 00dc 0123     		movne	r3, #1
+ 319 00de 1370     		strb	r3, [r2]
+ 320 00e0 B4E7     		b	.L6
+ 321              	.L23:
+ 322 00e2 00BF     		.align	2
+ 323              	.L22:
+ 324 00e4 00000000 		.word	.LANCHOR0
+ 325 00e8 00000000 		.word	.LANCHOR1
+ 326 00ec 00000000 		.word	.LANCHOR5
+ 327 00f0 00000000 		.word	.LANCHOR3
+ 328 00f4 00000000 		.word	.LANCHOR2
+ 329 00f8 00000000 		.word	.LANCHOR4
+ 330 00fc 00000000 		.word	.LANCHOR6
+ 331 0100 00000000 		.word	.LANCHOR7
+ 332 0104 00000000 		.word	.LC0
+ 333 0108 00000000 		.word	.LANCHOR8
+ 334              		.cfi_endproc
+ 335              	.LFE112:
+ 337              		.section	.text.HANcoder_E407_initialize,"ax",%progbits
+ 338              		.align	1
+ 339              		.p2align 2,,3
+ 340              		.global	HANcoder_E407_initialize
+ 341              		.syntax unified
+ 342              		.thumb
+ 343              		.thumb_func
+ 345              	HANcoder_E407_initialize:
+ 346              	.LFB113:
+ 168:HANcoder_E407.c **** 
+ 169:HANcoder_E407.c **** /* Model initialize function */
+ 170:HANcoder_E407.c **** void HANcoder_E407_initialize(void)
+ 171:HANcoder_E407.c **** {
+ 347              		.loc 1 171 1 is_stmt 1 view -0
+ 348              		.cfi_startproc
+ 349              		@ args = 0, pretend = 0, frame = 0
+ 350              		@ frame_needed = 0, uses_anonymous_args = 0
+ 172:HANcoder_E407.c ****   /* Start for M-S-Function: '<S16>/Level-2 M-file S-Function' */
+ 173:HANcoder_E407.c **** 
+ 174:HANcoder_E407.c ****   /* configure the digital output */
+ 175:HANcoder_E407.c ****   DigoutConfigure(DIGOUT_PORTC_PIN13, DIGOUT_CFG_PUSHPULL);
+ 351              		.loc 1 175 3 view .LVU118
+ 171:HANcoder_E407.c ****   /* Start for M-S-Function: '<S16>/Level-2 M-file S-Function' */
+ 352              		.loc 1 171 1 is_stmt 0 view .LVU119
+ 353 0000 08B5     		push	{r3, lr}
+ 354              		.cfi_def_cfa_offset 8
+ 355              		.cfi_offset 3, -8
+ 356              		.cfi_offset 14, -4
+ 357              		.loc 1 175 3 view .LVU120
+ 358 0002 0121     		movs	r1, #1
+ 359 0004 4720     		movs	r0, #71
+ 360 0006 FFF7FEFF 		bl	DigoutConfigure
+ 361              	.LVL17:
+ 176:HANcoder_E407.c **** 
+ 177:HANcoder_E407.c ****   /* Start for M-S-Function: '<S15>/Level-2 M-file S-Function' */
+ 178:HANcoder_E407.c **** 
+ 179:HANcoder_E407.c ****   /* configure the digital input */
+ 180:HANcoder_E407.c ****   DiginConfigure(DIGIN_PORTA_PIN0, DIGIN_CFG_PULLDOWN);
+ 362              		.loc 1 180 3 is_stmt 1 view .LVU121
+ 363 000a 0221     		movs	r1, #2
+ 364 000c 4720     		movs	r0, #71
+ 365 000e FFF7FEFF 		bl	DiginConfigure
+ 366              	.LVL18:
+ 181:HANcoder_E407.c **** 
+ 182:HANcoder_E407.c ****   /* Start for M-S-Function: '<S3>/Level-2 M-file S-Function' */
+ 183:HANcoder_E407.c **** 
+ 184:HANcoder_E407.c ****   /* configure the stack size for the task that executes the model */
+ 185:HANcoder_E407.c ****   AppCtrlTaskSetStackSize((configMINIMAL_STACK_SIZE*sizeof(portBASE_TYPE)) + 100);
+ 367              		.loc 1 185 3 view .LVU122
+ 368 0012 4FF41970 		mov	r0, #612
+ 369 0016 FFF7FEFF 		bl	AppCtrlTaskSetStackSize
+ 370              	.LVL19:
+ 186:HANcoder_E407.c **** 
+ 187:HANcoder_E407.c ****   /* configure the sample time of the model in microseconds */
+ 188:HANcoder_E407.c ****   AppCtrlTaskSetPeriod(10000);
+ 371              		.loc 1 188 3 view .LVU123
+ 372 001a 42F21070 		movw	r0, #10000
+ 373 001e FFF7FEFF 		bl	AppCtrlTaskSetPeriod
+ 374              	.LVL20:
+ 189:HANcoder_E407.c **** 
+ 190:HANcoder_E407.c ****   /* Run the ADC conversions ten times faster than the Simulink model */
+ 191:HANcoder_E407.c ****   ADCconversionTaskSetPeriod(10000/10);
+ 375              		.loc 1 191 3 view .LVU124
+ 376 0022 4FF47A70 		mov	r0, #1000
+ 377 0026 FFF7FEFF 		bl	ADCconversionTaskSetPeriod
+ 378              	.LVL21:
+ 192:HANcoder_E407.c **** 
+ 193:HANcoder_E407.c ****   /* Start for M-S-Function: '<S8>/Level-2 M-file S-Function' */
+ 194:HANcoder_E407.c **** 
+ 195:HANcoder_E407.c ****   /* initialize the measurement and calibration interface */
+ 196:HANcoder_E407.c ****   MacUsbComInit();
+ 379              		.loc 1 196 3 view .LVU125
+ 380 002a FFF7FEFF 		bl	MacUsbComInit
+ 381              	.LVL22:
+ 197:HANcoder_E407.c ****   MacInit();
+ 382              		.loc 1 197 3 view .LVU126
+ 198:HANcoder_E407.c **** }
+ 383              		.loc 1 198 1 is_stmt 0 view .LVU127
+ 384 002e BDE80840 		pop	{r3, lr}
+ 385              		.cfi_restore 14
+ 386              		.cfi_restore 3
+ 387              		.cfi_def_cfa_offset 0
+ 197:HANcoder_E407.c ****   MacInit();
+ 388              		.loc 1 197 3 view .LVU128
+ 389 0032 FFF7FEBF 		b	MacInit
+ 390              	.LVL23:
+ 391              		.cfi_endproc
+ 392              	.LFE113:
+ 394              		.global	rtM
+ 395              		.global	rtDWork
+ 396              		.global	rtB
+ 397              		.global	HANtuneOverride
+ 398              		.global	LedValue
+ 399              		.global	button_press
+ 400              		.global	SI_CPUload
+ 401              		.global	SI_FreeStack
+ 402              		.global	SI_FreeHeap
+ 403 0036 00BF     		.section	.bss.LedValue,"aw",%nobits
+ 404              		.set	.LANCHOR4,. + 0
+ 407              	LedValue:
+ 408 0000 00       		.space	1
+ 409              		.section	.bss.SI_CPUload,"aw",%nobits
+ 410              		.set	.LANCHOR6,. + 0
+ 413              	SI_CPUload:
+ 414 0000 00       		.space	1
+ 415              		.section	.bss.SI_FreeHeap,"aw",%nobits
+ 416              		.align	2
+ 417              		.set	.LANCHOR7,. + 0
+ 420              	SI_FreeHeap:
+ 421 0000 00000000 		.space	4
+ 422              		.section	.bss.SI_FreeStack,"aw",%nobits
+ 423              		.align	2
+ 424              		.set	.LANCHOR8,. + 0
+ 427              	SI_FreeStack:
+ 428 0000 00000000 		.space	4
+ 429              		.section	.bss.button_press,"aw",%nobits
+ 430              		.set	.LANCHOR2,. + 0
+ 433              	button_press:
+ 434 0000 00       		.space	1
+ 435              		.section	.bss.rtB,"aw",%nobits
+ 436              		.align	2
+ 437              		.set	.LANCHOR5,. + 0
+ 440              	rtB:
+ 441 0000 00       		.space	1
+ 442              		.section	.bss.rtDWork,"aw",%nobits
+ 443              		.align	2
+ 444              		.set	.LANCHOR1,. + 0
+ 447              	rtDWork:
+ 448 0000 0000     		.space	2
+ 449              		.section	.bss.rtM_,"aw",%nobits
+ 450              		.align	2
+ 451              		.set	.LANCHOR0,. + 0
+ 454              	rtM_:
+ 455 0000 000000   		.space	3
+ 456              		.section	.data.HANtuneOverride,"aw"
+ 457              		.set	.LANCHOR3,. + 0
+ 460              	HANtuneOverride:
+ 461 0000 00       		.space	1
+ 462              		.section	.rodata.rtM,"a"
+ 463              		.align	2
+ 466              	rtM:
+ 467 0000 00000000 		.word	rtM_
+ 468              		.text
+ 469              	.Letext0:
+ 470              		.file 2 "rtwtypes.h"
+ 471              		.file 3 "../blockset/rtw/STM32/inc/STM32_E407/digout.h"
+ 472              		.file 4 "../blockset/rtw/STM32/inc/STM32_E407/digin.h"
+ 473              		.file 5 "HANcoder_E407_types.h"
+ 474              		.file 6 "HANcoder_E407.h"
+ 475              		.file 7 "../blockset/rtw/STM32/inc/app.h"
+ 476              		.file 8 "../blockset/rtw/STM32/inc/STM32_E407/anin.h"
+ 477              		.file 9 "../blockset/rtw/STM32/inc/STM32_E407/mac.h"
+ 478              		.file 10 "../blockset/rtw/STM32/inc/os.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 HANcoder_E407.c
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:19     .rodata.HANcoder_E407_step.str1.4:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:23     .text.HANcoder_E407_step:00000000 $t
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:30     .text.HANcoder_E407_step:00000000 HANcoder_E407_step
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:324    .text.HANcoder_E407_step:000000e4 $d
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:338    .text.HANcoder_E407_initialize:00000000 $t
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:345    .text.HANcoder_E407_initialize:00000000 HANcoder_E407_initialize
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:466    .rodata.rtM:00000000 rtM
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:447    .bss.rtDWork:00000000 rtDWork
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:440    .bss.rtB:00000000 rtB
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:460    .data.HANtuneOverride:00000000 HANtuneOverride
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:407    .bss.LedValue:00000000 LedValue
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:433    .bss.button_press:00000000 button_press
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:413    .bss.SI_CPUload:00000000 SI_CPUload
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:427    .bss.SI_FreeStack:00000000 SI_FreeStack
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:420    .bss.SI_FreeHeap:00000000 SI_FreeHeap
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:408    .bss.LedValue:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:414    .bss.SI_CPUload:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:416    .bss.SI_FreeHeap:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:423    .bss.SI_FreeStack:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:434    .bss.button_press:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:436    .bss.rtB:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:443    .bss.rtDWork:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:450    .bss.rtM_:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:454    .bss.rtM_:00000000 rtM_
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:461    .data.HANtuneOverride:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\ccnkiGv2.s:463    .rodata.rtM:00000000 $d
+
+UNDEFINED SYMBOLS
+DiginGet
+OsGetCpuLoad
+OsGetFreeHeapSize
+OsGetTaskFreeStackSize
+DigoutSet
+DigoutConfigure
+DiginConfigure
+AppCtrlTaskSetStackSize
+AppCtrlTaskSetPeriod
+ADCconversionTaskSetPeriod
+MacUsbComInit
+MacInit

@@ -1,0 +1,3820 @@
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 2
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"HANcoder_E407_DS_HTE.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.PwmoutIRQ_PWMOUT_MODULE_TIM2,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 2,,3
+  21              		.global	PwmoutIRQ_PWMOUT_MODULE_TIM2
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	PwmoutIRQ_PWMOUT_MODULE_TIM2:
+  27              	.LFB113:
+  28              		.file 1 "HANcoder_E407_DS_HTE.c"
+   1:HANcoder_E407_DS_HTE.c **** /*
+   2:HANcoder_E407_DS_HTE.c ****  * Academic License - for use in teaching, academic research, and meeting
+   3:HANcoder_E407_DS_HTE.c ****  * course requirements at degree granting institutions only.  Not for
+   4:HANcoder_E407_DS_HTE.c ****  * government, commercial, or other organizational use.
+   5:HANcoder_E407_DS_HTE.c ****  *
+   6:HANcoder_E407_DS_HTE.c ****  * File: HANcoder_E407_DS_HTE.c
+   7:HANcoder_E407_DS_HTE.c ****  *
+   8:HANcoder_E407_DS_HTE.c ****  * Code generated for Simulink model 'HANcoder_E407_DS_HTE'.
+   9:HANcoder_E407_DS_HTE.c ****  *
+  10:HANcoder_E407_DS_HTE.c ****  * Model version                  : 16.9
+  11:HANcoder_E407_DS_HTE.c ****  * Simulink Coder version         : 9.7 (R2022a) 13-Nov-2021
+  12:HANcoder_E407_DS_HTE.c ****  * C/C++ source code generated on : Mon Mar  6 20:24:54 2023
+  13:HANcoder_E407_DS_HTE.c ****  *
+  14:HANcoder_E407_DS_HTE.c ****  * Target selection: ert.tlc
+  15:HANcoder_E407_DS_HTE.c ****  * Embedded hardware selection: ARM Compatible->ARM Cortex
+  16:HANcoder_E407_DS_HTE.c ****  * Code generation objectives: Unspecified
+  17:HANcoder_E407_DS_HTE.c ****  * Validation result: Not run
+  18:HANcoder_E407_DS_HTE.c ****  */
+  19:HANcoder_E407_DS_HTE.c **** 
+  20:HANcoder_E407_DS_HTE.c **** #include "HANcoder_E407_DS_HTE.h"
+  21:HANcoder_E407_DS_HTE.c **** #include <math.h>
+  22:HANcoder_E407_DS_HTE.c **** #include "rtwtypes.h"
+  23:HANcoder_E407_DS_HTE.c **** #include "multiword_types.h"
+  24:HANcoder_E407_DS_HTE.c **** #include "HANcoder_E407_DS_HTE_private.h"
+  25:HANcoder_E407_DS_HTE.c **** 
+  26:HANcoder_E407_DS_HTE.c **** /* map ByteSwap function */
+  27:HANcoder_E407_DS_HTE.c **** #define ByteSwap(x)                    (ByteSwap_x((uint8_t *) &x, sizeof(x)))
+  28:HANcoder_E407_DS_HTE.c **** 
+  29:HANcoder_E407_DS_HTE.c **** void PwmoutIRQ_PWMOUT_MODULE_TIM2(void);
+  30:HANcoder_E407_DS_HTE.c **** 
+  31:HANcoder_E407_DS_HTE.c **** /* Exported block signals */
+  32:HANcoder_E407_DS_HTE.c **** real_T RPM;                            /* '<S6>/Gain' */
+  33:HANcoder_E407_DS_HTE.c **** uint32_T SI_FreeHeap;                  /* '<S128>/Level-2 M-file S-Function' */
+  34:HANcoder_E407_DS_HTE.c **** uint32_T SI_FreeStack;                 /* '<S129>/Level-2 M-file S-Function' */
+  35:HANcoder_E407_DS_HTE.c **** int32_T EncCount;                      /* '<S119>/Level-2 M-file S-Function' */
+  36:HANcoder_E407_DS_HTE.c **** int32_T RotorPos;                      /* '<S12>/Counts to rotation [deg]' */
+  37:HANcoder_E407_DS_HTE.c **** int32_T PosError;                      /* '<S12>/Sum' */
+  38:HANcoder_E407_DS_HTE.c **** uint16_T PotVal;                       /* '<S116>/Level-2 M-file S-Function' */
+  39:HANcoder_E407_DS_HTE.c **** uint16_T MotorPWM;                     /* '<S7>/Signal Conversion' */
+  40:HANcoder_E407_DS_HTE.c **** uint16_T RPMSetpoint;                  /* '<S13>/Constant' */
+  41:HANcoder_E407_DS_HTE.c **** uint16_T RpmPIDOut;                    /* '<S106>/Saturation' */
+  42:HANcoder_E407_DS_HTE.c **** int16_T RPMError;                      /* '<S13>/Sum' */
+  43:HANcoder_E407_DS_HTE.c **** int16_T PotDeg;                        /* '<S12>/Analog byte to degree' */
+  44:HANcoder_E407_DS_HTE.c **** int16_T PosPIDOut;                     /* '<S55>/Saturation' */
+  45:HANcoder_E407_DS_HTE.c **** uint8_T SI_CPUload;                    /* '<S127>/Level-2 M-file S-Function' */
+  46:HANcoder_E407_DS_HTE.c **** uint8_T CANreceive;                    /* '<S120>/In1' */
+  47:HANcoder_E407_DS_HTE.c **** boolean_T EncReset;                    /* '<S2>/Constant' */
+  48:HANcoder_E407_DS_HTE.c **** boolean_T DIRFault;                    /* '<S2>/Equal' */
+  49:HANcoder_E407_DS_HTE.c **** boolean_T IN1;                         /* '<S2>/Switch2' */
+  50:HANcoder_E407_DS_HTE.c **** boolean_T IN2;                         /* '<S2>/Switch3' */
+  51:HANcoder_E407_DS_HTE.c **** 
+  52:HANcoder_E407_DS_HTE.c **** /* Exported block parameters */
+  53:HANcoder_E407_DS_HTE.c **** uint16_T HANtuneOverride = 0U;         /* Variable: HANtuneOverride
+  54:HANcoder_E407_DS_HTE.c ****                                         * Referenced by: '<S13>/Constant'
+  55:HANcoder_E407_DS_HTE.c ****                                         */
+  56:HANcoder_E407_DS_HTE.c **** boolean_T System_select = false;       /* Variable: System_select
+  57:HANcoder_E407_DS_HTE.c ****                                         * Referenced by: '<S2>/Constant'
+  58:HANcoder_E407_DS_HTE.c ****                                         */
+  59:HANcoder_E407_DS_HTE.c **** 
+  60:HANcoder_E407_DS_HTE.c **** /* Block signals (default storage) */
+  61:HANcoder_E407_DS_HTE.c **** BlockIO rtB;
+  62:HANcoder_E407_DS_HTE.c **** 
+  63:HANcoder_E407_DS_HTE.c **** /* Block states (default storage) */
+  64:HANcoder_E407_DS_HTE.c **** D_Work rtDWork;
+  65:HANcoder_E407_DS_HTE.c **** static tCanDataTypes canTxData;
+  66:HANcoder_E407_DS_HTE.c **** static tCanDataTypes canRxData_0_1094U;
+  67:HANcoder_E407_DS_HTE.c **** 
+  68:HANcoder_E407_DS_HTE.c **** /*
+  69:HANcoder_E407_DS_HTE.c ****  * Swaps the values of two bytes.
+  70:HANcoder_E407_DS_HTE.c ****  * a, b pointers to data values that need swapping
+  71:HANcoder_E407_DS_HTE.c ****  */
+  72:HANcoder_E407_DS_HTE.c **** static void swap(unsigned char *a, unsigned char *b)
+  73:HANcoder_E407_DS_HTE.c **** {
+  74:HANcoder_E407_DS_HTE.c ****   register char i = *a;
+  75:HANcoder_E407_DS_HTE.c ****   *a = *b;
+  76:HANcoder_E407_DS_HTE.c ****   *b = i;
+  77:HANcoder_E407_DS_HTE.c **** }                                      /*** end of swap ***/
+  78:HANcoder_E407_DS_HTE.c **** 
+  79:HANcoder_E407_DS_HTE.c **** /*
+  80:HANcoder_E407_DS_HTE.c ****  * Swaps all bytes in b. Typically used to fix endianes.
+  81:HANcoder_E407_DS_HTE.c ****  * b pointer to data with bytes to swap
+  82:HANcoder_E407_DS_HTE.c ****  * n number of bytes to swap
+  83:HANcoder_E407_DS_HTE.c ****  */
+  84:HANcoder_E407_DS_HTE.c **** void ByteSwap_x(uint8_t *b, size_t n)
+  85:HANcoder_E407_DS_HTE.c **** {
+  86:HANcoder_E407_DS_HTE.c ****   int i = 0;
+  87:HANcoder_E407_DS_HTE.c ****   int j = n-1;
+  88:HANcoder_E407_DS_HTE.c ****   while (i<j) {
+  89:HANcoder_E407_DS_HTE.c ****     swap(&b[i], &b[j]);
+  90:HANcoder_E407_DS_HTE.c ****     i++, j--;
+  91:HANcoder_E407_DS_HTE.c ****   }
+  92:HANcoder_E407_DS_HTE.c **** }
+  93:HANcoder_E407_DS_HTE.c **** 
+  94:HANcoder_E407_DS_HTE.c **** void PwmoutIRQ_PWMOUT_MODULE_TIM2(void)
+  95:HANcoder_E407_DS_HTE.c **** {
+  29              		.loc 1 95 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  96:HANcoder_E407_DS_HTE.c **** }
+  34              		.loc 1 96 1 view .LVU1
+  35 0000 7047     		bx	lr
+  36              		.cfi_endproc
+  37              	.LFE113:
+  39 0002 00BF     		.section	.text.ByteSwap_x,"ax",%progbits
+  40              		.align	1
+  41              		.p2align 2,,3
+  42              		.global	ByteSwap_x
+  43              		.syntax unified
+  44              		.thumb
+  45              		.thumb_func
+  47              	ByteSwap_x:
+  48              	.LVL0:
+  49              	.LFB112:
+  85:HANcoder_E407_DS_HTE.c ****   int i = 0;
+  50              		.loc 1 85 1 view -0
+  51              		.cfi_startproc
+  52              		@ args = 0, pretend = 0, frame = 0
+  53              		@ frame_needed = 0, uses_anonymous_args = 0
+  86:HANcoder_E407_DS_HTE.c ****   int j = n-1;
+  54              		.loc 1 86 3 view .LVU3
+  87:HANcoder_E407_DS_HTE.c ****   while (i<j) {
+  55              		.loc 1 87 3 view .LVU4
+  85:HANcoder_E407_DS_HTE.c ****   int i = 0;
+  56              		.loc 1 85 1 is_stmt 0 view .LVU5
+  57 0000 70B5     		push	{r4, r5, r6, lr}
+  58              		.cfi_def_cfa_offset 16
+  59              		.cfi_offset 4, -16
+  60              		.cfi_offset 5, -12
+  61              		.cfi_offset 6, -8
+  62              		.cfi_offset 14, -4
+  87:HANcoder_E407_DS_HTE.c ****   while (i<j) {
+  63              		.loc 1 87 12 view .LVU6
+  64 0002 01F1FF3E 		add	lr, r1, #-1
+  65              	.LVL1:
+  88:HANcoder_E407_DS_HTE.c ****     swap(&b[i], &b[j]);
+  66              		.loc 1 88 3 is_stmt 1 view .LVU7
+  88:HANcoder_E407_DS_HTE.c ****     swap(&b[i], &b[j]);
+  67              		.loc 1 88 9 view .LVU8
+  68 0006 BEF1000F 		cmp	lr, #0
+  69 000a 15DD     		ble	.L3
+  70 000c 00F1FF3C 		add	ip, r0, #-1
+  71 0010 8644     		add	lr, lr, r0
+  72              	.LVL2:
+  88:HANcoder_E407_DS_HTE.c ****     swap(&b[i], &b[j]);
+  73              		.loc 1 88 9 is_stmt 0 view .LVU9
+  74 0012 6FF00106 		mvn	r6, #1
+  75              	.LVL3:
+  76              	.L5:
+  89:HANcoder_E407_DS_HTE.c ****     i++, j--;
+  77              		.loc 1 89 5 is_stmt 1 view .LVU10
+  78              	.LBB12:
+  79              	.LBI12:
+  72:HANcoder_E407_DS_HTE.c **** {
+  80              		.loc 1 72 13 view .LVU11
+  81              	.LBB13:
+  74:HANcoder_E407_DS_HTE.c ****   *a = *b;
+  82              		.loc 1 74 3 view .LVU12
+  83 0016 6246     		mov	r2, ip
+  74:HANcoder_E407_DS_HTE.c ****   *a = *b;
+  84              		.loc 1 74 17 is_stmt 0 view .LVU13
+  85 0018 1CF8014F 		ldrb	r4, [ip, #1]!	@ zero_extendqisi2
+  86              	.LVL4:
+  75:HANcoder_E407_DS_HTE.c ****   *b = i;
+  87              		.loc 1 75 3 is_stmt 1 view .LVU14
+  75:HANcoder_E407_DS_HTE.c ****   *b = i;
+  88              		.loc 1 75 8 is_stmt 0 view .LVU15
+  89 001c 9EF80050 		ldrb	r5, [lr]	@ zero_extendqisi2
+  75:HANcoder_E407_DS_HTE.c ****   *b = i;
+  90              		.loc 1 75 6 view .LVU16
+  91 0020 8CF80050 		strb	r5, [ip]
+  76:HANcoder_E407_DS_HTE.c **** }                                      /*** end of swap ***/
+  92              		.loc 1 76 3 is_stmt 1 view .LVU17
+  93              	.LBE13:
+  94              	.LBE12:
+  88:HANcoder_E407_DS_HTE.c ****     swap(&b[i], &b[j]);
+  95              		.loc 1 88 9 is_stmt 0 view .LVU18
+  96 0024 A6EB0C03 		sub	r3, r6, ip
+  97 0028 0232     		adds	r2, r2, #2
+  98              	.LVL5:
+  88:HANcoder_E407_DS_HTE.c ****     swap(&b[i], &b[j]);
+  99              		.loc 1 88 9 view .LVU19
+ 100 002a 0344     		add	r3, r3, r0
+ 101 002c 121A     		subs	r2, r2, r0
+ 102              	.LVL6:
+  88:HANcoder_E407_DS_HTE.c ****     swap(&b[i], &b[j]);
+ 103              		.loc 1 88 9 view .LVU20
+ 104 002e 0B44     		add	r3, r3, r1
+ 105 0030 9A42     		cmp	r2, r3
+ 106              	.LBB15:
+ 107              	.LBB14:
+  76:HANcoder_E407_DS_HTE.c **** }                                      /*** end of swap ***/
+ 108              		.loc 1 76 6 view .LVU21
+ 109 0032 0EF80149 		strb	r4, [lr], #-1
+ 110              	.LVL7:
+  76:HANcoder_E407_DS_HTE.c **** }                                      /*** end of swap ***/
+ 111              		.loc 1 76 6 view .LVU22
+ 112              	.LBE14:
+ 113              	.LBE15:
+  90:HANcoder_E407_DS_HTE.c ****   }
+ 114              		.loc 1 90 5 is_stmt 1 view .LVU23
+  88:HANcoder_E407_DS_HTE.c ****     swap(&b[i], &b[j]);
+ 115              		.loc 1 88 9 view .LVU24
+ 116 0036 EEDB     		blt	.L5
+ 117              	.LVL8:
+ 118              	.L3:
+  92:HANcoder_E407_DS_HTE.c **** 
+ 119              		.loc 1 92 1 is_stmt 0 view .LVU25
+ 120 0038 70BD     		pop	{r4, r5, r6, pc}
+ 121              		.cfi_endproc
+ 122              	.LFE112:
+ 124 003a 00BF     		.section	.text.MultiWord2sLong,"ax",%progbits
+ 125              		.align	1
+ 126              		.p2align 2,,3
+ 127              		.global	MultiWord2sLong
+ 128              		.syntax unified
+ 129              		.thumb
+ 130              		.thumb_func
+ 132              	MultiWord2sLong:
+ 133              	.LVL9:
+ 134              	.LFB114:
+  97:HANcoder_E407_DS_HTE.c **** 
+  98:HANcoder_E407_DS_HTE.c **** int32_T MultiWord2sLong(const uint32_T u[])
+  99:HANcoder_E407_DS_HTE.c **** {
+ 135              		.loc 1 99 1 is_stmt 1 view -0
+ 136              		.cfi_startproc
+ 137              		@ args = 0, pretend = 0, frame = 0
+ 138              		@ frame_needed = 0, uses_anonymous_args = 0
+ 139              		@ link register save eliminated.
+ 100:HANcoder_E407_DS_HTE.c ****   return (int32_T)u[0];
+ 140              		.loc 1 100 3 view .LVU27
+ 101:HANcoder_E407_DS_HTE.c **** }
+ 141              		.loc 1 101 1 is_stmt 0 view .LVU28
+ 142 0000 0068     		ldr	r0, [r0]
+ 143              	.LVL10:
+ 144              		.loc 1 101 1 view .LVU29
+ 145 0002 7047     		bx	lr
+ 146              		.cfi_endproc
+ 147              	.LFE114:
+ 149              		.section	.text.sMultiWordShr,"ax",%progbits
+ 150              		.align	1
+ 151              		.p2align 2,,3
+ 152              		.global	sMultiWordShr
+ 153              		.syntax unified
+ 154              		.thumb
+ 155              		.thumb_func
+ 157              	sMultiWordShr:
+ 158              	.LVL11:
+ 159              	.LFB115:
+ 102:HANcoder_E407_DS_HTE.c **** 
+ 103:HANcoder_E407_DS_HTE.c **** void sMultiWordShr(const uint32_T u1[], int32_T n1, uint32_T n2, uint32_T y[],
+ 104:HANcoder_E407_DS_HTE.c ****                    int32_T n)
+ 105:HANcoder_E407_DS_HTE.c **** {
+ 160              		.loc 1 105 1 is_stmt 1 view -0
+ 161              		.cfi_startproc
+ 162              		@ args = 4, pretend = 0, frame = 0
+ 163              		@ frame_needed = 0, uses_anonymous_args = 0
+ 106:HANcoder_E407_DS_HTE.c ****   int32_T i;
+ 164              		.loc 1 106 3 view .LVU31
+ 107:HANcoder_E407_DS_HTE.c ****   int32_T i1;
+ 165              		.loc 1 107 3 view .LVU32
+ 108:HANcoder_E407_DS_HTE.c ****   int32_T nb;
+ 166              		.loc 1 108 3 view .LVU33
+ 109:HANcoder_E407_DS_HTE.c ****   int32_T nc;
+ 167              		.loc 1 109 3 view .LVU34
+ 110:HANcoder_E407_DS_HTE.c ****   uint32_T nr;
+ 168              		.loc 1 110 3 view .LVU35
+ 111:HANcoder_E407_DS_HTE.c ****   uint32_T u1i;
+ 169              		.loc 1 111 3 view .LVU36
+ 112:HANcoder_E407_DS_HTE.c ****   uint32_T yi;
+ 170              		.loc 1 112 3 view .LVU37
+ 113:HANcoder_E407_DS_HTE.c ****   uint32_T ys;
+ 171              		.loc 1 113 3 view .LVU38
+ 114:HANcoder_E407_DS_HTE.c ****   nb = (int32_T)(n2 >> 5);
+ 172              		.loc 1 114 3 view .LVU39
+ 105:HANcoder_E407_DS_HTE.c ****   int32_T i;
+ 173              		.loc 1 105 1 is_stmt 0 view .LVU40
+ 174 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 175              		.cfi_def_cfa_offset 36
+ 176              		.cfi_offset 4, -36
+ 177              		.cfi_offset 5, -32
+ 178              		.cfi_offset 6, -28
+ 179              		.cfi_offset 7, -24
+ 180              		.cfi_offset 8, -20
+ 181              		.cfi_offset 9, -16
+ 182              		.cfi_offset 10, -12
+ 183              		.cfi_offset 11, -8
+ 184              		.cfi_offset 14, -4
+ 115:HANcoder_E407_DS_HTE.c ****   i = 0;
+ 116:HANcoder_E407_DS_HTE.c ****   ys = (u1[n1 - 1] & 2147483648U) != 0U ? MAX_uint32_T : 0U;
+ 185              		.loc 1 116 11 view .LVU41
+ 186 0004 6FF04045 		mvn	r5, #-1073741824
+ 187 0008 4C19     		adds	r4, r1, r5
+ 117:HANcoder_E407_DS_HTE.c ****   if (nb < n1) {
+ 188              		.loc 1 117 6 view .LVU42
+ 189 000a B1EB521F 		cmp	r1, r2, lsr #5
+ 116:HANcoder_E407_DS_HTE.c ****   if (nb < n1) {
+ 190              		.loc 1 116 56 view .LVU43
+ 191 000e 50F82440 		ldr	r4, [r0, r4, lsl #2]
+ 192 0012 4FEAE474 		asr	r4, r4, #31
+ 193              	.LVL12:
+ 115:HANcoder_E407_DS_HTE.c ****   i = 0;
+ 194              		.loc 1 115 3 is_stmt 1 view .LVU44
+ 116:HANcoder_E407_DS_HTE.c ****   if (nb < n1) {
+ 195              		.loc 1 116 3 view .LVU45
+ 196              		.loc 1 117 3 view .LVU46
+ 197              		.loc 1 117 6 is_stmt 0 view .LVU47
+ 198 0016 3EDD     		ble	.L22
+ 118:HANcoder_E407_DS_HTE.c ****     nc = n + nb;
+ 199              		.loc 1 118 5 is_stmt 1 view .LVU48
+ 200              		.loc 1 118 8 is_stmt 0 view .LVU49
+ 201 0018 099E     		ldr	r6, [sp, #36]
+ 202 001a 4FEA521C 		lsr	ip, r2, #5
+ 203              	.LVL13:
+ 204              		.loc 1 118 8 view .LVU50
+ 205 001e 0CEB0609 		add	r9, ip, r6
+ 206              	.LVL14:
+ 119:HANcoder_E407_DS_HTE.c ****     if (nc > n1) {
+ 207              		.loc 1 119 5 is_stmt 1 view .LVU51
+ 208 0022 8945     		cmp	r9, r1
+ 209 0024 A8BF     		it	ge
+ 210 0026 8946     		movge	r9, r1
+ 211              	.LVL15:
+ 120:HANcoder_E407_DS_HTE.c ****       nc = n1;
+ 121:HANcoder_E407_DS_HTE.c ****     }
+ 122:HANcoder_E407_DS_HTE.c **** 
+ 123:HANcoder_E407_DS_HTE.c ****     nr = n2 - ((uint32_T)nb << 5);
+ 212              		.loc 1 123 5 view .LVU52
+ 124:HANcoder_E407_DS_HTE.c ****     if (nr > 0U) {
+ 213              		.loc 1 124 5 view .LVU53
+ 214              		.loc 1 124 8 is_stmt 0 view .LVU54
+ 215 0028 12F01F02 		ands	r2, r2, #31
+ 216              	.LVL16:
+ 217              		.loc 1 124 8 view .LVU55
+ 218 002c 48D0     		beq	.L29
+ 125:HANcoder_E407_DS_HTE.c ****       u1i = u1[nb];
+ 219              		.loc 1 125 7 is_stmt 1 view .LVU56
+ 126:HANcoder_E407_DS_HTE.c ****       for (i1 = nb + 1; i1 < nc; i1++) {
+ 220              		.loc 1 126 15 is_stmt 0 view .LVU57
+ 221 002e 0CF10106 		add	r6, ip, #1
+ 222              		.loc 1 126 7 view .LVU58
+ 223 0032 B145     		cmp	r9, r6
+ 125:HANcoder_E407_DS_HTE.c ****       u1i = u1[nb];
+ 224              		.loc 1 125 11 view .LVU59
+ 225 0034 50F82C50 		ldr	r5, [r0, ip, lsl #2]
+ 226              	.LVL17:
+ 227              		.loc 1 126 7 is_stmt 1 view .LVU60
+ 228              		.loc 1 126 25 view .LVU61
+ 229              		.loc 1 126 7 is_stmt 0 view .LVU62
+ 230 0038 55DD     		ble	.L13
+ 231 003a A0F1040A 		sub	r10, r0, #4
+ 232 003e 00EB8C06 		add	r6, r0, ip, lsl #2
+ 233              	.LVL18:
+ 234              		.loc 1 126 7 view .LVU63
+ 235 0042 0AEB890A 		add	r10, r10, r9, lsl #2
+ 127:HANcoder_E407_DS_HTE.c ****         yi = u1i >> nr;
+ 128:HANcoder_E407_DS_HTE.c ****         u1i = u1[i1];
+ 129:HANcoder_E407_DS_HTE.c ****         y[i] = u1i << (32U - nr) | yi;
+ 130:HANcoder_E407_DS_HTE.c ****         i++;
+ 131:HANcoder_E407_DS_HTE.c ****       }
+ 132:HANcoder_E407_DS_HTE.c **** 
+ 133:HANcoder_E407_DS_HTE.c ****       y[i] = (nc < n1 ? u1[nc] : ys) << (32U - nr) | u1i >> nr;
+ 236              		.loc 1 133 46 view .LVU64
+ 237 0046 C2F1200B 		rsb	fp, r2, #32
+ 238 004a 1F1F     		subs	r7, r3, #4
+ 239 004c B046     		mov	r8, r6
+ 240              	.LVL19:
+ 241              	.L14:
+ 127:HANcoder_E407_DS_HTE.c ****         yi = u1i >> nr;
+ 242              		.loc 1 127 9 is_stmt 1 discriminator 3 view .LVU65
+ 127:HANcoder_E407_DS_HTE.c ****         yi = u1i >> nr;
+ 243              		.loc 1 127 12 is_stmt 0 discriminator 3 view .LVU66
+ 244 004e 25FA02F6 		lsr	r6, r5, r2
+ 245              	.LVL20:
+ 128:HANcoder_E407_DS_HTE.c ****         y[i] = u1i << (32U - nr) | yi;
+ 246              		.loc 1 128 9 is_stmt 1 discriminator 3 view .LVU67
+ 128:HANcoder_E407_DS_HTE.c ****         y[i] = u1i << (32U - nr) | yi;
+ 247              		.loc 1 128 13 is_stmt 0 discriminator 3 view .LVU68
+ 248 0052 58F8045F 		ldr	r5, [r8, #4]!
+ 249              	.LVL21:
+ 129:HANcoder_E407_DS_HTE.c ****         i++;
+ 250              		.loc 1 129 9 is_stmt 1 discriminator 3 view .LVU69
+ 129:HANcoder_E407_DS_HTE.c ****         i++;
+ 251              		.loc 1 129 20 is_stmt 0 discriminator 3 view .LVU70
+ 252 0056 05FA0BFE 		lsl	lr, r5, fp
+ 129:HANcoder_E407_DS_HTE.c ****         i++;
+ 253              		.loc 1 129 34 discriminator 3 view .LVU71
+ 254 005a 4EEA0606 		orr	r6, lr, r6
+ 255              	.LVL22:
+ 126:HANcoder_E407_DS_HTE.c ****         yi = u1i >> nr;
+ 256              		.loc 1 126 7 discriminator 3 view .LVU72
+ 257 005e D045     		cmp	r8, r10
+ 129:HANcoder_E407_DS_HTE.c ****         i++;
+ 258              		.loc 1 129 14 discriminator 3 view .LVU73
+ 259 0060 47F8046F 		str	r6, [r7, #4]!
+ 130:HANcoder_E407_DS_HTE.c ****       }
+ 260              		.loc 1 130 9 is_stmt 1 discriminator 3 view .LVU74
+ 126:HANcoder_E407_DS_HTE.c ****         yi = u1i >> nr;
+ 261              		.loc 1 126 34 discriminator 3 view .LVU75
+ 126:HANcoder_E407_DS_HTE.c ****         yi = u1i >> nr;
+ 262              		.loc 1 126 25 discriminator 3 view .LVU76
+ 126:HANcoder_E407_DS_HTE.c ****         yi = u1i >> nr;
+ 263              		.loc 1 126 7 is_stmt 0 discriminator 3 view .LVU77
+ 264 0064 F3D1     		bne	.L14
+ 265 0066 6FEA0C0C 		mvn	ip, ip
+ 266              	.LVL23:
+ 126:HANcoder_E407_DS_HTE.c ****         yi = u1i >> nr;
+ 267              		.loc 1 126 7 discriminator 3 view .LVU78
+ 268 006a CC44     		add	ip, ip, r9
+ 269              	.LVL24:
+ 270              		.loc 1 133 8 view .LVU79
+ 271 006c 03EB8C06 		add	r6, r3, ip, lsl #2
+ 134:HANcoder_E407_DS_HTE.c ****       i++;
+ 272              		.loc 1 134 8 view .LVU80
+ 273 0070 0CF1010C 		add	ip, ip, #1
+ 274              	.L15:
+ 133:HANcoder_E407_DS_HTE.c ****       i++;
+ 275              		.loc 1 133 7 is_stmt 1 view .LVU81
+ 133:HANcoder_E407_DS_HTE.c ****       i++;
+ 276              		.loc 1 133 32 is_stmt 0 view .LVU82
+ 277 0074 8945     		cmp	r9, r1
+ 278 0076 B4BF     		ite	lt
+ 279 0078 50F82910 		ldrlt	r1, [r0, r9, lsl #2]
+ 280              	.LVL25:
+ 133:HANcoder_E407_DS_HTE.c ****       i++;
+ 281              		.loc 1 133 32 view .LVU83
+ 282 007c 2146     		movge	r1, r4
+ 133:HANcoder_E407_DS_HTE.c ****       i++;
+ 283              		.loc 1 133 38 view .LVU84
+ 284 007e 01FA0BFB 		lsl	fp, r1, fp
+ 133:HANcoder_E407_DS_HTE.c ****       i++;
+ 285              		.loc 1 133 58 view .LVU85
+ 286 0082 25FA02F2 		lsr	r2, r5, r2
+ 287              	.LVL26:
+ 133:HANcoder_E407_DS_HTE.c ****       i++;
+ 288              		.loc 1 133 52 view .LVU86
+ 289 0086 4BEA0202 		orr	r2, fp, r2
+ 133:HANcoder_E407_DS_HTE.c ****       i++;
+ 290              		.loc 1 133 12 view .LVU87
+ 291 008a 3260     		str	r2, [r6]
+ 292              		.loc 1 134 7 is_stmt 1 view .LVU88
+ 293              	.LVL27:
+ 135:HANcoder_E407_DS_HTE.c ****     } else {
+ 136:HANcoder_E407_DS_HTE.c ****       for (i1 = nb; i1 < nc; i1++) {
+ 137:HANcoder_E407_DS_HTE.c ****         y[i] = u1[i1];
+ 138:HANcoder_E407_DS_HTE.c ****         i++;
+ 139:HANcoder_E407_DS_HTE.c ****       }
+ 140:HANcoder_E407_DS_HTE.c ****     }
+ 141:HANcoder_E407_DS_HTE.c ****   }
+ 142:HANcoder_E407_DS_HTE.c **** 
+ 143:HANcoder_E407_DS_HTE.c ****   while (i < n) {
+ 294              		.loc 1 143 9 view .LVU89
+ 295 008c 099A     		ldr	r2, [sp, #36]
+ 296 008e 6245     		cmp	r2, ip
+ 297 0090 06DC     		bgt	.L20
+ 298              	.LVL28:
+ 299              	.L9:
+ 144:HANcoder_E407_DS_HTE.c ****     y[i] = ys;
+ 145:HANcoder_E407_DS_HTE.c ****     i++;
+ 146:HANcoder_E407_DS_HTE.c ****   }
+ 147:HANcoder_E407_DS_HTE.c **** }
+ 300              		.loc 1 147 1 is_stmt 0 view .LVU90
+ 301 0092 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 302              	.LVL29:
+ 303              	.L22:
+ 115:HANcoder_E407_DS_HTE.c ****   ys = (u1[n1 - 1] & 2147483648U) != 0U ? MAX_uint32_T : 0U;
+ 304              		.loc 1 115 5 view .LVU91
+ 305 0096 4FF0000C 		mov	ip, #0
+ 306              	.LVL30:
+ 307              	.L10:
+ 143:HANcoder_E407_DS_HTE.c ****     y[i] = ys;
+ 308              		.loc 1 143 9 is_stmt 1 view .LVU92
+ 309 009a 099A     		ldr	r2, [sp, #36]
+ 310 009c 6245     		cmp	r2, ip
+ 311 009e F8DD     		ble	.L9
+ 312              	.L20:
+ 143:HANcoder_E407_DS_HTE.c ****     y[i] = ys;
+ 313              		.loc 1 143 9 is_stmt 0 view .LVU93
+ 314 00a0 0999     		ldr	r1, [sp, #36]
+ 315 00a2 0CF1804C 		add	ip, ip, #1073741824
+ 316              	.LVL31:
+ 143:HANcoder_E407_DS_HTE.c ****     y[i] = ys;
+ 317              		.loc 1 143 9 view .LVU94
+ 318 00a6 1A1F     		subs	r2, r3, #4
+ 319 00a8 0CF1FF3C 		add	ip, ip, #-1
+ 320              	.LVL32:
+ 143:HANcoder_E407_DS_HTE.c ****     y[i] = ys;
+ 321              		.loc 1 143 9 view .LVU95
+ 322 00ac 03EB8C03 		add	r3, r3, ip, lsl #2
+ 323              	.LVL33:
+ 143:HANcoder_E407_DS_HTE.c ****     y[i] = ys;
+ 324              		.loc 1 143 9 view .LVU96
+ 325 00b0 02EB8102 		add	r2, r2, r1, lsl #2
+ 326              	.LVL34:
+ 327              	.L19:
+ 144:HANcoder_E407_DS_HTE.c ****     y[i] = ys;
+ 328              		.loc 1 144 5 is_stmt 1 view .LVU97
+ 144:HANcoder_E407_DS_HTE.c ****     y[i] = ys;
+ 329              		.loc 1 144 10 is_stmt 0 view .LVU98
+ 330 00b4 43F8044F 		str	r4, [r3, #4]!
+ 145:HANcoder_E407_DS_HTE.c ****   }
+ 331              		.loc 1 145 5 is_stmt 1 view .LVU99
+ 143:HANcoder_E407_DS_HTE.c ****     y[i] = ys;
+ 332              		.loc 1 143 9 view .LVU100
+ 333 00b8 9A42     		cmp	r2, r3
+ 334 00ba FBD1     		bne	.L19
+ 335              		.loc 1 147 1 is_stmt 0 view .LVU101
+ 336 00bc BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 337              	.LVL35:
+ 338              	.L29:
+ 136:HANcoder_E407_DS_HTE.c ****         y[i] = u1[i1];
+ 339              		.loc 1 136 21 is_stmt 1 view .LVU102
+ 136:HANcoder_E407_DS_HTE.c ****         y[i] = u1[i1];
+ 340              		.loc 1 136 7 is_stmt 0 view .LVU103
+ 341 00c0 E145     		cmp	r9, ip
+ 342 00c2 E8DD     		ble	.L22
+ 343 00c4 0CEB0502 		add	r2, ip, r5
+ 344              	.LVL36:
+ 136:HANcoder_E407_DS_HTE.c ****         y[i] = u1[i1];
+ 345              		.loc 1 136 7 view .LVU104
+ 346 00c8 00EB8202 		add	r2, r0, r2, lsl #2
+ 347 00cc 0438     		subs	r0, r0, #4
+ 348              	.LVL37:
+ 136:HANcoder_E407_DS_HTE.c ****         y[i] = u1[i1];
+ 349              		.loc 1 136 7 view .LVU105
+ 350 00ce 00EB8900 		add	r0, r0, r9, lsl #2
+ 351              	.LVL38:
+ 136:HANcoder_E407_DS_HTE.c ****         y[i] = u1[i1];
+ 352              		.loc 1 136 7 view .LVU106
+ 353 00d2 191F     		subs	r1, r3, #4
+ 354              	.LVL39:
+ 355              	.L17:
+ 137:HANcoder_E407_DS_HTE.c ****         i++;
+ 356              		.loc 1 137 9 is_stmt 1 discriminator 3 view .LVU107
+ 137:HANcoder_E407_DS_HTE.c ****         i++;
+ 357              		.loc 1 137 18 is_stmt 0 discriminator 3 view .LVU108
+ 358 00d4 52F8045F 		ldr	r5, [r2, #4]!
+ 137:HANcoder_E407_DS_HTE.c ****         i++;
+ 359              		.loc 1 137 14 discriminator 3 view .LVU109
+ 360 00d8 41F8045F 		str	r5, [r1, #4]!
+ 138:HANcoder_E407_DS_HTE.c ****       }
+ 361              		.loc 1 138 9 is_stmt 1 discriminator 3 view .LVU110
+ 136:HANcoder_E407_DS_HTE.c ****         y[i] = u1[i1];
+ 362              		.loc 1 136 30 discriminator 3 view .LVU111
+ 136:HANcoder_E407_DS_HTE.c ****         y[i] = u1[i1];
+ 363              		.loc 1 136 21 discriminator 3 view .LVU112
+ 136:HANcoder_E407_DS_HTE.c ****         y[i] = u1[i1];
+ 364              		.loc 1 136 7 is_stmt 0 discriminator 3 view .LVU113
+ 365 00dc 8242     		cmp	r2, r0
+ 366 00de F9D1     		bne	.L17
+ 138:HANcoder_E407_DS_HTE.c ****       }
+ 367              		.loc 1 138 10 view .LVU114
+ 368 00e0 A9EB0C0C 		sub	ip, r9, ip
+ 369              	.LVL40:
+ 138:HANcoder_E407_DS_HTE.c ****       }
+ 370              		.loc 1 138 10 view .LVU115
+ 371 00e4 D9E7     		b	.L10
+ 372              	.LVL41:
+ 373              	.L13:
+ 133:HANcoder_E407_DS_HTE.c ****       i++;
+ 374              		.loc 1 133 46 view .LVU116
+ 375 00e6 C2F1200B 		rsb	fp, r2, #32
+ 376 00ea 1E46     		mov	r6, r3
+ 377              	.LVL42:
+ 133:HANcoder_E407_DS_HTE.c ****       i++;
+ 378              		.loc 1 133 46 view .LVU117
+ 379 00ec 4FF0010C 		mov	ip, #1
+ 380              	.LVL43:
+ 133:HANcoder_E407_DS_HTE.c ****       i++;
+ 381              		.loc 1 133 46 view .LVU118
+ 382 00f0 C0E7     		b	.L15
+ 383              		.cfi_endproc
+ 384              	.LFE115:
+ 386 00f2 00BF     		.section	.text.sMultiWordMul,"ax",%progbits
+ 387              		.align	1
+ 388              		.p2align 2,,3
+ 389              		.global	sMultiWordMul
+ 390              		.syntax unified
+ 391              		.thumb
+ 392              		.thumb_func
+ 394              	sMultiWordMul:
+ 395              	.LVL44:
+ 396              	.LFB116:
+ 148:HANcoder_E407_DS_HTE.c **** 
+ 149:HANcoder_E407_DS_HTE.c **** void sMultiWordMul(const uint32_T u1[], int32_T n1, const uint32_T u2[], int32_T
+ 150:HANcoder_E407_DS_HTE.c ****                    n2, uint32_T y[], int32_T n)
+ 151:HANcoder_E407_DS_HTE.c **** {
+ 397              		.loc 1 151 1 is_stmt 1 view -0
+ 398              		.cfi_startproc
+ 399              		@ args = 8, pretend = 0, frame = 40
+ 400              		@ frame_needed = 0, uses_anonymous_args = 0
+ 152:HANcoder_E407_DS_HTE.c ****   int32_T i;
+ 401              		.loc 1 152 3 view .LVU120
+ 153:HANcoder_E407_DS_HTE.c ****   int32_T j;
+ 402              		.loc 1 153 3 view .LVU121
+ 154:HANcoder_E407_DS_HTE.c ****   int32_T k;
+ 403              		.loc 1 154 3 view .LVU122
+ 155:HANcoder_E407_DS_HTE.c ****   int32_T ni;
+ 404              		.loc 1 155 3 view .LVU123
+ 156:HANcoder_E407_DS_HTE.c ****   uint32_T a0;
+ 405              		.loc 1 156 3 view .LVU124
+ 157:HANcoder_E407_DS_HTE.c ****   uint32_T a1;
+ 406              		.loc 1 157 3 view .LVU125
+ 158:HANcoder_E407_DS_HTE.c ****   uint32_T b1;
+ 407              		.loc 1 158 3 view .LVU126
+ 159:HANcoder_E407_DS_HTE.c ****   uint32_T cb;
+ 408              		.loc 1 159 3 view .LVU127
+ 160:HANcoder_E407_DS_HTE.c ****   uint32_T cb1;
+ 409              		.loc 1 160 3 view .LVU128
+ 161:HANcoder_E407_DS_HTE.c ****   uint32_T cb2;
+ 410              		.loc 1 161 3 view .LVU129
+ 162:HANcoder_E407_DS_HTE.c ****   uint32_T u1i;
+ 411              		.loc 1 162 3 view .LVU130
+ 163:HANcoder_E407_DS_HTE.c ****   uint32_T w01;
+ 412              		.loc 1 163 3 view .LVU131
+ 164:HANcoder_E407_DS_HTE.c ****   uint32_T w10;
+ 413              		.loc 1 164 3 view .LVU132
+ 165:HANcoder_E407_DS_HTE.c ****   uint32_T yk;
+ 414              		.loc 1 165 3 view .LVU133
+ 166:HANcoder_E407_DS_HTE.c ****   boolean_T isNegative1;
+ 415              		.loc 1 166 3 view .LVU134
+ 167:HANcoder_E407_DS_HTE.c ****   boolean_T isNegative2;
+ 416              		.loc 1 167 3 view .LVU135
+ 168:HANcoder_E407_DS_HTE.c ****   isNegative1 = ((u1[n1 - 1] & 2147483648U) != 0U);
+ 417              		.loc 1 168 3 view .LVU136
+ 151:HANcoder_E407_DS_HTE.c ****   int32_T i;
+ 418              		.loc 1 151 1 is_stmt 0 view .LVU137
+ 419 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 420              		.cfi_def_cfa_offset 36
+ 421              		.cfi_offset 4, -36
+ 422              		.cfi_offset 5, -32
+ 423              		.cfi_offset 6, -28
+ 424              		.cfi_offset 7, -24
+ 425              		.cfi_offset 8, -20
+ 426              		.cfi_offset 9, -16
+ 427              		.cfi_offset 10, -12
+ 428              		.cfi_offset 11, -8
+ 429              		.cfi_offset 14, -4
+ 430 0004 8BB0     		sub	sp, sp, #44
+ 431              		.cfi_def_cfa_offset 80
+ 151:HANcoder_E407_DS_HTE.c ****   int32_T i;
+ 432              		.loc 1 151 1 view .LVU138
+ 433 0006 0D46     		mov	r5, r1
+ 434 0008 0493     		str	r3, [sp, #16]
+ 435 000a 1946     		mov	r1, r3
+ 436              	.LVL45:
+ 437              		.loc 1 168 21 view .LVU139
+ 438 000c 6FF04043 		mvn	r3, #-1073741824
+ 439              	.LVL46:
+ 440              		.loc 1 168 21 view .LVU140
+ 441 0010 EF18     		adds	r7, r5, r3
+ 169:HANcoder_E407_DS_HTE.c ****   isNegative2 = ((u2[n2 - 1] & 2147483648U) != 0U);
+ 442              		.loc 1 169 21 view .LVU141
+ 443 0012 0B44     		add	r3, r3, r1
+ 151:HANcoder_E407_DS_HTE.c ****   int32_T i;
+ 444              		.loc 1 151 1 view .LVU142
+ 445 0014 0446     		mov	r4, r0
+ 446              		.loc 1 169 45 view .LVU143
+ 447 0016 52F82360 		ldr	r6, [r2, r3, lsl #2]
+ 168:HANcoder_E407_DS_HTE.c ****   isNegative1 = ((u1[n1 - 1] & 2147483648U) != 0U);
+ 448              		.loc 1 168 45 view .LVU144
+ 449 001a 50F82730 		ldr	r3, [r0, r7, lsl #2]
+ 450 001e 0393     		str	r3, [sp, #12]
+ 451 0020 DB0F     		lsrs	r3, r3, #31
+ 452 0022 0893     		str	r3, [sp, #32]
+ 453              	.LVL47:
+ 454              		.loc 1 169 3 is_stmt 1 view .LVU145
+ 455              		.loc 1 169 45 is_stmt 0 view .LVU146
+ 456 0024 F30F     		lsrs	r3, r6, #31
+ 457 0026 0993     		str	r3, [sp, #36]
+ 458              	.LVL48:
+ 170:HANcoder_E407_DS_HTE.c ****   cb1 = 1U;
+ 459              		.loc 1 170 3 is_stmt 1 view .LVU147
+ 171:HANcoder_E407_DS_HTE.c **** 
+ 172:HANcoder_E407_DS_HTE.c ****   /* Initialize output to zero */
+ 173:HANcoder_E407_DS_HTE.c ****   for (k = 0; k < n; k++) {
+ 460              		.loc 1 173 3 view .LVU148
+ 461              		.loc 1 173 15 view .LVU149
+ 462              		.loc 1 173 3 is_stmt 0 view .LVU150
+ 463 0028 159B     		ldr	r3, [sp, #84]
+ 151:HANcoder_E407_DS_HTE.c ****   int32_T i;
+ 464              		.loc 1 151 1 view .LVU151
+ 465 002a 0692     		str	r2, [sp, #24]
+ 466              		.loc 1 173 3 view .LVU152
+ 467 002c 002B     		cmp	r3, #0
+ 168:HANcoder_E407_DS_HTE.c ****   isNegative2 = ((u2[n2 - 1] & 2147483648U) != 0U);
+ 468              		.loc 1 168 21 view .LVU153
+ 469 002e 4FEA8707 		lsl	r7, r7, #2
+ 470              		.loc 1 173 3 view .LVU154
+ 471 0032 04DD     		ble	.L31
+ 174:HANcoder_E407_DS_HTE.c ****     y[k] = 0U;
+ 472              		.loc 1 174 10 view .LVU155
+ 473 0034 1498     		ldr	r0, [sp, #80]
+ 474              	.LVL49:
+ 475              		.loc 1 174 10 view .LVU156
+ 476 0036 9A00     		lsls	r2, r3, #2
+ 477              	.LVL50:
+ 478              		.loc 1 174 10 view .LVU157
+ 479 0038 0021     		movs	r1, #0
+ 480              	.LVL51:
+ 481              		.loc 1 174 10 view .LVU158
+ 482 003a FFF7FEFF 		bl	memset
+ 483              	.LVL52:
+ 484              	.L31:
+ 175:HANcoder_E407_DS_HTE.c ****   }
+ 176:HANcoder_E407_DS_HTE.c **** 
+ 177:HANcoder_E407_DS_HTE.c ****   for (i = 0; i < n1; i++) {
+ 485              		.loc 1 177 15 is_stmt 1 view .LVU159
+ 486              		.loc 1 177 3 is_stmt 0 view .LVU160
+ 487 003e 002D     		cmp	r5, #0
+ 488 0040 75DD     		ble	.L32
+ 489 0042 E319     		adds	r3, r4, r7
+ 490 0044 0593     		str	r3, [sp, #20]
+ 491 0046 231F     		subs	r3, r4, #4
+ 492 0048 0193     		str	r3, [sp, #4]
+ 493 004a 149B     		ldr	r3, [sp, #80]
+ 494 004c 043B     		subs	r3, r3, #4
+ 495 004e 0293     		str	r3, [sp, #8]
+ 170:HANcoder_E407_DS_HTE.c **** 
+ 496              		.loc 1 170 7 view .LVU161
+ 497 0050 0123     		movs	r3, #1
+ 498 0052 0793     		str	r3, [sp, #28]
+ 499              		.loc 1 177 10 view .LVU162
+ 500 0054 0023     		movs	r3, #0
+ 501 0056 0093     		str	r3, [sp]
+ 502              	.LVL53:
+ 503              	.L48:
+ 178:HANcoder_E407_DS_HTE.c ****     cb = 0U;
+ 504              		.loc 1 178 5 is_stmt 1 view .LVU163
+ 179:HANcoder_E407_DS_HTE.c ****     u1i = u1[i];
+ 505              		.loc 1 179 5 view .LVU164
+ 506              		.loc 1 179 9 is_stmt 0 view .LVU165
+ 507 0058 019A     		ldr	r2, [sp, #4]
+ 508 005a 52F8043F 		ldr	r3, [r2, #4]!
+ 509 005e 0192     		str	r2, [sp, #4]
+ 510              	.LVL54:
+ 180:HANcoder_E407_DS_HTE.c ****     if (isNegative1) {
+ 511              		.loc 1 180 5 is_stmt 1 view .LVU166
+ 512              		.loc 1 180 8 is_stmt 0 view .LVU167
+ 513 0060 039A     		ldr	r2, [sp, #12]
+ 514 0062 002A     		cmp	r2, #0
+ 515 0064 07DA     		bge	.L33
+ 181:HANcoder_E407_DS_HTE.c ****       u1i = ~u1i + cb1;
+ 516              		.loc 1 181 7 is_stmt 1 view .LVU168
+ 517              		.loc 1 181 11 is_stmt 0 view .LVU169
+ 518 0066 0799     		ldr	r1, [sp, #28]
+ 519 0068 4A1E     		subs	r2, r1, #1
+ 520 006a D31A     		subs	r3, r2, r3
+ 521              	.LVL55:
+ 182:HANcoder_E407_DS_HTE.c ****       cb1 = (uint32_T)(u1i < cb1);
+ 522              		.loc 1 182 7 is_stmt 1 view .LVU170
+ 523              		.loc 1 182 13 is_stmt 0 view .LVU171
+ 524 006c 8B42     		cmp	r3, r1
+ 525 006e 2CBF     		ite	cs
+ 526 0070 0022     		movcs	r2, #0
+ 527 0072 0122     		movcc	r2, #1
+ 528 0074 0792     		str	r2, [sp, #28]
+ 529              	.LVL56:
+ 530              	.L33:
+ 183:HANcoder_E407_DS_HTE.c ****     }
+ 184:HANcoder_E407_DS_HTE.c **** 
+ 185:HANcoder_E407_DS_HTE.c ****     a1 = u1i >> 16U;
+ 531              		.loc 1 185 5 is_stmt 1 view .LVU172
+ 186:HANcoder_E407_DS_HTE.c ****     a0 = u1i & 65535U;
+ 187:HANcoder_E407_DS_HTE.c ****     cb2 = 1U;
+ 188:HANcoder_E407_DS_HTE.c ****     ni = n - i;
+ 189:HANcoder_E407_DS_HTE.c ****     ni = n2 <= ni ? n2 : ni;
+ 532              		.loc 1 189 8 is_stmt 0 view .LVU173
+ 533 0076 159A     		ldr	r2, [sp, #84]
+ 534 0078 0099     		ldr	r1, [sp]
+ 535 007a A2EB010B 		sub	fp, r2, r1
+ 536 007e 049A     		ldr	r2, [sp, #16]
+ 537 0080 9345     		cmp	fp, r2
+ 538 0082 A8BF     		it	ge
+ 539 0084 9346     		movge	fp, r2
+ 190:HANcoder_E407_DS_HTE.c ****     k = i;
+ 191:HANcoder_E407_DS_HTE.c ****     for (j = 0; j < ni; j++) {
+ 540              		.loc 1 191 5 view .LVU174
+ 541 0086 BBF1000F 		cmp	fp, #0
+ 185:HANcoder_E407_DS_HTE.c ****     a0 = u1i & 65535U;
+ 542              		.loc 1 185 8 view .LVU175
+ 543 008a 4FEA1348 		lsr	r8, r3, #16
+ 544              	.LVL57:
+ 186:HANcoder_E407_DS_HTE.c ****     a0 = u1i & 65535U;
+ 545              		.loc 1 186 5 is_stmt 1 view .LVU176
+ 186:HANcoder_E407_DS_HTE.c ****     a0 = u1i & 65535U;
+ 546              		.loc 1 186 8 is_stmt 0 view .LVU177
+ 547 008e 1FFA83FE 		uxth	lr, r3
+ 548              	.LVL58:
+ 187:HANcoder_E407_DS_HTE.c ****     ni = n - i;
+ 549              		.loc 1 187 5 is_stmt 1 view .LVU178
+ 188:HANcoder_E407_DS_HTE.c ****     ni = n2 <= ni ? n2 : ni;
+ 550              		.loc 1 188 5 view .LVU179
+ 189:HANcoder_E407_DS_HTE.c ****     k = i;
+ 551              		.loc 1 189 5 view .LVU180
+ 190:HANcoder_E407_DS_HTE.c ****     for (j = 0; j < ni; j++) {
+ 552              		.loc 1 190 5 view .LVU181
+ 553              		.loc 1 191 5 view .LVU182
+ 554              		.loc 1 191 17 view .LVU183
+ 555              		.loc 1 191 5 is_stmt 0 view .LVU184
+ 556 0092 66DD     		ble	.L53
+ 557              		.loc 1 191 5 view .LVU185
+ 558 0094 069B     		ldr	r3, [sp, #24]
+ 559              	.LVL59:
+ 560              		.loc 1 191 5 view .LVU186
+ 561 0096 029D     		ldr	r5, [sp, #8]
+ 562 0098 1C1F     		subs	r4, r3, #4
+ 563 009a 04EB8B0A 		add	r10, r4, fp, lsl #2
+ 187:HANcoder_E407_DS_HTE.c ****     ni = n - i;
+ 564              		.loc 1 187 9 view .LVU187
+ 565 009e 0122     		movs	r2, #1
+ 178:HANcoder_E407_DS_HTE.c ****     u1i = u1[i];
+ 566              		.loc 1 178 8 view .LVU188
+ 567 00a0 0021     		movs	r1, #0
+ 568              	.LVL60:
+ 569              	.L46:
+ 192:HANcoder_E407_DS_HTE.c ****       u1i = u2[j];
+ 570              		.loc 1 192 7 is_stmt 1 view .LVU189
+ 193:HANcoder_E407_DS_HTE.c ****       if (isNegative2) {
+ 194:HANcoder_E407_DS_HTE.c ****         u1i = ~u1i + cb2;
+ 571              		.loc 1 194 9 view .LVU190
+ 193:HANcoder_E407_DS_HTE.c ****       if (isNegative2) {
+ 572              		.loc 1 193 10 is_stmt 0 view .LVU191
+ 573 00a2 002E     		cmp	r6, #0
+ 192:HANcoder_E407_DS_HTE.c ****       u1i = u2[j];
+ 574              		.loc 1 192 11 view .LVU192
+ 575 00a4 54F8040F 		ldr	r0, [r4, #4]!
+ 576              	.LVL61:
+ 193:HANcoder_E407_DS_HTE.c ****       if (isNegative2) {
+ 577              		.loc 1 193 7 is_stmt 1 view .LVU193
+ 193:HANcoder_E407_DS_HTE.c ****       if (isNegative2) {
+ 578              		.loc 1 193 10 is_stmt 0 view .LVU194
+ 579 00a8 04DA     		bge	.L35
+ 580 00aa C043     		mvns	r0, r0
+ 581              	.LVL62:
+ 193:HANcoder_E407_DS_HTE.c ****       if (isNegative2) {
+ 582              		.loc 1 193 10 view .LVU195
+ 583 00ac 1018     		adds	r0, r2, r0
+ 584              	.LVL63:
+ 195:HANcoder_E407_DS_HTE.c ****         cb2 = (uint32_T)(u1i < cb2);
+ 585              		.loc 1 195 9 is_stmt 1 view .LVU196
+ 586              		.loc 1 195 15 is_stmt 0 view .LVU197
+ 587 00ae 2CBF     		ite	cs
+ 588 00b0 0122     		movcs	r2, #1
+ 589              	.LVL64:
+ 590              		.loc 1 195 15 view .LVU198
+ 591 00b2 0022     		movcc	r2, #0
+ 592              	.LVL65:
+ 593              	.L35:
+ 196:HANcoder_E407_DS_HTE.c ****       }
+ 197:HANcoder_E407_DS_HTE.c **** 
+ 198:HANcoder_E407_DS_HTE.c ****       b1 = u1i >> 16U;
+ 594              		.loc 1 198 7 is_stmt 1 discriminator 2 view .LVU199
+ 595 00b4 55F8043F 		ldr	r3, [r5, #4]!
+ 596 00b8 5918     		adds	r1, r3, r1
+ 597              	.LVL66:
+ 598              		.loc 1 198 10 is_stmt 0 discriminator 2 view .LVU200
+ 599 00ba 4FEA1047 		lsr	r7, r0, #16
+ 600              	.LVL67:
+ 199:HANcoder_E407_DS_HTE.c ****       u1i &= 65535U;
+ 601              		.loc 1 199 7 is_stmt 1 discriminator 2 view .LVU201
+ 602              		.loc 1 199 11 is_stmt 0 discriminator 2 view .LVU202
+ 603 00be 83B2     		uxth	r3, r0
+ 604              	.LVL68:
+ 200:HANcoder_E407_DS_HTE.c ****       w10 = a1 * u1i;
+ 605              		.loc 1 200 7 is_stmt 1 discriminator 2 view .LVU203
+ 606 00c0 2CBF     		ite	cs
+ 607 00c2 4FF0010C 		movcs	ip, #1
+ 608 00c6 4FF0000C 		movcc	ip, #0
+ 609              		.loc 1 200 11 is_stmt 0 discriminator 2 view .LVU204
+ 610 00ca 03FB08F0 		mul	r0, r3, r8
+ 611              	.LVL69:
+ 201:HANcoder_E407_DS_HTE.c ****       w01 = a0 * b1;
+ 612              		.loc 1 201 7 is_stmt 1 discriminator 2 view .LVU205
+ 613 00ce 07FB08CC 		mla	ip, r7, r8, ip
+ 202:HANcoder_E407_DS_HTE.c ****       yk = y[k] + cb;
+ 203:HANcoder_E407_DS_HTE.c ****       cb = (uint32_T)(yk < cb);
+ 204:HANcoder_E407_DS_HTE.c ****       u1i *= a0;
+ 614              		.loc 1 204 11 is_stmt 0 discriminator 2 view .LVU206
+ 615 00d2 03FB0EF3 		mul	r3, r3, lr
+ 616              	.LVL70:
+ 617              		.loc 1 204 11 discriminator 2 view .LVU207
+ 618 00d6 CB18     		adds	r3, r1, r3
+ 619 00d8 0CEB104C 		add	ip, ip, r0, lsr #16
+ 205:HANcoder_E407_DS_HTE.c ****       yk += u1i;
+ 206:HANcoder_E407_DS_HTE.c ****       cb += (yk < u1i);
+ 207:HANcoder_E407_DS_HTE.c ****       u1i = w10 << 16U;
+ 620              		.loc 1 207 11 discriminator 2 view .LVU208
+ 621 00dc 4FEA0041 		lsl	r1, r0, #16
+ 201:HANcoder_E407_DS_HTE.c ****       yk = y[k] + cb;
+ 622              		.loc 1 201 11 discriminator 2 view .LVU209
+ 623 00e0 07FB0EF7 		mul	r7, r7, lr
+ 624              	.LVL71:
+ 202:HANcoder_E407_DS_HTE.c ****       yk = y[k] + cb;
+ 625              		.loc 1 202 7 is_stmt 1 discriminator 2 view .LVU210
+ 203:HANcoder_E407_DS_HTE.c ****       u1i *= a0;
+ 626              		.loc 1 203 7 discriminator 2 view .LVU211
+ 204:HANcoder_E407_DS_HTE.c ****       yk += u1i;
+ 627              		.loc 1 204 7 discriminator 2 view .LVU212
+ 205:HANcoder_E407_DS_HTE.c ****       cb += (yk < u1i);
+ 628              		.loc 1 205 7 discriminator 2 view .LVU213
+ 629 00e4 2CBF     		ite	cs
+ 630 00e6 0120     		movcs	r0, #1
+ 631              	.LVL72:
+ 205:HANcoder_E407_DS_HTE.c ****       cb += (yk < u1i);
+ 632              		.loc 1 205 7 is_stmt 0 discriminator 2 view .LVU214
+ 633 00e8 0020     		movcc	r0, #0
+ 634              	.LVL73:
+ 206:HANcoder_E407_DS_HTE.c ****       u1i = w10 << 16U;
+ 635              		.loc 1 206 7 is_stmt 1 discriminator 2 view .LVU215
+ 636              		.loc 1 207 7 discriminator 2 view .LVU216
+ 208:HANcoder_E407_DS_HTE.c ****       yk += u1i;
+ 637              		.loc 1 208 7 discriminator 2 view .LVU217
+ 209:HANcoder_E407_DS_HTE.c ****       cb += (yk < u1i);
+ 210:HANcoder_E407_DS_HTE.c ****       u1i = w01 << 16U;
+ 638              		.loc 1 210 11 is_stmt 0 discriminator 2 view .LVU218
+ 639 00ea 4FEA0749 		lsl	r9, r7, #16
+ 640 00ee 5B18     		adds	r3, r3, r1
+ 641              	.LVL74:
+ 642              		.loc 1 210 11 discriminator 2 view .LVU219
+ 643 00f0 0CEB1747 		add	r7, ip, r7, lsr #16
+ 644              	.LVL75:
+ 645              		.loc 1 210 11 discriminator 2 view .LVU220
+ 646 00f4 2CBF     		ite	cs
+ 647 00f6 0121     		movcs	r1, #1
+ 648 00f8 0021     		movcc	r1, #0
+ 649              	.LVL76:
+ 209:HANcoder_E407_DS_HTE.c ****       cb += (yk < u1i);
+ 650              		.loc 1 209 7 is_stmt 1 discriminator 2 view .LVU221
+ 651              		.loc 1 210 7 discriminator 2 view .LVU222
+ 211:HANcoder_E407_DS_HTE.c ****       yk += u1i;
+ 652              		.loc 1 211 7 discriminator 2 view .LVU223
+ 653 00fa 3844     		add	r0, r0, r7
+ 654              		.loc 1 211 7 is_stmt 0 discriminator 2 view .LVU224
+ 655 00fc 13EB0903 		adds	r3, r3, r9
+ 656              	.LVL77:
+ 212:HANcoder_E407_DS_HTE.c ****       cb += (yk < u1i);
+ 657              		.loc 1 212 7 is_stmt 1 discriminator 2 view .LVU225
+ 213:HANcoder_E407_DS_HTE.c ****       y[k] = yk;
+ 658              		.loc 1 213 7 discriminator 2 view .LVU226
+ 214:HANcoder_E407_DS_HTE.c ****       cb += w10 >> 16U;
+ 215:HANcoder_E407_DS_HTE.c ****       cb += w01 >> 16U;
+ 216:HANcoder_E407_DS_HTE.c ****       cb += a1 * b1;
+ 659              		.loc 1 216 10 is_stmt 0 discriminator 2 view .LVU227
+ 660 0100 41EB0001 		adc	r1, r1, r0
+ 191:HANcoder_E407_DS_HTE.c ****       u1i = u2[j];
+ 661              		.loc 1 191 5 discriminator 2 view .LVU228
+ 662 0104 A245     		cmp	r10, r4
+ 213:HANcoder_E407_DS_HTE.c ****       y[k] = yk;
+ 663              		.loc 1 213 12 discriminator 2 view .LVU229
+ 664 0106 2B60     		str	r3, [r5]
+ 214:HANcoder_E407_DS_HTE.c ****       cb += w10 >> 16U;
+ 665              		.loc 1 214 7 is_stmt 1 discriminator 2 view .LVU230
+ 215:HANcoder_E407_DS_HTE.c ****       cb += a1 * b1;
+ 666              		.loc 1 215 7 discriminator 2 view .LVU231
+ 667              		.loc 1 216 7 discriminator 2 view .LVU232
+ 668              	.LVL78:
+ 217:HANcoder_E407_DS_HTE.c ****       k++;
+ 669              		.loc 1 217 7 discriminator 2 view .LVU233
+ 191:HANcoder_E407_DS_HTE.c ****       u1i = u2[j];
+ 670              		.loc 1 191 25 discriminator 2 view .LVU234
+ 191:HANcoder_E407_DS_HTE.c ****       u1i = u2[j];
+ 671              		.loc 1 191 17 discriminator 2 view .LVU235
+ 191:HANcoder_E407_DS_HTE.c ****       u1i = u2[j];
+ 672              		.loc 1 191 5 is_stmt 0 discriminator 2 view .LVU236
+ 673 0108 CBD1     		bne	.L46
+ 674              		.loc 1 217 8 view .LVU237
+ 675 010a 009B     		ldr	r3, [sp]
+ 676              	.LVL79:
+ 677              		.loc 1 217 8 view .LVU238
+ 678 010c 9B44     		add	fp, fp, r3
+ 679              	.LVL80:
+ 680              	.L34:
+ 218:HANcoder_E407_DS_HTE.c ****     }
+ 219:HANcoder_E407_DS_HTE.c **** 
+ 220:HANcoder_E407_DS_HTE.c ****     if (k < n) {
+ 681              		.loc 1 220 5 is_stmt 1 view .LVU239
+ 682              		.loc 1 220 8 is_stmt 0 view .LVU240
+ 683 010e 159B     		ldr	r3, [sp, #84]
+ 177:HANcoder_E407_DS_HTE.c ****     cb = 0U;
+ 684              		.loc 1 177 3 view .LVU241
+ 685 0110 019A     		ldr	r2, [sp, #4]
+ 686              		.loc 1 220 8 view .LVU242
+ 687 0112 5B45     		cmp	r3, fp
+ 221:HANcoder_E407_DS_HTE.c ****       y[k] = cb;
+ 688              		.loc 1 221 7 is_stmt 1 view .LVU243
+ 689              		.loc 1 221 12 is_stmt 0 view .LVU244
+ 690 0114 C4BF     		itt	gt
+ 691 0116 149B     		ldrgt	r3, [sp, #80]
+ 692 0118 43F82B10 		strgt	r1, [r3, fp, lsl #2]
+ 177:HANcoder_E407_DS_HTE.c ****     cb = 0U;
+ 693              		.loc 1 177 23 is_stmt 1 view .LVU245
+ 177:HANcoder_E407_DS_HTE.c ****     cb = 0U;
+ 694              		.loc 1 177 24 is_stmt 0 view .LVU246
+ 695 011c 009B     		ldr	r3, [sp]
+ 696 011e 0133     		adds	r3, r3, #1
+ 697 0120 0093     		str	r3, [sp]
+ 698              	.LVL81:
+ 177:HANcoder_E407_DS_HTE.c ****     cb = 0U;
+ 699              		.loc 1 177 15 is_stmt 1 view .LVU247
+ 177:HANcoder_E407_DS_HTE.c ****     cb = 0U;
+ 700              		.loc 1 177 3 is_stmt 0 view .LVU248
+ 701 0122 029B     		ldr	r3, [sp, #8]
+ 702              	.LVL82:
+ 177:HANcoder_E407_DS_HTE.c ****     cb = 0U;
+ 703              		.loc 1 177 3 view .LVU249
+ 704 0124 0433     		adds	r3, r3, #4
+ 705 0126 0293     		str	r3, [sp, #8]
+ 706 0128 059B     		ldr	r3, [sp, #20]
+ 707 012a 9342     		cmp	r3, r2
+ 708 012c 94D1     		bne	.L48
+ 709              	.LVL83:
+ 710              	.L32:
+ 222:HANcoder_E407_DS_HTE.c ****     }
+ 223:HANcoder_E407_DS_HTE.c ****   }
+ 224:HANcoder_E407_DS_HTE.c **** 
+ 225:HANcoder_E407_DS_HTE.c ****   /* Apply sign */
+ 226:HANcoder_E407_DS_HTE.c ****   if (isNegative1 != isNegative2) {
+ 711              		.loc 1 226 3 is_stmt 1 view .LVU250
+ 712              		.loc 1 226 6 is_stmt 0 view .LVU251
+ 713 012e DDE90832 		ldrd	r3, r2, [sp, #32]
+ 714 0132 9342     		cmp	r3, r2
+ 715 0134 12D0     		beq	.L30
+ 716              	.LVL84:
+ 227:HANcoder_E407_DS_HTE.c ****     cb = 1U;
+ 228:HANcoder_E407_DS_HTE.c ****     for (k = 0; k < n; k++) {
+ 717              		.loc 1 228 17 is_stmt 1 view .LVU252
+ 718              		.loc 1 228 5 is_stmt 0 view .LVU253
+ 719 0136 159B     		ldr	r3, [sp, #84]
+ 720 0138 002B     		cmp	r3, #0
+ 721 013a 0FDD     		ble	.L30
+ 722 013c 149B     		ldr	r3, [sp, #80]
+ 723 013e 191F     		subs	r1, r3, #4
+ 724 0140 159B     		ldr	r3, [sp, #84]
+ 227:HANcoder_E407_DS_HTE.c ****     cb = 1U;
+ 725              		.loc 1 227 8 view .LVU254
+ 726 0142 0122     		movs	r2, #1
+ 727 0144 01EB8300 		add	r0, r1, r3, lsl #2
+ 728              	.LVL85:
+ 729              	.L52:
+ 229:HANcoder_E407_DS_HTE.c ****       yk = ~y[k] + cb;
+ 730              		.loc 1 229 7 is_stmt 1 discriminator 3 view .LVU255
+ 731 0148 51F8043F 		ldr	r3, [r1, #4]!
+ 732 014c DB43     		mvns	r3, r3
+ 733 014e 9B18     		adds	r3, r3, r2
+ 734              	.LVL86:
+ 230:HANcoder_E407_DS_HTE.c ****       y[k] = yk;
+ 735              		.loc 1 230 7 discriminator 3 view .LVU256
+ 231:HANcoder_E407_DS_HTE.c ****       cb = (uint32_T)(yk < cb);
+ 736              		.loc 1 231 12 is_stmt 0 discriminator 3 view .LVU257
+ 737 0150 2CBF     		ite	cs
+ 738 0152 0122     		movcs	r2, #1
+ 739              	.LVL87:
+ 740              		.loc 1 231 12 discriminator 3 view .LVU258
+ 741 0154 0022     		movcc	r2, #0
+ 228:HANcoder_E407_DS_HTE.c ****       yk = ~y[k] + cb;
+ 742              		.loc 1 228 5 discriminator 3 view .LVU259
+ 743 0156 8142     		cmp	r1, r0
+ 230:HANcoder_E407_DS_HTE.c ****       y[k] = yk;
+ 744              		.loc 1 230 12 discriminator 3 view .LVU260
+ 745 0158 0B60     		str	r3, [r1]
+ 746              		.loc 1 231 7 is_stmt 1 discriminator 3 view .LVU261
+ 747              	.LVL88:
+ 228:HANcoder_E407_DS_HTE.c ****       yk = ~y[k] + cb;
+ 748              		.loc 1 228 24 discriminator 3 view .LVU262
+ 228:HANcoder_E407_DS_HTE.c ****       yk = ~y[k] + cb;
+ 749              		.loc 1 228 17 discriminator 3 view .LVU263
+ 228:HANcoder_E407_DS_HTE.c ****       yk = ~y[k] + cb;
+ 750              		.loc 1 228 5 is_stmt 0 discriminator 3 view .LVU264
+ 751 015a F5D1     		bne	.L52
+ 752              	.LVL89:
+ 753              	.L30:
+ 232:HANcoder_E407_DS_HTE.c ****     }
+ 233:HANcoder_E407_DS_HTE.c ****   }
+ 234:HANcoder_E407_DS_HTE.c **** }
+ 754              		.loc 1 234 1 view .LVU265
+ 755 015c 0BB0     		add	sp, sp, #44
+ 756              		.cfi_remember_state
+ 757              		.cfi_def_cfa_offset 36
+ 758              		@ sp needed
+ 759 015e BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 760              	.LVL90:
+ 761              	.L53:
+ 762              		.cfi_restore_state
+ 191:HANcoder_E407_DS_HTE.c ****       u1i = u2[j];
+ 763              		.loc 1 191 5 view .LVU266
+ 764 0162 DDF800B0 		ldr	fp, [sp]
+ 765              	.LVL91:
+ 178:HANcoder_E407_DS_HTE.c ****     u1i = u1[i];
+ 766              		.loc 1 178 8 view .LVU267
+ 767 0166 0021     		movs	r1, #0
+ 768              	.LVL92:
+ 178:HANcoder_E407_DS_HTE.c ****     u1i = u1[i];
+ 769              		.loc 1 178 8 view .LVU268
+ 770 0168 D1E7     		b	.L34
+ 771              		.cfi_endproc
+ 772              	.LFE116:
+ 774 016a 00BF     		.section	.text.MultiWordAdd,"ax",%progbits
+ 775              		.align	1
+ 776              		.p2align 2,,3
+ 777              		.global	MultiWordAdd
+ 778              		.syntax unified
+ 779              		.thumb
+ 780              		.thumb_func
+ 782              	MultiWordAdd:
+ 783              	.LVL93:
+ 784              	.LFB117:
+ 235:HANcoder_E407_DS_HTE.c **** 
+ 236:HANcoder_E407_DS_HTE.c **** void MultiWordAdd(const uint32_T u1[], const uint32_T u2[], uint32_T y[],
+ 237:HANcoder_E407_DS_HTE.c ****                   int32_T n)
+ 238:HANcoder_E407_DS_HTE.c **** {
+ 785              		.loc 1 238 1 is_stmt 1 view -0
+ 786              		.cfi_startproc
+ 787              		@ args = 0, pretend = 0, frame = 0
+ 788              		@ frame_needed = 0, uses_anonymous_args = 0
+ 239:HANcoder_E407_DS_HTE.c ****   int32_T i;
+ 789              		.loc 1 239 3 view .LVU270
+ 240:HANcoder_E407_DS_HTE.c ****   uint32_T carry = 0U;
+ 790              		.loc 1 240 3 view .LVU271
+ 241:HANcoder_E407_DS_HTE.c ****   uint32_T u1i;
+ 791              		.loc 1 241 3 view .LVU272
+ 242:HANcoder_E407_DS_HTE.c ****   uint32_T yi;
+ 792              		.loc 1 242 3 view .LVU273
+ 243:HANcoder_E407_DS_HTE.c ****   for (i = 0; i < n; i++) {
+ 793              		.loc 1 243 3 view .LVU274
+ 794              		.loc 1 243 15 view .LVU275
+ 795              		.loc 1 243 3 is_stmt 0 view .LVU276
+ 796 0000 002B     		cmp	r3, #0
+ 797              		.loc 1 243 3 view .LVU277
+ 798 0002 20DD     		ble	.L65
+ 799 0004 0438     		subs	r0, r0, #4
+ 800              	.LVL94:
+ 238:HANcoder_E407_DS_HTE.c ****   int32_T i;
+ 801              		.loc 1 238 1 view .LVU278
+ 802 0006 10B5     		push	{r4, lr}
+ 803              		.cfi_def_cfa_offset 8
+ 804              		.cfi_offset 4, -8
+ 805              		.cfi_offset 14, -4
+ 806 0008 A2F1040C 		sub	ip, r2, #4
+ 807 000c A1F1040E 		sub	lr, r1, #4
+ 808 0010 00EB8304 		add	r4, r0, r3, lsl #2
+ 240:HANcoder_E407_DS_HTE.c ****   uint32_T u1i;
+ 809              		.loc 1 240 12 view .LVU279
+ 810 0014 0022     		movs	r2, #0
+ 811              	.LVL95:
+ 240:HANcoder_E407_DS_HTE.c ****   uint32_T u1i;
+ 812              		.loc 1 240 12 view .LVU280
+ 813 0016 05E0     		b	.L62
+ 814              	.LVL96:
+ 815              	.L69:
+ 244:HANcoder_E407_DS_HTE.c ****     u1i = u1[i];
+ 245:HANcoder_E407_DS_HTE.c ****     yi = (u1i + u2[i]) + carry;
+ 246:HANcoder_E407_DS_HTE.c ****     y[i] = yi;
+ 247:HANcoder_E407_DS_HTE.c ****     carry = carry != 0U ? (uint32_T)(yi <= u1i) : (uint32_T)(yi < u1i);
+ 816              		.loc 1 247 27 discriminator 1 view .LVU281
+ 817 0018 9942     		cmp	r1, r3
+ 818 001a 34BF     		ite	cc
+ 819 001c 0022     		movcc	r2, #0
+ 820 001e 0122     		movcs	r2, #1
+ 821              	.LVL97:
+ 243:HANcoder_E407_DS_HTE.c ****     u1i = u1[i];
+ 822              		.loc 1 243 22 is_stmt 1 discriminator 1 view .LVU282
+ 243:HANcoder_E407_DS_HTE.c ****     u1i = u1[i];
+ 823              		.loc 1 243 15 discriminator 1 view .LVU283
+ 243:HANcoder_E407_DS_HTE.c ****     u1i = u1[i];
+ 824              		.loc 1 243 3 is_stmt 0 discriminator 1 view .LVU284
+ 825 0020 A042     		cmp	r0, r4
+ 826 0022 0FD0     		beq	.L68
+ 827              	.LVL98:
+ 828              	.L62:
+ 244:HANcoder_E407_DS_HTE.c ****     u1i = u1[i];
+ 829              		.loc 1 244 5 is_stmt 1 view .LVU285
+ 244:HANcoder_E407_DS_HTE.c ****     u1i = u1[i];
+ 830              		.loc 1 244 9 is_stmt 0 view .LVU286
+ 831 0024 50F8041F 		ldr	r1, [r0, #4]!
+ 832              	.LVL99:
+ 245:HANcoder_E407_DS_HTE.c ****     y[i] = yi;
+ 833              		.loc 1 245 5 is_stmt 1 view .LVU287
+ 245:HANcoder_E407_DS_HTE.c ****     y[i] = yi;
+ 834              		.loc 1 245 15 is_stmt 0 view .LVU288
+ 835 0028 5EF8043F 		ldr	r3, [lr, #4]!
+ 836 002c 0B44     		add	r3, r3, r1
+ 245:HANcoder_E407_DS_HTE.c ****     y[i] = yi;
+ 837              		.loc 1 245 8 view .LVU289
+ 838 002e 1344     		add	r3, r3, r2
+ 839              	.LVL100:
+ 246:HANcoder_E407_DS_HTE.c ****     carry = carry != 0U ? (uint32_T)(yi <= u1i) : (uint32_T)(yi < u1i);
+ 840              		.loc 1 246 5 is_stmt 1 view .LVU290
+ 246:HANcoder_E407_DS_HTE.c ****     carry = carry != 0U ? (uint32_T)(yi <= u1i) : (uint32_T)(yi < u1i);
+ 841              		.loc 1 246 10 is_stmt 0 view .LVU291
+ 842 0030 4CF8043F 		str	r3, [ip, #4]!
+ 843              		.loc 1 247 5 is_stmt 1 view .LVU292
+ 844              		.loc 1 247 49 is_stmt 0 view .LVU293
+ 845 0034 002A     		cmp	r2, #0
+ 846 0036 EFD1     		bne	.L69
+ 847              		.loc 1 247 51 discriminator 2 view .LVU294
+ 848 0038 9942     		cmp	r1, r3
+ 849 003a 94BF     		ite	ls
+ 850 003c 0022     		movls	r2, #0
+ 851 003e 0122     		movhi	r2, #1
+ 852              	.LVL101:
+ 243:HANcoder_E407_DS_HTE.c ****     u1i = u1[i];
+ 853              		.loc 1 243 22 is_stmt 1 discriminator 2 view .LVU295
+ 243:HANcoder_E407_DS_HTE.c ****     u1i = u1[i];
+ 854              		.loc 1 243 15 discriminator 2 view .LVU296
+ 243:HANcoder_E407_DS_HTE.c ****     u1i = u1[i];
+ 855              		.loc 1 243 3 is_stmt 0 discriminator 2 view .LVU297
+ 856 0040 A042     		cmp	r0, r4
+ 857 0042 EFD1     		bne	.L62
+ 858              	.L68:
+ 248:HANcoder_E407_DS_HTE.c ****   }
+ 249:HANcoder_E407_DS_HTE.c **** }
+ 859              		.loc 1 249 1 view .LVU298
+ 860 0044 10BD     		pop	{r4, pc}
+ 861              	.LVL102:
+ 862              	.L65:
+ 863              		.cfi_def_cfa_offset 0
+ 864              		.cfi_restore 4
+ 865              		.cfi_restore 14
+ 866              		.loc 1 249 1 view .LVU299
+ 867 0046 7047     		bx	lr
+ 868              		.cfi_endproc
+ 869              	.LFE117:
+ 871              		.section	.text.mul_wide_s32,"ax",%progbits
+ 872              		.align	1
+ 873              		.p2align 2,,3
+ 874              		.global	mul_wide_s32
+ 875              		.syntax unified
+ 876              		.thumb
+ 877              		.thumb_func
+ 879              	mul_wide_s32:
+ 880              	.LVL103:
+ 881              	.LFB118:
+ 250:HANcoder_E407_DS_HTE.c **** 
+ 251:HANcoder_E407_DS_HTE.c **** void mul_wide_s32(int32_T in0, int32_T in1, uint32_T *ptrOutBitsHi, uint32_T
+ 252:HANcoder_E407_DS_HTE.c ****                   *ptrOutBitsLo)
+ 253:HANcoder_E407_DS_HTE.c **** {
+ 882              		.loc 1 253 1 is_stmt 1 view -0
+ 883              		.cfi_startproc
+ 884              		@ args = 0, pretend = 0, frame = 0
+ 885              		@ frame_needed = 0, uses_anonymous_args = 0
+ 254:HANcoder_E407_DS_HTE.c ****   uint32_T absIn0;
+ 886              		.loc 1 254 3 view .LVU301
+ 255:HANcoder_E407_DS_HTE.c ****   uint32_T absIn1;
+ 887              		.loc 1 255 3 view .LVU302
+ 256:HANcoder_E407_DS_HTE.c ****   uint32_T in0Hi;
+ 888              		.loc 1 256 3 view .LVU303
+ 257:HANcoder_E407_DS_HTE.c ****   uint32_T in0Lo;
+ 889              		.loc 1 257 3 view .LVU304
+ 258:HANcoder_E407_DS_HTE.c ****   uint32_T in1Hi;
+ 890              		.loc 1 258 3 view .LVU305
+ 259:HANcoder_E407_DS_HTE.c ****   uint32_T productHiLo;
+ 891              		.loc 1 259 3 view .LVU306
+ 260:HANcoder_E407_DS_HTE.c ****   uint32_T productLoHi;
+ 892              		.loc 1 260 3 view .LVU307
+ 261:HANcoder_E407_DS_HTE.c ****   absIn0 = in0 < 0 ? ~(uint32_T)in0 + 1U : (uint32_T)in0;
+ 893              		.loc 1 261 3 view .LVU308
+ 253:HANcoder_E407_DS_HTE.c ****   uint32_T absIn0;
+ 894              		.loc 1 253 1 is_stmt 0 view .LVU309
+ 895 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 896              		.cfi_def_cfa_offset 24
+ 897              		.cfi_offset 4, -24
+ 898              		.cfi_offset 5, -20
+ 899              		.cfi_offset 6, -16
+ 900              		.cfi_offset 7, -12
+ 901              		.cfi_offset 8, -8
+ 902              		.cfi_offset 14, -4
+ 262:HANcoder_E407_DS_HTE.c ****   absIn1 = in1 < 0 ? ~(uint32_T)in1 + 1U : (uint32_T)in1;
+ 903              		.loc 1 262 42 view .LVU310
+ 904 0004 81EAE17C 		eor	ip, r1, r1, asr #31
+ 261:HANcoder_E407_DS_HTE.c ****   absIn0 = in0 < 0 ? ~(uint32_T)in0 + 1U : (uint32_T)in0;
+ 905              		.loc 1 261 42 view .LVU311
+ 906 0008 80EAE074 		eor	r4, r0, r0, asr #31
+ 907 000c A4EBE074 		sub	r4, r4, r0, asr #31
+ 908              	.LVL104:
+ 909              		.loc 1 262 3 is_stmt 1 view .LVU312
+ 910              		.loc 1 262 42 is_stmt 0 view .LVU313
+ 911 0010 ACEBE17C 		sub	ip, ip, r1, asr #31
+ 912              	.LVL105:
+ 263:HANcoder_E407_DS_HTE.c ****   in0Hi = absIn0 >> 16U;
+ 913              		.loc 1 263 3 is_stmt 1 view .LVU314
+ 264:HANcoder_E407_DS_HTE.c ****   in0Lo = absIn0 & 65535U;
+ 914              		.loc 1 264 9 is_stmt 0 view .LVU315
+ 915 0014 1FFA84FE 		uxth	lr, r4
+ 265:HANcoder_E407_DS_HTE.c ****   in1Hi = absIn1 >> 16U;
+ 916              		.loc 1 265 9 view .LVU316
+ 917 0018 4FEA1C47 		lsr	r7, ip, #16
+ 263:HANcoder_E407_DS_HTE.c ****   in0Hi = absIn0 >> 16U;
+ 918              		.loc 1 263 9 view .LVU317
+ 919 001c 250C     		lsrs	r5, r4, #16
+ 920              	.LVL106:
+ 264:HANcoder_E407_DS_HTE.c ****   in0Lo = absIn0 & 65535U;
+ 921              		.loc 1 264 3 is_stmt 1 view .LVU318
+ 922              		.loc 1 265 3 view .LVU319
+ 266:HANcoder_E407_DS_HTE.c ****   absIn0 = absIn1 & 65535U;
+ 923              		.loc 1 266 3 view .LVU320
+ 924              		.loc 1 266 10 is_stmt 0 view .LVU321
+ 925 001e 1FFA8CFC 		uxth	ip, ip
+ 926              	.LVL107:
+ 267:HANcoder_E407_DS_HTE.c ****   productHiLo = in0Hi * absIn0;
+ 927              		.loc 1 267 3 is_stmt 1 view .LVU322
+ 268:HANcoder_E407_DS_HTE.c ****   productLoHi = in0Lo * in1Hi;
+ 928              		.loc 1 268 15 is_stmt 0 view .LVU323
+ 929 0022 07FB0EF4 		mul	r4, r7, lr
+ 269:HANcoder_E407_DS_HTE.c ****   absIn0 *= in0Lo;
+ 930              		.loc 1 269 10 view .LVU324
+ 931 0026 0CFB0EF6 		mul	r6, ip, lr
+ 267:HANcoder_E407_DS_HTE.c ****   productHiLo = in0Hi * absIn0;
+ 932              		.loc 1 267 15 view .LVU325
+ 933 002a 0CFB05FC 		mul	ip, ip, r5
+ 934              	.LVL108:
+ 268:HANcoder_E407_DS_HTE.c ****   productLoHi = in0Lo * in1Hi;
+ 935              		.loc 1 268 3 is_stmt 1 view .LVU326
+ 936              		.loc 1 269 3 view .LVU327
+ 270:HANcoder_E407_DS_HTE.c ****   absIn1 = 0U;
+ 937              		.loc 1 270 3 view .LVU328
+ 271:HANcoder_E407_DS_HTE.c ****   in0Lo = (productLoHi << 16U) + absIn0;
+ 938              		.loc 1 271 3 view .LVU329
+ 939              		.loc 1 271 24 is_stmt 0 view .LVU330
+ 940 002e 4FEA044E 		lsl	lr, r4, #16
+ 941              	.LVL109:
+ 272:HANcoder_E407_DS_HTE.c ****   if (in0Lo < absIn0) {
+ 942              		.loc 1 272 3 is_stmt 1 view .LVU331
+ 943              		.loc 1 272 6 is_stmt 0 view .LVU332
+ 944 0032 1EEB060E 		adds	lr, lr, r6
+ 945              	.LVL110:
+ 273:HANcoder_E407_DS_HTE.c ****     absIn1 = 1U;
+ 274:HANcoder_E407_DS_HTE.c ****   }
+ 275:HANcoder_E407_DS_HTE.c **** 
+ 276:HANcoder_E407_DS_HTE.c ****   absIn0 = in0Lo;
+ 277:HANcoder_E407_DS_HTE.c ****   in0Lo += productHiLo << 16U;
+ 946              		.loc 1 277 24 view .LVU333
+ 947 0036 4FEA0C48 		lsl	r8, ip, #16
+ 278:HANcoder_E407_DS_HTE.c ****   if (in0Lo < absIn0) {
+ 279:HANcoder_E407_DS_HTE.c ****     absIn1++;
+ 280:HANcoder_E407_DS_HTE.c ****   }
+ 281:HANcoder_E407_DS_HTE.c **** 
+ 282:HANcoder_E407_DS_HTE.c ****   absIn0 = (((productLoHi >> 16U) + (productHiLo >> 16U)) + in0Hi * in1Hi) +
+ 948              		.loc 1 282 50 view .LVU334
+ 949 003a 4FEA1C4C 		lsr	ip, ip, #16
+ 950              	.LVL111:
+ 272:HANcoder_E407_DS_HTE.c ****     absIn1 = 1U;
+ 951              		.loc 1 272 6 view .LVU335
+ 952 003e 2CBF     		ite	cs
+ 953 0040 0126     		movcs	r6, #1
+ 954 0042 0026     		movcc	r6, #0
+ 955              	.LVL112:
+ 276:HANcoder_E407_DS_HTE.c ****   in0Lo += productHiLo << 16U;
+ 956              		.loc 1 276 3 is_stmt 1 view .LVU336
+ 277:HANcoder_E407_DS_HTE.c ****   if (in0Lo < absIn0) {
+ 957              		.loc 1 277 3 view .LVU337
+ 958              		.loc 1 282 35 is_stmt 0 view .LVU338
+ 959 0044 0CEB1444 		add	r4, ip, r4, lsr #16
+ 960              	.LVL113:
+ 961              		.loc 1 282 35 view .LVU339
+ 962 0048 18EB0E0E 		adds	lr, r8, lr
+ 963              	.LVL114:
+ 279:HANcoder_E407_DS_HTE.c ****   }
+ 964              		.loc 1 279 11 view .LVU340
+ 965 004c 28BF     		it	cs
+ 966 004e 0136     		addcs	r6, r6, #1
+ 967              	.LVL115:
+ 968              		.loc 1 282 59 view .LVU341
+ 969 0050 07FB0544 		mla	r4, r7, r5, r4
+ 277:HANcoder_E407_DS_HTE.c ****   if (in0Lo < absIn0) {
+ 970              		.loc 1 277 9 view .LVU342
+ 971 0054 F046     		mov	r8, lr
+ 972              	.LVL116:
+ 278:HANcoder_E407_DS_HTE.c ****     absIn1++;
+ 973              		.loc 1 278 3 is_stmt 1 view .LVU343
+ 279:HANcoder_E407_DS_HTE.c ****   }
+ 974              		.loc 1 279 5 view .LVU344
+ 975              		.loc 1 282 3 view .LVU345
+ 976              		.loc 1 282 10 is_stmt 0 view .LVU346
+ 977 0056 3444     		add	r4, r4, r6
+ 978              	.LVL117:
+ 283:HANcoder_E407_DS_HTE.c ****     absIn1;
+ 284:HANcoder_E407_DS_HTE.c ****   if ((in0 != 0) && ((in1 != 0) && ((in0 > 0) != (in1 > 0)))) {
+ 979              		.loc 1 284 3 is_stmt 1 view .LVU347
+ 980              		.loc 1 284 6 is_stmt 0 view .LVU348
+ 981 0058 80B1     		cbz	r0, .L80
+ 982              		.loc 1 284 18 discriminator 1 view .LVU349
+ 983 005a 79B1     		cbz	r1, .L80
+ 984              		.loc 1 284 33 discriminator 2 view .LVU350
+ 985 005c 0028     		cmp	r0, #0
+ 986 005e D4BF     		ite	le
+ 987 0060 0020     		movle	r0, #0
+ 988              	.LVL118:
+ 989              		.loc 1 284 33 discriminator 2 view .LVU351
+ 990 0062 0120     		movgt	r0, #1
+ 991 0064 0029     		cmp	r1, #0
+ 992 0066 D4BF     		ite	le
+ 993 0068 0021     		movle	r1, #0
+ 994              	.LVL119:
+ 995              		.loc 1 284 33 discriminator 2 view .LVU352
+ 996 006a 0121     		movgt	r1, #1
+ 997 006c 8842     		cmp	r0, r1
+ 998 006e 05D0     		beq	.L80
+ 285:HANcoder_E407_DS_HTE.c ****     absIn0 = ~absIn0;
+ 999              		.loc 1 285 5 is_stmt 1 view .LVU353
+ 1000              	.LVL120:
+ 286:HANcoder_E407_DS_HTE.c ****     in0Lo = ~in0Lo;
+ 1001              		.loc 1 286 5 view .LVU354
+ 287:HANcoder_E407_DS_HTE.c ****     in0Lo++;
+ 1002              		.loc 1 287 5 view .LVU355
+ 1003              		.loc 1 287 10 is_stmt 0 view .LVU356
+ 1004 0070 CEF10008 		rsb	r8, lr, #0
+ 1005              	.LVL121:
+ 288:HANcoder_E407_DS_HTE.c ****     if (in0Lo == 0U) {
+ 1006              		.loc 1 288 5 is_stmt 1 view .LVU357
+ 1007              		.loc 1 288 8 is_stmt 0 view .LVU358
+ 1008 0074 BEF1000F 		cmp	lr, #0
+ 1009 0078 05D0     		beq	.L81
+ 285:HANcoder_E407_DS_HTE.c ****     in0Lo = ~in0Lo;
+ 1010              		.loc 1 285 12 view .LVU359
+ 1011 007a E443     		mvns	r4, r4
+ 1012              	.LVL122:
+ 1013              	.L80:
+ 289:HANcoder_E407_DS_HTE.c ****       absIn0++;
+ 290:HANcoder_E407_DS_HTE.c ****     }
+ 291:HANcoder_E407_DS_HTE.c ****   }
+ 292:HANcoder_E407_DS_HTE.c **** 
+ 293:HANcoder_E407_DS_HTE.c ****   *ptrOutBitsHi = absIn0;
+ 1014              		.loc 1 293 3 is_stmt 1 view .LVU360
+ 1015              		.loc 1 293 17 is_stmt 0 view .LVU361
+ 1016 007c 1460     		str	r4, [r2]
+ 294:HANcoder_E407_DS_HTE.c ****   *ptrOutBitsLo = in0Lo;
+ 1017              		.loc 1 294 3 is_stmt 1 view .LVU362
+ 1018              		.loc 1 294 17 is_stmt 0 view .LVU363
+ 1019 007e C3F80080 		str	r8, [r3]
+ 295:HANcoder_E407_DS_HTE.c **** }
+ 1020              		.loc 1 295 1 view .LVU364
+ 1021 0082 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 1022              	.LVL123:
+ 1023              	.L81:
+ 289:HANcoder_E407_DS_HTE.c ****       absIn0++;
+ 1024              		.loc 1 289 7 is_stmt 1 view .LVU365
+ 289:HANcoder_E407_DS_HTE.c ****       absIn0++;
+ 1025              		.loc 1 289 13 is_stmt 0 view .LVU366
+ 1026 0086 6442     		rsbs	r4, r4, #0
+ 1027              	.LVL124:
+ 289:HANcoder_E407_DS_HTE.c ****       absIn0++;
+ 1028              		.loc 1 289 13 view .LVU367
+ 1029 0088 F8E7     		b	.L80
+ 1030              		.cfi_endproc
+ 1031              	.LFE118:
+ 1033 008a 00BF     		.section	.text.mul_s32_hiSR,"ax",%progbits
+ 1034              		.align	1
+ 1035              		.p2align 2,,3
+ 1036              		.global	mul_s32_hiSR
+ 1037              		.syntax unified
+ 1038              		.thumb
+ 1039              		.thumb_func
+ 1041              	mul_s32_hiSR:
+ 1042              	.LVL125:
+ 1043              	.LFB119:
+ 296:HANcoder_E407_DS_HTE.c **** 
+ 297:HANcoder_E407_DS_HTE.c **** int32_T mul_s32_hiSR(int32_T a, int32_T b, uint32_T aShift)
+ 298:HANcoder_E407_DS_HTE.c **** {
+ 1044              		.loc 1 298 1 is_stmt 1 view -0
+ 1045              		.cfi_startproc
+ 1046              		@ args = 0, pretend = 0, frame = 8
+ 1047              		@ frame_needed = 0, uses_anonymous_args = 0
+ 299:HANcoder_E407_DS_HTE.c ****   uint32_T u32_chi;
+ 1048              		.loc 1 299 3 view .LVU369
+ 300:HANcoder_E407_DS_HTE.c ****   uint32_T u32_clo;
+ 1049              		.loc 1 300 3 view .LVU370
+ 301:HANcoder_E407_DS_HTE.c ****   mul_wide_s32(a, b, &u32_chi, &u32_clo);
+ 1050              		.loc 1 301 3 view .LVU371
+ 298:HANcoder_E407_DS_HTE.c ****   uint32_T u32_chi;
+ 1051              		.loc 1 298 1 is_stmt 0 view .LVU372
+ 1052 0000 10B5     		push	{r4, lr}
+ 1053              		.cfi_def_cfa_offset 8
+ 1054              		.cfi_offset 4, -8
+ 1055              		.cfi_offset 14, -4
+ 1056 0002 82B0     		sub	sp, sp, #8
+ 1057              		.cfi_def_cfa_offset 16
+ 298:HANcoder_E407_DS_HTE.c ****   uint32_T u32_chi;
+ 1058              		.loc 1 298 1 view .LVU373
+ 1059 0004 1446     		mov	r4, r2
+ 1060              		.loc 1 301 3 view .LVU374
+ 1061 0006 01AB     		add	r3, sp, #4
+ 1062 0008 6A46     		mov	r2, sp
+ 1063              	.LVL126:
+ 1064              		.loc 1 301 3 view .LVU375
+ 1065 000a FFF7FEFF 		bl	mul_wide_s32
+ 1066              	.LVL127:
+ 302:HANcoder_E407_DS_HTE.c ****   return (int32_T)u32_chi >> aShift;
+ 1067              		.loc 1 302 3 is_stmt 1 view .LVU376
+ 1068              		.loc 1 302 27 is_stmt 0 view .LVU377
+ 1069 000e 0098     		ldr	r0, [sp]
+ 303:HANcoder_E407_DS_HTE.c **** }
+ 1070              		.loc 1 303 1 view .LVU378
+ 1071 0010 2041     		asrs	r0, r0, r4
+ 1072 0012 02B0     		add	sp, sp, #8
+ 1073              		.cfi_def_cfa_offset 8
+ 1074              		@ sp needed
+ 1075 0014 10BD     		pop	{r4, pc}
+ 1076              		.loc 1 303 1 view .LVU379
+ 1077              		.cfi_endproc
+ 1078              	.LFE119:
+ 1080              		.global	__aeabi_i2d
+ 1081              		.global	__aeabi_dmul
+ 1082              		.global	__aeabi_dsub
+ 1083              		.global	__aeabi_ui2d
+ 1084              		.global	__aeabi_d2iz
+ 1085 0016 00BF     		.section	.rodata.HANcoder_E407_DS_HTE_step.str1.4,"aMS",%progbits,1
+ 1086              		.align	2
+ 1087              	.LC0:
+ 1088 0000 41707043 		.ascii	"AppCtrlTask\000"
+ 1088      74726C54 
+ 1088      61736B00 
+ 1089              		.section	.text.HANcoder_E407_DS_HTE_step,"ax",%progbits
+ 1090              		.align	1
+ 1091              		.p2align 2,,3
+ 1092              		.global	HANcoder_E407_DS_HTE_step
+ 1093              		.syntax unified
+ 1094              		.thumb
+ 1095              		.thumb_func
+ 1097              	HANcoder_E407_DS_HTE_step:
+ 1098              	.LFB120:
+ 304:HANcoder_E407_DS_HTE.c **** 
+ 305:HANcoder_E407_DS_HTE.c **** /* Model step function */
+ 306:HANcoder_E407_DS_HTE.c **** void HANcoder_E407_DS_HTE_step(void)
+ 307:HANcoder_E407_DS_HTE.c **** {
+ 1099              		.loc 1 307 1 is_stmt 1 view -0
+ 1100              		.cfi_startproc
+ 1101              		@ args = 0, pretend = 0, frame = 48
+ 1102              		@ frame_needed = 0, uses_anonymous_args = 0
+ 308:HANcoder_E407_DS_HTE.c ****   /* local block i/o variables */
+ 309:HANcoder_E407_DS_HTE.c ****   uint8_T rtb_SFunction_o2;
+ 1103              		.loc 1 309 3 view .LVU381
+ 310:HANcoder_E407_DS_HTE.c ****   int8_T rtb_SFunction_o1;
+ 1104              		.loc 1 310 3 view .LVU382
+ 311:HANcoder_E407_DS_HTE.c ****   int128m_T tmp_1;
+ 1105              		.loc 1 311 3 view .LVU383
+ 312:HANcoder_E407_DS_HTE.c ****   int128m_T tmp_2;
+ 1106              		.loc 1 312 3 view .LVU384
+ 313:HANcoder_E407_DS_HTE.c ****   int64m_T tmp;
+ 1107              		.loc 1 313 3 view .LVU385
+ 314:HANcoder_E407_DS_HTE.c ****   int64m_T tmp_0;
+ 1108              		.loc 1 314 3 view .LVU386
+ 315:HANcoder_E407_DS_HTE.c ****   int64m_T tmp_3;
+ 1109              		.loc 1 315 3 view .LVU387
+ 316:HANcoder_E407_DS_HTE.c ****   real_T rtb_TSamp;
+ 1110              		.loc 1 316 3 view .LVU388
+ 317:HANcoder_E407_DS_HTE.c ****   int32_T rtb_IntegralGain_d;
+ 1111              		.loc 1 317 3 view .LVU389
+ 318:HANcoder_E407_DS_HTE.c ****   int32_T tmp_4;
+ 1112              		.loc 1 318 3 view .LVU390
+ 319:HANcoder_E407_DS_HTE.c ****   uint32_T tmp_5;
+ 1113              		.loc 1 319 3 view .LVU391
+ 320:HANcoder_E407_DS_HTE.c ****   uint32_T tmp_6;
+ 1114              		.loc 1 320 3 view .LVU392
+ 321:HANcoder_E407_DS_HTE.c ****   int16_T u0;
+ 1115              		.loc 1 321 3 view .LVU393
+ 322:HANcoder_E407_DS_HTE.c ****   uint16_T rtb_DeadZone;
+ 1116              		.loc 1 322 3 view .LVU394
+ 323:HANcoder_E407_DS_HTE.c ****   uint16_T rtb_Sum;
+ 1117              		.loc 1 323 3 view .LVU395
+ 324:HANcoder_E407_DS_HTE.c ****   int8_T rtb_DeadZone_0;
+ 1118              		.loc 1 324 3 view .LVU396
+ 325:HANcoder_E407_DS_HTE.c ****   int8_T rtb_IntegralGain_e;
+ 1119              		.loc 1 325 3 view .LVU397
+ 326:HANcoder_E407_DS_HTE.c ****   boolean_T rtb_RelationalOperator;
+ 1120              		.loc 1 326 3 view .LVU398
+ 327:HANcoder_E407_DS_HTE.c ****   boolean_T rtb_fixforDTpropagationissue;
+ 1121              		.loc 1 327 3 view .LVU399
+ 328:HANcoder_E407_DS_HTE.c ****   static const int64m_T tmp_7 = { { 1202590843U, 1342177U }/* chunks */
+ 1122              		.loc 1 328 3 view .LVU400
+ 329:HANcoder_E407_DS_HTE.c ****   };
+ 330:HANcoder_E407_DS_HTE.c **** 
+ 331:HANcoder_E407_DS_HTE.c ****   /* M-S-Function: '<S116>/Level-2 M-file S-Function' */
+ 332:HANcoder_E407_DS_HTE.c ****   /* read from analog input for filtered inputs*/
+ 333:HANcoder_E407_DS_HTE.c ****   PotVal = AninGet(ANIN_PORTC_PIN0,0);
+ 1123              		.loc 1 333 3 view .LVU401
+ 307:HANcoder_E407_DS_HTE.c ****   /* local block i/o variables */
+ 1124              		.loc 1 307 1 is_stmt 0 view .LVU402
+ 1125 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 1126              		.cfi_def_cfa_offset 32
+ 1127              		.cfi_offset 4, -32
+ 1128              		.cfi_offset 5, -28
+ 1129              		.cfi_offset 6, -24
+ 1130              		.cfi_offset 7, -20
+ 1131              		.cfi_offset 8, -16
+ 1132              		.cfi_offset 9, -12
+ 1133              		.cfi_offset 10, -8
+ 1134              		.cfi_offset 14, -4
+ 1135              		.loc 1 333 12 view .LVU403
+ 1136 0004 0021     		movs	r1, #0
+ 334:HANcoder_E407_DS_HTE.c **** 
+ 335:HANcoder_E407_DS_HTE.c ****   /* M-S-Function: '<S119>/Level-2 M-file S-Function' */
+ 336:HANcoder_E407_DS_HTE.c ****   /* determine if the counter needs a reset  */
+ 337:HANcoder_E407_DS_HTE.c ****   if (rtB.DataTypeConversion > 0) {
+ 1137              		.loc 1 337 10 view .LVU404
+ 1138 0006 764D     		ldr	r5, .L134+8
+ 333:HANcoder_E407_DS_HTE.c **** 
+ 1139              		.loc 1 333 10 view .LVU405
+ 1140 0008 764C     		ldr	r4, .L134+12
+ 307:HANcoder_E407_DS_HTE.c ****   /* local block i/o variables */
+ 1141              		.loc 1 307 1 view .LVU406
+ 1142 000a 8EB0     		sub	sp, sp, #56
+ 1143              		.cfi_def_cfa_offset 88
+ 333:HANcoder_E407_DS_HTE.c **** 
+ 1144              		.loc 1 333 12 view .LVU407
+ 1145 000c 0820     		movs	r0, #8
+ 1146 000e FFF7FEFF 		bl	AninGet
+ 1147              	.LVL128:
+ 1148              		.loc 1 337 6 view .LVU408
+ 1149 0012 AB7A     		ldrb	r3, [r5, #10]	@ zero_extendqisi2
+ 333:HANcoder_E407_DS_HTE.c **** 
+ 1150              		.loc 1 333 10 view .LVU409
+ 1151 0014 2080     		strh	r0, [r4]	@ movhi
+ 1152              		.loc 1 337 3 is_stmt 1 view .LVU410
+ 1153              		.loc 1 337 6 is_stmt 0 view .LVU411
+ 1154 0016 002B     		cmp	r3, #0
+ 1155 0018 40F0A981 		bne	.L131
+ 1156              	.L95:
+ 338:HANcoder_E407_DS_HTE.c ****     QuadEncResetCounter(QUADENC_TIM3_PA6_PB5);
+ 339:HANcoder_E407_DS_HTE.c ****   }
+ 340:HANcoder_E407_DS_HTE.c **** 
+ 341:HANcoder_E407_DS_HTE.c ****   /* read counter from the quadrature encoder module */
+ 342:HANcoder_E407_DS_HTE.c ****   EncCount = QuadEncGetCounter(QUADENC_TIM3_PA6_PB5);
+ 1157              		.loc 1 342 3 is_stmt 1 view .LVU412
+ 1158              		.loc 1 342 14 is_stmt 0 view .LVU413
+ 1159 001c 0120     		movs	r0, #1
+ 1160 001e FFF7FEFF 		bl	QuadEncGetCounter
+ 1161              	.LVL129:
+ 343:HANcoder_E407_DS_HTE.c **** 
+ 344:HANcoder_E407_DS_HTE.c ****   /* Constant: '<S2>/Constant' */
+ 345:HANcoder_E407_DS_HTE.c ****   EncReset = System_select;
+ 1162              		.loc 1 345 12 view .LVU414
+ 1163 0022 714B     		ldr	r3, .L134+16
+ 342:HANcoder_E407_DS_HTE.c **** 
+ 1164              		.loc 1 342 12 view .LVU415
+ 1165 0024 714F     		ldr	r7, .L134+20
+ 1166              		.loc 1 345 12 view .LVU416
+ 1167 0026 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1168 0028 714E     		ldr	r6, .L134+24
+ 342:HANcoder_E407_DS_HTE.c **** 
+ 1169              		.loc 1 342 12 view .LVU417
+ 1170 002a 3860     		str	r0, [r7]
+ 1171              		.loc 1 345 3 is_stmt 1 view .LVU418
+ 1172              		.loc 1 345 12 is_stmt 0 view .LVU419
+ 1173 002c 3370     		strb	r3, [r6]
+ 346:HANcoder_E407_DS_HTE.c **** 
+ 347:HANcoder_E407_DS_HTE.c ****   /* Outputs for Enabled SubSystem: '<S2>/Position Control' incorporates:
+ 348:HANcoder_E407_DS_HTE.c ****    *  EnablePort: '<S12>/Enable'
+ 349:HANcoder_E407_DS_HTE.c ****    */
+ 350:HANcoder_E407_DS_HTE.c ****   if (EncReset) {
+ 1174              		.loc 1 350 3 is_stmt 1 view .LVU420
+ 1175              		.loc 1 350 6 is_stmt 0 view .LVU421
+ 1176 002e 002B     		cmp	r3, #0
+ 1177 0030 40F00681 		bne	.L132
+ 351:HANcoder_E407_DS_HTE.c ****     /* Gain: '<S12>/Analog byte to degree' */
+ 352:HANcoder_E407_DS_HTE.c ****     PotDeg = (int16_T)(((uint32_T)((uint16_T)46091U) * PotVal) >> 19);
+ 353:HANcoder_E407_DS_HTE.c **** 
+ 354:HANcoder_E407_DS_HTE.c ****     /* Gain: '<S12>/Counts to rotation [deg]' */
+ 355:HANcoder_E407_DS_HTE.c ****     RotorPos = mul_s32_hiSR(1105604738, EncCount, 1U);
+ 356:HANcoder_E407_DS_HTE.c **** 
+ 357:HANcoder_E407_DS_HTE.c ****     /* Sum: '<S12>/Sum' */
+ 358:HANcoder_E407_DS_HTE.c ****     PosError = PotDeg - RotorPos;
+ 359:HANcoder_E407_DS_HTE.c **** 
+ 360:HANcoder_E407_DS_HTE.c ****     /* DiscreteIntegrator: '<S48>/Integrator' */
+ 361:HANcoder_E407_DS_HTE.c ****     if ((EncReset && (rtDWork.Integrator_PrevResetState_a <= 0)) || ((!EncReset)
+ 362:HANcoder_E407_DS_HTE.c ****          && (rtDWork.Integrator_PrevResetState_a == 1))) {
+ 363:HANcoder_E407_DS_HTE.c ****       rtDWork.Integrator_DSTATE = rtConstP.Integrator_IC;
+ 364:HANcoder_E407_DS_HTE.c ****     }
+ 365:HANcoder_E407_DS_HTE.c **** 
+ 366:HANcoder_E407_DS_HTE.c ****     /* Gain: '<S53>/Proportional Gain' incorporates:
+ 367:HANcoder_E407_DS_HTE.c ****      *  Gain: '<S45>/Integral Gain'
+ 368:HANcoder_E407_DS_HTE.c ****      */
+ 369:HANcoder_E407_DS_HTE.c ****     tmp_5 = (uint32_T)1342177280;
+ 370:HANcoder_E407_DS_HTE.c ****     tmp_6 = (uint32_T)PosError;
+ 371:HANcoder_E407_DS_HTE.c ****     sMultiWordMul(&tmp_5, 1, &tmp_6, 1, &tmp_0.chunks[0U], 2);
+ 372:HANcoder_E407_DS_HTE.c **** 
+ 373:HANcoder_E407_DS_HTE.c ****     /* Sum: '<S57>/Sum' incorporates:
+ 374:HANcoder_E407_DS_HTE.c ****      *  DiscreteIntegrator: '<S48>/Integrator'
+ 375:HANcoder_E407_DS_HTE.c ****      */
+ 376:HANcoder_E407_DS_HTE.c ****     sMultiWordShr(&tmp_0.chunks[0U], 2, 27U, &tmp.chunks[0U], 2);
+ 377:HANcoder_E407_DS_HTE.c ****     tmp_0 = tmp_7;
+ 378:HANcoder_E407_DS_HTE.c ****     sMultiWordMul(&rtDWork.Integrator_DSTATE.chunks[0U], 2, &tmp_7.chunks[0U], 2,
+ 379:HANcoder_E407_DS_HTE.c ****                   &tmp_2.chunks[0U], 4);
+ 380:HANcoder_E407_DS_HTE.c ****     sMultiWordShr(&tmp_2.chunks[0U], 4, 87U, &tmp_1.chunks[0U], 4);
+ 381:HANcoder_E407_DS_HTE.c ****     u0 = (int16_T)((int16_T)MultiWord2sLong(&tmp.chunks[0U]) + (int16_T)
+ 382:HANcoder_E407_DS_HTE.c ****                    MultiWord2sLong(&tmp_1.chunks[0U]));
+ 383:HANcoder_E407_DS_HTE.c **** 
+ 384:HANcoder_E407_DS_HTE.c ****     /* Saturate: '<S55>/Saturation' */
+ 385:HANcoder_E407_DS_HTE.c ****     if (u0 > 1023) {
+ 386:HANcoder_E407_DS_HTE.c ****       /* Saturate: '<S55>/Saturation' */
+ 387:HANcoder_E407_DS_HTE.c ****       PosPIDOut = 1023;
+ 388:HANcoder_E407_DS_HTE.c ****     } else if (u0 < (-1023)) {
+ 389:HANcoder_E407_DS_HTE.c ****       /* Saturate: '<S55>/Saturation' */
+ 390:HANcoder_E407_DS_HTE.c ****       PosPIDOut = (-1023);
+ 391:HANcoder_E407_DS_HTE.c ****     } else {
+ 392:HANcoder_E407_DS_HTE.c ****       /* Saturate: '<S55>/Saturation' */
+ 393:HANcoder_E407_DS_HTE.c ****       PosPIDOut = u0;
+ 394:HANcoder_E407_DS_HTE.c ****     }
+ 395:HANcoder_E407_DS_HTE.c **** 
+ 396:HANcoder_E407_DS_HTE.c ****     /* End of Saturate: '<S55>/Saturation' */
+ 397:HANcoder_E407_DS_HTE.c **** 
+ 398:HANcoder_E407_DS_HTE.c ****     /* Abs: '<S12>/Abs' */
+ 399:HANcoder_E407_DS_HTE.c ****     if (PosPIDOut < 0) {
+ 400:HANcoder_E407_DS_HTE.c ****       /* Abs: '<S12>/Abs' */
+ 401:HANcoder_E407_DS_HTE.c ****       rtB.Abs = (uint16_T)-PosPIDOut;
+ 402:HANcoder_E407_DS_HTE.c ****     } else {
+ 403:HANcoder_E407_DS_HTE.c ****       /* Abs: '<S12>/Abs' */
+ 404:HANcoder_E407_DS_HTE.c ****       rtB.Abs = (uint16_T)PosPIDOut;
+ 405:HANcoder_E407_DS_HTE.c ****     }
+ 406:HANcoder_E407_DS_HTE.c **** 
+ 407:HANcoder_E407_DS_HTE.c ****     /* End of Abs: '<S12>/Abs' */
+ 408:HANcoder_E407_DS_HTE.c **** 
+ 409:HANcoder_E407_DS_HTE.c ****     /* Switch: '<S12>/Switch' incorporates:
+ 410:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S12>/IN1'
+ 411:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S12>/IN2'
+ 412:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S16>/Constant'
+ 413:HANcoder_E407_DS_HTE.c ****      *  RelationalOperator: '<S16>/Compare'
+ 414:HANcoder_E407_DS_HTE.c ****      */
+ 415:HANcoder_E407_DS_HTE.c ****     if (PosPIDOut > 0) {
+ 416:HANcoder_E407_DS_HTE.c ****       rtb_fixforDTpropagationissue = true;
+ 417:HANcoder_E407_DS_HTE.c ****     } else {
+ 418:HANcoder_E407_DS_HTE.c ****       rtb_fixforDTpropagationissue = false;
+ 419:HANcoder_E407_DS_HTE.c ****     }
+ 420:HANcoder_E407_DS_HTE.c **** 
+ 421:HANcoder_E407_DS_HTE.c ****     /* End of Switch: '<S12>/Switch' */
+ 422:HANcoder_E407_DS_HTE.c **** 
+ 423:HANcoder_E407_DS_HTE.c ****     /* Switch: '<S12>/Switch1' incorporates:
+ 424:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S12>/IN3'
+ 425:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S12>/IN4'
+ 426:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S15>/Constant'
+ 427:HANcoder_E407_DS_HTE.c ****      *  RelationalOperator: '<S15>/Compare'
+ 428:HANcoder_E407_DS_HTE.c ****      */
+ 429:HANcoder_E407_DS_HTE.c ****     if (PosPIDOut < 0) {
+ 430:HANcoder_E407_DS_HTE.c ****       rtb_RelationalOperator = true;
+ 431:HANcoder_E407_DS_HTE.c ****     } else {
+ 432:HANcoder_E407_DS_HTE.c ****       rtb_RelationalOperator = false;
+ 433:HANcoder_E407_DS_HTE.c ****     }
+ 434:HANcoder_E407_DS_HTE.c **** 
+ 435:HANcoder_E407_DS_HTE.c ****     /* End of Switch: '<S12>/Switch1' */
+ 436:HANcoder_E407_DS_HTE.c **** 
+ 437:HANcoder_E407_DS_HTE.c ****     /* Switch: '<S12>/Switch2' incorporates:
+ 438:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S12>/IN5'
+ 439:HANcoder_E407_DS_HTE.c ****      *  RelationalOperator: '<S12>/Equal'
+ 440:HANcoder_E407_DS_HTE.c ****      *  Switch: '<S12>/Switch3'
+ 441:HANcoder_E407_DS_HTE.c ****      */
+ 442:HANcoder_E407_DS_HTE.c ****     if (rtb_fixforDTpropagationissue == rtb_RelationalOperator) {
+ 443:HANcoder_E407_DS_HTE.c ****       rtb_Sum = false;
+ 444:HANcoder_E407_DS_HTE.c **** 
+ 445:HANcoder_E407_DS_HTE.c ****       /* Switch: '<S12>/Switch2' incorporates:
+ 446:HANcoder_E407_DS_HTE.c ****        *  Constant: '<S12>/IN5'
+ 447:HANcoder_E407_DS_HTE.c ****        */
+ 448:HANcoder_E407_DS_HTE.c ****       rtB.Switch2 = rtb_Sum;
+ 449:HANcoder_E407_DS_HTE.c **** 
+ 450:HANcoder_E407_DS_HTE.c ****       /* Switch: '<S12>/Switch3' */
+ 451:HANcoder_E407_DS_HTE.c ****       rtB.Switch3 = rtb_Sum;
+ 452:HANcoder_E407_DS_HTE.c ****     } else {
+ 453:HANcoder_E407_DS_HTE.c ****       /* Switch: '<S12>/Switch2' */
+ 454:HANcoder_E407_DS_HTE.c ****       rtB.Switch2 = rtb_fixforDTpropagationissue;
+ 455:HANcoder_E407_DS_HTE.c **** 
+ 456:HANcoder_E407_DS_HTE.c ****       /* Switch: '<S12>/Switch3' */
+ 457:HANcoder_E407_DS_HTE.c ****       rtB.Switch3 = rtb_RelationalOperator;
+ 458:HANcoder_E407_DS_HTE.c ****     }
+ 459:HANcoder_E407_DS_HTE.c **** 
+ 460:HANcoder_E407_DS_HTE.c ****     /* End of Switch: '<S12>/Switch2' */
+ 461:HANcoder_E407_DS_HTE.c **** 
+ 462:HANcoder_E407_DS_HTE.c ****     /* Gain: '<S45>/Integral Gain' */
+ 463:HANcoder_E407_DS_HTE.c ****     sMultiWordMul(&tmp_5, 1, &tmp_6, 1, &tmp_0.chunks[0U], 2);
+ 464:HANcoder_E407_DS_HTE.c **** 
+ 465:HANcoder_E407_DS_HTE.c ****     /* Update for DiscreteIntegrator: '<S48>/Integrator' */
+ 466:HANcoder_E407_DS_HTE.c ****     MultiWordAdd(&rtDWork.Integrator_DSTATE.chunks[0U], &tmp_0.chunks[0U],
+ 467:HANcoder_E407_DS_HTE.c ****                  &tmp_3.chunks[0U], 2);
+ 468:HANcoder_E407_DS_HTE.c ****     rtDWork.Integrator_DSTATE = tmp_3;
+ 469:HANcoder_E407_DS_HTE.c ****     rtDWork.Integrator_PrevResetState_a = (int8_T)EncReset;
+ 470:HANcoder_E407_DS_HTE.c ****   }
+ 471:HANcoder_E407_DS_HTE.c **** 
+ 472:HANcoder_E407_DS_HTE.c ****   /* End of Outputs for SubSystem: '<S2>/Position Control' */
+ 473:HANcoder_E407_DS_HTE.c **** 
+ 474:HANcoder_E407_DS_HTE.c ****   /* Abs: '<S6>/Abs' */
+ 475:HANcoder_E407_DS_HTE.c ****   if (EncCount < 0) {
+ 1178              		.loc 1 475 3 is_stmt 1 view .LVU422
+ 1179              	.LVL130:
+ 476:HANcoder_E407_DS_HTE.c ****     tmp_4 = -EncCount;
+ 477:HANcoder_E407_DS_HTE.c ****   } else {
+ 478:HANcoder_E407_DS_HTE.c ****     tmp_4 = EncCount;
+ 479:HANcoder_E407_DS_HTE.c ****   }
+ 480:HANcoder_E407_DS_HTE.c **** 
+ 481:HANcoder_E407_DS_HTE.c ****   /* End of Abs: '<S6>/Abs' */
+ 482:HANcoder_E407_DS_HTE.c **** 
+ 483:HANcoder_E407_DS_HTE.c ****   /* SampleTimeMath: '<S118>/TSamp'
+ 484:HANcoder_E407_DS_HTE.c ****    *
+ 485:HANcoder_E407_DS_HTE.c ****    * About '<S118>/TSamp':
+ 486:HANcoder_E407_DS_HTE.c ****    *  y = u * K where K = 1 / ( w * Ts )
+ 487:HANcoder_E407_DS_HTE.c ****    */
+ 488:HANcoder_E407_DS_HTE.c ****   rtb_TSamp = (real_T)25 * 4.0 * (real_T)tmp_4;
+ 1180              		.loc 1 488 3 view .LVU423
+ 1181              		.loc 1 488 34 is_stmt 0 view .LVU424
+ 1182 0034 0028     		cmp	r0, #0
+ 1183 0036 B8BF     		it	lt
+ 1184 0038 4042     		rsblt	r0, r0, #0
+ 1185              	.LVL131:
+ 1186              		.loc 1 488 34 view .LVU425
+ 1187 003a FFF7FEFF 		bl	__aeabi_i2d
+ 1188              	.LVL132:
+ 1189              		.loc 1 488 13 view .LVU426
+ 1190 003e 6D4B     		ldr	r3, .L134+28
+ 489:HANcoder_E407_DS_HTE.c **** 
+ 490:HANcoder_E407_DS_HTE.c ****   /* Gain: '<S6>/Gain' incorporates:
+ 491:HANcoder_E407_DS_HTE.c ****    *  Sum: '<S118>/Diff'
+ 492:HANcoder_E407_DS_HTE.c ****    *  UnitDelay: '<S118>/UD'
+ 493:HANcoder_E407_DS_HTE.c ****    *
+ 494:HANcoder_E407_DS_HTE.c ****    * Block description for '<S118>/Diff':
+ 495:HANcoder_E407_DS_HTE.c ****    *
+ 496:HANcoder_E407_DS_HTE.c ****    *  Add in CPU
+ 497:HANcoder_E407_DS_HTE.c ****    *
+ 498:HANcoder_E407_DS_HTE.c ****    * Block description for '<S118>/UD':
+ 499:HANcoder_E407_DS_HTE.c ****    *
+ 500:HANcoder_E407_DS_HTE.c ****    *  Store in Global RAM
+ 501:HANcoder_E407_DS_HTE.c ****    */
+ 502:HANcoder_E407_DS_HTE.c ****   RPM = (rtb_TSamp - rtDWork.UD_DSTATE) * 0.021451555237754737;
+ 1191              		.loc 1 502 29 view .LVU427
+ 1192 0040 6D4C     		ldr	r4, .L134+32
+ 488:HANcoder_E407_DS_HTE.c **** 
+ 1193              		.loc 1 488 13 view .LVU428
+ 1194 0042 0022     		movs	r2, #0
+ 1195 0044 FFF7FEFF 		bl	__aeabi_dmul
+ 1196              	.LVL133:
+ 1197 0048 0246     		mov	r2, r0
+ 1198 004a 0B46     		mov	r3, r1
+ 1199 004c CDE90223 		strd	r2, [sp, #8]
+ 1200              	.LVL134:
+ 1201              		.loc 1 502 3 is_stmt 1 view .LVU429
+ 1202              		.loc 1 502 20 is_stmt 0 view .LVU430
+ 1203 0050 D4E90023 		ldrd	r2, [r4]
+ 1204              	.LVL135:
+ 1205              		.loc 1 502 20 view .LVU431
+ 1206 0054 FFF7FEFF 		bl	__aeabi_dsub
+ 1207              	.LVL136:
+ 1208              		.loc 1 502 41 view .LVU432
+ 1209 0058 5FA3     		adr	r3, .L134
+ 1210 005a D3E90023 		ldrd	r2, [r3]
+ 1211 005e FFF7FEFF 		bl	__aeabi_dmul
+ 1212              	.LVL137:
+ 1213              		.loc 1 502 7 view .LVU433
+ 1214 0062 664B     		ldr	r3, .L134+36
+ 1215              		.loc 1 502 41 view .LVU434
+ 1216 0064 8046     		mov	r8, r0
+ 1217 0066 8946     		mov	r9, r1
+ 1218              		.loc 1 502 7 view .LVU435
+ 1219 0068 C3E90089 		strd	r8, [r3]
+ 503:HANcoder_E407_DS_HTE.c **** 
+ 504:HANcoder_E407_DS_HTE.c ****   /* Outputs for Enabled SubSystem: '<S2>/Speed Control' incorporates:
+ 505:HANcoder_E407_DS_HTE.c ****    *  EnablePort: '<S13>/Enable'
+ 506:HANcoder_E407_DS_HTE.c ****    */
+ 507:HANcoder_E407_DS_HTE.c ****   /* RelationalOperator: '<S11>/Compare' incorporates:
+ 508:HANcoder_E407_DS_HTE.c ****    *  Constant: '<S11>/Constant'
+ 509:HANcoder_E407_DS_HTE.c ****    *  Constant: '<S13>/Constant'
+ 510:HANcoder_E407_DS_HTE.c ****    *  Constant: '<S13>/Constant1'
+ 511:HANcoder_E407_DS_HTE.c ****    *  Constant: '<S13>/Constant2'
+ 512:HANcoder_E407_DS_HTE.c ****    */
+ 513:HANcoder_E407_DS_HTE.c ****   if (EncReset == false) {
+ 1220              		.loc 1 513 3 is_stmt 1 view .LVU436
+ 1221              	.L123:
+ 514:HANcoder_E407_DS_HTE.c ****     RPMSetpoint = HANtuneOverride;
+ 1222              		.loc 1 514 5 view .LVU437
+ 1223              		.loc 1 514 17 is_stmt 0 view .LVU438
+ 1224 006c 644B     		ldr	r3, .L134+40
+ 1225 006e 1888     		ldrh	r0, [r3]
+ 1226 0070 644B     		ldr	r3, .L134+44
+ 1227 0072 1880     		strh	r0, [r3]	@ movhi
+ 515:HANcoder_E407_DS_HTE.c **** 
+ 516:HANcoder_E407_DS_HTE.c ****     /* Sum: '<S13>/Sum' incorporates:
+ 517:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S13>/Constant'
+ 518:HANcoder_E407_DS_HTE.c ****      */
+ 519:HANcoder_E407_DS_HTE.c ****     RPMError = (int16_T)floor((real_T)RPMSetpoint - RPM);
+ 1228              		.loc 1 519 5 is_stmt 1 view .LVU439
+ 1229              		.loc 1 519 31 is_stmt 0 view .LVU440
+ 1230 0074 FFF7FEFF 		bl	__aeabi_ui2d
+ 1231              	.LVL138:
+ 1232              		.loc 1 519 25 view .LVU441
+ 1233 0078 4246     		mov	r2, r8
+ 1234 007a 4B46     		mov	r3, r9
+ 1235 007c FFF7FEFF 		bl	__aeabi_dsub
+ 1236              	.LVL139:
+ 1237 0080 FFF7FEFF 		bl	floor
+ 1238              	.LVL140:
+ 1239              		.loc 1 519 16 view .LVU442
+ 1240 0084 FFF7FEFF 		bl	__aeabi_d2iz
+ 1241              	.LVL141:
+ 520:HANcoder_E407_DS_HTE.c **** 
+ 521:HANcoder_E407_DS_HTE.c ****     /* DiscreteIntegrator: '<S99>/Integrator' */
+ 522:HANcoder_E407_DS_HTE.c ****     if ((EncReset && (rtDWork.Integrator_PrevResetState <= 0)) || ((!EncReset) &&
+ 1242              		.loc 1 522 80 view .LVU443
+ 1243 0088 94F91530 		ldrsb	r3, [r4, #21]
+ 519:HANcoder_E407_DS_HTE.c **** 
+ 1244              		.loc 1 519 14 view .LVU444
+ 1245 008c DFF8A081 		ldr	r8, .L134+88
+ 1246              	.LBB30:
+ 1247              	.LBB31:
+ 301:HANcoder_E407_DS_HTE.c ****   return (int32_T)u32_chi >> aShift;
+ 1248              		.loc 1 301 3 view .LVU445
+ 1249 0090 5D49     		ldr	r1, .L134+48
+ 1250              	.LBE31:
+ 1251              	.LBE30:
+ 1252              		.loc 1 522 80 view .LVU446
+ 1253 0092 012B     		cmp	r3, #1
+ 519:HANcoder_E407_DS_HTE.c **** 
+ 1254              		.loc 1 519 16 view .LVU447
+ 1255 0094 07B2     		sxth	r7, r0
+ 1256              	.LBB36:
+ 1257              	.LBB32:
+ 301:HANcoder_E407_DS_HTE.c ****   return (int32_T)u32_chi >> aShift;
+ 1258              		.loc 1 301 3 view .LVU448
+ 1259 0096 07AB     		add	r3, sp, #28
+ 1260              	.LBE32:
+ 1261              	.LBE36:
+ 523:HANcoder_E407_DS_HTE.c ****          (rtDWork.Integrator_PrevResetState == 1))) {
+ 524:HANcoder_E407_DS_HTE.c ****       rtDWork.Integrator_DSTATE_h = 0;
+ 1262              		.loc 1 524 35 view .LVU449
+ 1263 0098 0CBF     		ite	eq
+ 1264 009a 0020     		moveq	r0, #0
+ 525:HANcoder_E407_DS_HTE.c ****     }
+ 526:HANcoder_E407_DS_HTE.c **** 
+ 527:HANcoder_E407_DS_HTE.c ****     /* Sum: '<S108>/Sum' incorporates:
+ 528:HANcoder_E407_DS_HTE.c ****      *  DiscreteIntegrator: '<S99>/Integrator'
+ 529:HANcoder_E407_DS_HTE.c ****      *  Gain: '<S104>/Proportional Gain'
+ 530:HANcoder_E407_DS_HTE.c ****      */
+ 531:HANcoder_E407_DS_HTE.c ****     rtb_Sum = (uint16_T)((((20480 * RPMError) >> 1) + mul_s32_hiSR
+ 1265              		.loc 1 531 55 view .LVU450
+ 1266 009c 2069     		ldrne	r0, [r4, #16]
+ 519:HANcoder_E407_DS_HTE.c **** 
+ 1267              		.loc 1 519 14 view .LVU451
+ 1268 009e A8F80070 		strh	r7, [r8]	@ movhi
+ 522:HANcoder_E407_DS_HTE.c ****          (rtDWork.Integrator_PrevResetState == 1))) {
+ 1269              		.loc 1 522 5 is_stmt 1 view .LVU452
+ 524:HANcoder_E407_DS_HTE.c ****     }
+ 1270              		.loc 1 524 7 view .LVU453
+ 1271              		.loc 1 531 5 view .LVU454
+ 1272              	.LVL142:
+ 1273              	.LBB37:
+ 1274              	.LBI30:
+ 297:HANcoder_E407_DS_HTE.c **** {
+ 1275              		.loc 1 297 9 view .LVU455
+ 1276              	.LBB33:
+ 299:HANcoder_E407_DS_HTE.c ****   uint32_T u32_clo;
+ 1277              		.loc 1 299 3 view .LVU456
+ 300:HANcoder_E407_DS_HTE.c ****   mul_wide_s32(a, b, &u32_chi, &u32_clo);
+ 1278              		.loc 1 300 3 view .LVU457
+ 301:HANcoder_E407_DS_HTE.c ****   return (int32_T)u32_chi >> aShift;
+ 1279              		.loc 1 301 3 view .LVU458
+ 1280 00a2 06AA     		add	r2, sp, #24
+ 1281              	.LBE33:
+ 1282              	.LBE37:
+ 524:HANcoder_E407_DS_HTE.c ****     }
+ 1283              		.loc 1 524 35 is_stmt 0 view .LVU459
+ 1284 00a4 08BF     		it	eq
+ 1285 00a6 2061     		streq	r0, [r4, #16]
+ 1286              	.LVL143:
+ 1287              	.LBB38:
+ 1288              	.LBB34:
+ 301:HANcoder_E407_DS_HTE.c ****   return (int32_T)u32_chi >> aShift;
+ 1289              		.loc 1 301 3 view .LVU460
+ 1290 00a8 FFF7FEFF 		bl	mul_wide_s32
+ 1291              	.LVL144:
+ 302:HANcoder_E407_DS_HTE.c **** }
+ 1292              		.loc 1 302 3 is_stmt 1 view .LVU461
+ 302:HANcoder_E407_DS_HTE.c **** }
+ 1293              		.loc 1 302 3 is_stmt 0 view .LVU462
+ 1294              	.LBE34:
+ 1295              	.LBE38:
+ 1296              		.loc 1 531 35 view .LVU463
+ 1297 00ac 07EB8703 		add	r3, r7, r7, lsl #2
+ 1298              	.LBB39:
+ 1299              	.LBB35:
+ 302:HANcoder_E407_DS_HTE.c **** }
+ 1300              		.loc 1 302 27 view .LVU464
+ 1301 00b0 069F     		ldr	r7, [sp, #24]
+ 1302              	.LBE35:
+ 1303              	.LBE39:
+ 532:HANcoder_E407_DS_HTE.c ****                           (rtDWork.Integrator_DSTATE_h, 1374389535, 8U)) >> 10);
+ 533:HANcoder_E407_DS_HTE.c **** 
+ 534:HANcoder_E407_DS_HTE.c ****     /* DeadZone: '<S92>/DeadZone' */
+ 535:HANcoder_E407_DS_HTE.c ****     if (rtb_Sum > ((uint16_T)1023U)) {
+ 536:HANcoder_E407_DS_HTE.c ****       rtb_DeadZone = (uint16_T)((uint32_T)rtb_Sum - ((uint16_T)1023U));
+ 537:HANcoder_E407_DS_HTE.c ****     } else if (rtb_Sum >= ((uint16_T)0U)) {
+ 538:HANcoder_E407_DS_HTE.c ****       rtb_DeadZone = 0U;
+ 539:HANcoder_E407_DS_HTE.c ****     } else {
+ 540:HANcoder_E407_DS_HTE.c ****       rtb_DeadZone = (uint16_T)((uint32_T)rtb_Sum - ((uint16_T)0U));
+ 541:HANcoder_E407_DS_HTE.c ****     }
+ 542:HANcoder_E407_DS_HTE.c **** 
+ 543:HANcoder_E407_DS_HTE.c ****     /* End of DeadZone: '<S92>/DeadZone' */
+ 544:HANcoder_E407_DS_HTE.c **** 
+ 545:HANcoder_E407_DS_HTE.c ****     /* Gain: '<S96>/Integral Gain' */
+ 546:HANcoder_E407_DS_HTE.c ****     rtb_IntegralGain_d = 24576 * RPMError;
+ 1304              		.loc 1 546 24 view .LVU465
+ 1305 00b2 B8F90020 		ldrsh	r2, [r8]
+ 531:HANcoder_E407_DS_HTE.c ****                           (rtDWork.Integrator_DSTATE_h, 1374389535, 8U)) >> 10);
+ 1306              		.loc 1 531 47 view .LVU466
+ 1307 00b6 DB02     		lsls	r3, r3, #11
+ 531:HANcoder_E407_DS_HTE.c ****                           (rtDWork.Integrator_DSTATE_h, 1374389535, 8U)) >> 10);
+ 1308              		.loc 1 531 53 view .LVU467
+ 1309 00b8 03EB2723 		add	r3, r3, r7, asr #8
+ 531:HANcoder_E407_DS_HTE.c ****                           (rtDWork.Integrator_DSTATE_h, 1374389535, 8U)) >> 10);
+ 1310              		.loc 1 531 13 view .LVU468
+ 1311 00bc C3F38F23 		ubfx	r3, r3, #10, #16
+ 1312              	.LVL145:
+ 535:HANcoder_E407_DS_HTE.c ****       rtb_DeadZone = (uint16_T)((uint32_T)rtb_Sum - ((uint16_T)1023U));
+ 1313              		.loc 1 535 5 is_stmt 1 view .LVU469
+ 1314              		.loc 1 546 24 is_stmt 0 view .LVU470
+ 1315 00c0 02EB4202 		add	r2, r2, r2, lsl #1
+ 535:HANcoder_E407_DS_HTE.c ****       rtb_DeadZone = (uint16_T)((uint32_T)rtb_Sum - ((uint16_T)1023U));
+ 1316              		.loc 1 535 8 view .LVU471
+ 1317 00c4 B3F5806F 		cmp	r3, #1024
+ 1318              		.loc 1 546 24 view .LVU472
+ 1319 00c8 4FEA4232 		lsl	r2, r2, #13
+ 535:HANcoder_E407_DS_HTE.c ****       rtb_DeadZone = (uint16_T)((uint32_T)rtb_Sum - ((uint16_T)1023U));
+ 1320              		.loc 1 535 8 view .LVU473
+ 1321 00cc 69D2     		bcs	.L133
+ 1322              	.LVL146:
+ 1323              		.loc 1 546 5 is_stmt 1 view .LVU474
+ 547:HANcoder_E407_DS_HTE.c **** 
+ 548:HANcoder_E407_DS_HTE.c ****     /* Saturate: '<S106>/Saturation' */
+ 549:HANcoder_E407_DS_HTE.c ****     if (rtb_Sum <= ((uint16_T)1023U)) {
+ 1324              		.loc 1 549 5 view .LVU475
+ 550:HANcoder_E407_DS_HTE.c ****       /* Saturate: '<S106>/Saturation' */
+ 551:HANcoder_E407_DS_HTE.c ****       RpmPIDOut = rtb_Sum;
+ 1325              		.loc 1 551 7 view .LVU476
+ 1326 00ce 4F49     		ldr	r1, .L134+52
+ 1327 00d0 0B80     		strh	r3, [r1]	@ movhi
+ 552:HANcoder_E407_DS_HTE.c ****     } else {
+ 553:HANcoder_E407_DS_HTE.c ****       /* Saturate: '<S106>/Saturation' */
+ 554:HANcoder_E407_DS_HTE.c ****       RpmPIDOut = ((uint16_T)1023U);
+ 555:HANcoder_E407_DS_HTE.c ****     }
+ 556:HANcoder_E407_DS_HTE.c **** 
+ 557:HANcoder_E407_DS_HTE.c ****     /* End of Saturate: '<S106>/Saturation' */
+ 558:HANcoder_E407_DS_HTE.c ****     rtB.Constant2 = ((uint16_T)0U);
+ 1328              		.loc 1 558 5 view .LVU477
+ 559:HANcoder_E407_DS_HTE.c ****     rtB.Constant1 = ((uint16_T)1U);
+ 1329              		.loc 1 559 5 view .LVU478
+ 558:HANcoder_E407_DS_HTE.c ****     rtB.Constant1 = ((uint16_T)1U);
+ 1330              		.loc 1 558 19 is_stmt 0 view .LVU479
+ 1331 00d2 4FF48033 		mov	r3, #65536
+ 1332 00d6 2B60     		str	r3, [r5]
+ 560:HANcoder_E407_DS_HTE.c **** 
+ 561:HANcoder_E407_DS_HTE.c ****     /* RelationalOperator: '<S90>/fix for DT propagation issue' incorporates:
+ 562:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S13>/Constant1'
+ 563:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S13>/Constant2'
+ 564:HANcoder_E407_DS_HTE.c ****      *  RelationalOperator: '<S90>/Relational Operator'
+ 565:HANcoder_E407_DS_HTE.c ****      */
+ 566:HANcoder_E407_DS_HTE.c ****     tmp_4 = rtb_DeadZone << 13;
+ 1333              		.loc 1 566 5 is_stmt 1 view .LVU480
+ 1334              	.LVL147:
+ 567:HANcoder_E407_DS_HTE.c **** 
+ 568:HANcoder_E407_DS_HTE.c ****     /* Switch: '<S90>/Switch1' incorporates:
+ 569:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S90>/Constant'
+ 570:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S90>/Constant2'
+ 571:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S90>/Constant5'
+ 572:HANcoder_E407_DS_HTE.c ****      *  RelationalOperator: '<S90>/fix for DT propagation issue'
+ 573:HANcoder_E407_DS_HTE.c ****      */
+ 574:HANcoder_E407_DS_HTE.c ****     if (tmp_4 > 0) {
+ 1335              		.loc 1 574 5 view .LVU481
+ 575:HANcoder_E407_DS_HTE.c ****       rtb_DeadZone_0 = 1;
+ 576:HANcoder_E407_DS_HTE.c ****     } else {
+ 577:HANcoder_E407_DS_HTE.c ****       rtb_DeadZone_0 = (-1);
+ 578:HANcoder_E407_DS_HTE.c ****     }
+ 579:HANcoder_E407_DS_HTE.c **** 
+ 580:HANcoder_E407_DS_HTE.c ****     /* End of Switch: '<S90>/Switch1' */
+ 581:HANcoder_E407_DS_HTE.c **** 
+ 582:HANcoder_E407_DS_HTE.c ****     /* Switch: '<S90>/Switch2' incorporates:
+ 583:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S90>/Constant3'
+ 584:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S90>/Constant4'
+ 585:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S90>/Constant5'
+ 586:HANcoder_E407_DS_HTE.c ****      *  Gain: '<S96>/Integral Gain'
+ 587:HANcoder_E407_DS_HTE.c ****      *  RelationalOperator: '<S90>/fix for DT propagation issue1'
+ 588:HANcoder_E407_DS_HTE.c ****      */
+ 589:HANcoder_E407_DS_HTE.c ****     if (rtb_IntegralGain_d > 0) {
+ 1336              		.loc 1 589 5 view .LVU482
+ 1337              	.L121:
+ 590:HANcoder_E407_DS_HTE.c ****       rtb_IntegralGain_e = 1;
+ 591:HANcoder_E407_DS_HTE.c ****     } else {
+ 592:HANcoder_E407_DS_HTE.c ****       rtb_IntegralGain_e = (-1);
+ 593:HANcoder_E407_DS_HTE.c ****     }
+ 594:HANcoder_E407_DS_HTE.c **** 
+ 595:HANcoder_E407_DS_HTE.c ****     /* End of Switch: '<S90>/Switch2' */
+ 596:HANcoder_E407_DS_HTE.c **** 
+ 597:HANcoder_E407_DS_HTE.c ****     /* Switch: '<S90>/Switch' incorporates:
+ 598:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S90>/Constant1'
+ 599:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S90>/Constant5'
+ 600:HANcoder_E407_DS_HTE.c ****      *  Logic: '<S90>/AND3'
+ 601:HANcoder_E407_DS_HTE.c ****      *  RelationalOperator: '<S90>/Equal1'
+ 602:HANcoder_E407_DS_HTE.c ****      *  RelationalOperator: '<S90>/Relational Operator'
+ 603:HANcoder_E407_DS_HTE.c ****      */
+ 604:HANcoder_E407_DS_HTE.c ****     if ((tmp_4 != 0) && (rtb_DeadZone_0 == rtb_IntegralGain_e)) {
+ 605:HANcoder_E407_DS_HTE.c ****       rtb_IntegralGain_d = 0;
+ 606:HANcoder_E407_DS_HTE.c ****     }
+ 607:HANcoder_E407_DS_HTE.c **** 
+ 608:HANcoder_E407_DS_HTE.c ****     /* End of Switch: '<S90>/Switch' */
+ 609:HANcoder_E407_DS_HTE.c **** 
+ 610:HANcoder_E407_DS_HTE.c ****     /* Update for DiscreteIntegrator: '<S99>/Integrator' */
+ 611:HANcoder_E407_DS_HTE.c ****     rtDWork.Integrator_DSTATE_h += rtb_IntegralGain_d;
+ 1338              		.loc 1 611 5 view .LVU483
+ 1339              		.loc 1 611 33 is_stmt 0 view .LVU484
+ 1340 00d8 2369     		ldr	r3, [r4, #16]
+ 612:HANcoder_E407_DS_HTE.c ****     rtDWork.Integrator_PrevResetState = (int8_T)EncReset;
+ 1341              		.loc 1 612 41 view .LVU485
+ 1342 00da 3778     		ldrb	r7, [r6]	@ zero_extendqisi2
+ 1343              		.loc 1 612 39 view .LVU486
+ 1344 00dc 6775     		strb	r7, [r4, #21]
+ 611:HANcoder_E407_DS_HTE.c ****     rtDWork.Integrator_PrevResetState = (int8_T)EncReset;
+ 1345              		.loc 1 611 33 view .LVU487
+ 1346 00de 1344     		add	r3, r3, r2
+ 1347 00e0 2361     		str	r3, [r4, #16]
+ 1348              		.loc 1 612 5 is_stmt 1 view .LVU488
+ 613:HANcoder_E407_DS_HTE.c ****   }
+ 614:HANcoder_E407_DS_HTE.c **** 
+ 615:HANcoder_E407_DS_HTE.c ****   /* End of RelationalOperator: '<S11>/Compare' */
+ 616:HANcoder_E407_DS_HTE.c ****   /* End of Outputs for SubSystem: '<S2>/Speed Control' */
+ 617:HANcoder_E407_DS_HTE.c **** 
+ 618:HANcoder_E407_DS_HTE.c ****   /* Switch: '<S2>/Switch' */
+ 619:HANcoder_E407_DS_HTE.c ****   if (EncReset) {
+ 1349              		.loc 1 619 3 view .LVU489
+ 1350              		.loc 1 619 6 is_stmt 0 view .LVU490
+ 1351 00e2 002F     		cmp	r7, #0
+ 1352 00e4 40F03B81 		bne	.L108
+ 620:HANcoder_E407_DS_HTE.c ****     /* SignalConversion: '<S7>/Signal Conversion' */
+ 621:HANcoder_E407_DS_HTE.c ****     MotorPWM = rtB.Abs;
+ 622:HANcoder_E407_DS_HTE.c ****     rtb_Sum = rtB.Switch3;
+ 623:HANcoder_E407_DS_HTE.c ****     rtb_DeadZone = rtB.Switch2;
+ 624:HANcoder_E407_DS_HTE.c ****   } else {
+ 625:HANcoder_E407_DS_HTE.c ****     /* SignalConversion: '<S7>/Signal Conversion' */
+ 626:HANcoder_E407_DS_HTE.c ****     MotorPWM = RpmPIDOut;
+ 1353              		.loc 1 626 5 is_stmt 1 view .LVU491
+ 1354              		.loc 1 626 14 is_stmt 0 view .LVU492
+ 1355 00e8 DFF848A1 		ldr	r10, .L134+92
+ 1356 00ec 0B88     		ldrh	r3, [r1]
+ 1357 00ee AAF80030 		strh	r3, [r10]	@ movhi
+ 627:HANcoder_E407_DS_HTE.c ****     rtb_Sum = rtB.Constant2;
+ 1358              		.loc 1 627 5 is_stmt 1 view .LVU493
+ 1359              		.loc 1 627 13 is_stmt 0 view .LVU494
+ 1360 00f2 2A88     		ldrh	r2, [r5]
+ 1361              	.LVL148:
+ 628:HANcoder_E407_DS_HTE.c ****     rtb_DeadZone = rtB.Constant1;
+ 1362              		.loc 1 628 5 is_stmt 1 view .LVU495
+ 1363              		.loc 1 628 18 is_stmt 0 view .LVU496
+ 1364 00f4 6B88     		ldrh	r3, [r5, #2]
+ 1365              	.LVL149:
+ 1366              	.L113:
+ 629:HANcoder_E407_DS_HTE.c ****   }
+ 630:HANcoder_E407_DS_HTE.c **** 
+ 631:HANcoder_E407_DS_HTE.c ****   /* End of Switch: '<S2>/Switch' */
+ 632:HANcoder_E407_DS_HTE.c ****   /* RelationalOperator: '<S2>/Equal' */
+ 633:HANcoder_E407_DS_HTE.c ****   DIRFault = (rtb_Sum == rtb_DeadZone);
+ 1367              		.loc 1 633 3 is_stmt 1 view .LVU497
+ 1368              		.loc 1 633 12 is_stmt 0 view .LVU498
+ 1369 00f6 4649     		ldr	r1, .L134+56
+ 1370              		.loc 1 633 23 view .LVU499
+ 1371 00f8 9342     		cmp	r3, r2
+ 1372 00fa 0CBF     		ite	eq
+ 1373 00fc 0120     		moveq	r0, #1
+ 1374 00fe 0020     		movne	r0, #0
+ 1375 0100 0870     		strb	r0, [r1]
+ 634:HANcoder_E407_DS_HTE.c **** 
+ 635:HANcoder_E407_DS_HTE.c ****   /* Switch: '<S2>/Switch2' incorporates:
+ 636:HANcoder_E407_DS_HTE.c ****    *  Switch: '<S2>/Switch3'
+ 637:HANcoder_E407_DS_HTE.c ****    */
+ 638:HANcoder_E407_DS_HTE.c ****   if (DIRFault) {
+ 1376              		.loc 1 638 3 is_stmt 1 view .LVU500
+ 1377              		.loc 1 638 6 is_stmt 0 view .LVU501
+ 1378 0102 58D1     		bne	.L114
+ 639:HANcoder_E407_DS_HTE.c ****     /* Switch: '<S2>/Switch2' incorporates:
+ 640:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S2>/DIRFault'
+ 641:HANcoder_E407_DS_HTE.c ****      */
+ 642:HANcoder_E407_DS_HTE.c ****     IN1 = false;
+ 1379              		.loc 1 642 5 is_stmt 1 view .LVU502
+ 1380              		.loc 1 642 9 is_stmt 0 view .LVU503
+ 1381 0104 DFF83091 		ldr	r9, .L134+96
+ 643:HANcoder_E407_DS_HTE.c **** 
+ 644:HANcoder_E407_DS_HTE.c ****     /* Switch: '<S2>/Switch3' incorporates:
+ 645:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S2>/DIRFault'
+ 646:HANcoder_E407_DS_HTE.c ****      */
+ 647:HANcoder_E407_DS_HTE.c ****     IN2 = false;
+ 1382              		.loc 1 647 9 view .LVU504
+ 1383 0108 DFF83081 		ldr	r8, .L134+100
+ 642:HANcoder_E407_DS_HTE.c **** 
+ 1384              		.loc 1 642 9 view .LVU505
+ 1385 010c 0023     		movs	r3, #0
+ 1386              	.LVL150:
+ 642:HANcoder_E407_DS_HTE.c **** 
+ 1387              		.loc 1 642 9 view .LVU506
+ 1388 010e 89F80030 		strb	r3, [r9]
+ 1389              		.loc 1 647 5 is_stmt 1 view .LVU507
+ 1390              		.loc 1 647 9 is_stmt 0 view .LVU508
+ 1391 0112 88F80030 		strb	r3, [r8]
+ 1392              	.LVL151:
+ 1393              	.L115:
+ 648:HANcoder_E407_DS_HTE.c ****   } else {
+ 649:HANcoder_E407_DS_HTE.c ****     /* Switch: '<S2>/Switch2' */
+ 650:HANcoder_E407_DS_HTE.c ****     IN1 = (rtb_Sum != 0);
+ 651:HANcoder_E407_DS_HTE.c **** 
+ 652:HANcoder_E407_DS_HTE.c ****     /* Switch: '<S2>/Switch3' */
+ 653:HANcoder_E407_DS_HTE.c ****     IN2 = (rtb_DeadZone != 0);
+ 654:HANcoder_E407_DS_HTE.c ****   }
+ 655:HANcoder_E407_DS_HTE.c **** 
+ 656:HANcoder_E407_DS_HTE.c ****   /* End of Switch: '<S2>/Switch2' */
+ 657:HANcoder_E407_DS_HTE.c **** 
+ 658:HANcoder_E407_DS_HTE.c ****   /* DataTypeConversion: '<S119>/Data Type Conversion' incorporates:
+ 659:HANcoder_E407_DS_HTE.c ****    *  RelationalOperator: '<S121>/FixPt Relational Operator'
+ 660:HANcoder_E407_DS_HTE.c ****    *  UnitDelay: '<S121>/Delay Input1'
+ 661:HANcoder_E407_DS_HTE.c ****    *
+ 662:HANcoder_E407_DS_HTE.c ****    * Block description for '<S121>/Delay Input1':
+ 663:HANcoder_E407_DS_HTE.c ****    *
+ 664:HANcoder_E407_DS_HTE.c ****    *  Store in Global RAM
+ 665:HANcoder_E407_DS_HTE.c ****    */
+ 666:HANcoder_E407_DS_HTE.c ****   rtB.DataTypeConversion = ((int32_T)EncReset > (int32_T)
+ 1394              		.loc 1 666 3 is_stmt 1 view .LVU509
+ 1395              		.loc 1 666 47 is_stmt 0 view .LVU510
+ 1396 0116 237D     		ldrb	r3, [r4, #20]	@ zero_extendqisi2
+ 1397 0118 BB42     		cmp	r3, r7
+ 1398 011a 2CBF     		ite	cs
+ 1399 011c 0027     		movcs	r7, #0
+ 1400 011e 0127     		movcc	r7, #1
+ 1401 0120 AF72     		strb	r7, [r5, #10]
+ 667:HANcoder_E407_DS_HTE.c ****     rtDWork.DelayInput1_DSTATE);
+ 668:HANcoder_E407_DS_HTE.c **** 
+ 669:HANcoder_E407_DS_HTE.c ****   /* M-S-Function: '<S117>/S-Function' incorporates:
+ 670:HANcoder_E407_DS_HTE.c ****    *  Constant: '<S6>/Constant'
+ 671:HANcoder_E407_DS_HTE.c ****    */
+ 672:HANcoder_E407_DS_HTE.c **** 
+ 673:HANcoder_E407_DS_HTE.c ****   /* read the message data and store the new parameter */
+ 674:HANcoder_E407_DS_HTE.c ****   rtb_SFunction_o1 = CanIoGetMessage(0, 1094U, NULL,
+ 1402              		.loc 1 674 3 is_stmt 1 view .LVU511
+ 1403              		.loc 1 674 22 is_stmt 0 view .LVU512
+ 1404 0122 3C4D     		ldr	r5, .L134+60
+ 1405 0124 0022     		movs	r2, #0
+ 1406 0126 0092     		str	r2, [sp]
+ 1407 0128 2B46     		mov	r3, r5
+ 1408 012a 1046     		mov	r0, r2
+ 1409 012c 40F24641 		movw	r1, #1094
+ 1410 0130 FFF7FEFF 		bl	CanIoGetMessage
+ 1411              	.LVL152:
+ 675:HANcoder_E407_DS_HTE.c ****     &canRxData_0_1094U.uint8_T_info[0], NULL);
+ 676:HANcoder_E407_DS_HTE.c **** 
+ 677:HANcoder_E407_DS_HTE.c ****   /* process the message data */
+ 678:HANcoder_E407_DS_HTE.c ****   if (rtb_SFunction_o1 > 0) {
+ 1412              		.loc 1 678 3 is_stmt 1 view .LVU513
+ 1413              		.loc 1 678 6 is_stmt 0 view .LVU514
+ 1414 0134 0028     		cmp	r0, #0
+ 1415 0136 02DD     		ble	.L116
+ 679:HANcoder_E407_DS_HTE.c ****     /* read the data */
+ 680:HANcoder_E407_DS_HTE.c ****     rtb_SFunction_o2 = canRxData_0_1094U.uint8_T_info[0];
+ 1416              		.loc 1 680 5 is_stmt 1 view .LVU515
+ 1417              	.LVL153:
+ 681:HANcoder_E407_DS_HTE.c ****   }
+ 682:HANcoder_E407_DS_HTE.c **** 
+ 683:HANcoder_E407_DS_HTE.c ****   /* Outputs for Enabled SubSystem: '<S117>/Enabled Subsystem' incorporates:
+ 684:HANcoder_E407_DS_HTE.c ****    *  EnablePort: '<S120>/Enable'
+ 685:HANcoder_E407_DS_HTE.c ****    */
+ 686:HANcoder_E407_DS_HTE.c ****   if (rtb_SFunction_o1 > 0) {
+ 1418              		.loc 1 686 3 view .LVU516
+ 687:HANcoder_E407_DS_HTE.c ****     /* SignalConversion generated from: '<S120>/In1' */
+ 688:HANcoder_E407_DS_HTE.c ****     CANreceive = rtb_SFunction_o2;
+ 1419              		.loc 1 688 5 view .LVU517
+ 1420              		.loc 1 688 16 is_stmt 0 view .LVU518
+ 1421 0138 374B     		ldr	r3, .L134+64
+ 1422 013a 2A78     		ldrb	r2, [r5]	@ zero_extendqisi2
+ 1423 013c 1A70     		strb	r2, [r3]
+ 1424              	.LVL154:
+ 1425              	.L116:
+ 689:HANcoder_E407_DS_HTE.c ****   }
+ 690:HANcoder_E407_DS_HTE.c **** 
+ 691:HANcoder_E407_DS_HTE.c ****   /* End of Outputs for SubSystem: '<S117>/Enabled Subsystem' */
+ 692:HANcoder_E407_DS_HTE.c ****   /* M-S-Function: '<S127>/Level-2 M-file S-Function' */
+ 693:HANcoder_E407_DS_HTE.c ****   /* read the current CPU load */
+ 694:HANcoder_E407_DS_HTE.c ****   SI_CPUload = OsGetCpuLoad();
+ 1426              		.loc 1 694 3 is_stmt 1 view .LVU519
+ 1427              		.loc 1 694 16 is_stmt 0 view .LVU520
+ 1428 013e FFF7FEFF 		bl	OsGetCpuLoad
+ 1429              	.LVL155:
+ 1430              		.loc 1 694 14 view .LVU521
+ 1431 0142 364B     		ldr	r3, .L134+68
+ 1432 0144 1870     		strb	r0, [r3]
+ 695:HANcoder_E407_DS_HTE.c **** 
+ 696:HANcoder_E407_DS_HTE.c ****   /* M-S-Function: '<S128>/Level-2 M-file S-Function' */
+ 697:HANcoder_E407_DS_HTE.c ****   /* read the free heap size */
+ 698:HANcoder_E407_DS_HTE.c ****   SI_FreeHeap = OsGetFreeHeapSize();
+ 1433              		.loc 1 698 3 is_stmt 1 view .LVU522
+ 1434              		.loc 1 698 17 is_stmt 0 view .LVU523
+ 1435 0146 FFF7FEFF 		bl	OsGetFreeHeapSize
+ 1436              	.LVL156:
+ 1437              		.loc 1 698 15 view .LVU524
+ 1438 014a 354B     		ldr	r3, .L134+72
+ 1439 014c 1860     		str	r0, [r3]
+ 699:HANcoder_E407_DS_HTE.c **** 
+ 700:HANcoder_E407_DS_HTE.c ****   /* M-S-Function: '<S129>/Level-2 M-file S-Function' */
+ 701:HANcoder_E407_DS_HTE.c ****   /* read the task's free stack size */
+ 702:HANcoder_E407_DS_HTE.c ****   SI_FreeStack = OsGetTaskFreeStackSize("AppCtrlTask");
+ 1440              		.loc 1 702 3 is_stmt 1 view .LVU525
+ 1441              		.loc 1 702 18 is_stmt 0 view .LVU526
+ 1442 014e 3548     		ldr	r0, .L134+76
+ 1443 0150 FFF7FEFF 		bl	OsGetTaskFreeStackSize
+ 1444              	.LVL157:
+ 1445              		.loc 1 702 16 view .LVU527
+ 1446 0154 344B     		ldr	r3, .L134+80
+ 703:HANcoder_E407_DS_HTE.c **** 
+ 704:HANcoder_E407_DS_HTE.c ****   /* Update for M-S-Function: '<S125>/Level-2 M-file S-Function' */
+ 705:HANcoder_E407_DS_HTE.c ****   /* set the new duty cycle */
+ 706:HANcoder_E407_DS_HTE.c ****   PwmoutSet(PWMOUT_TIM2_PIN_PA5, MotorPWM);
+ 1447              		.loc 1 706 3 view .LVU528
+ 1448 0156 BAF80010 		ldrh	r1, [r10]
+ 702:HANcoder_E407_DS_HTE.c **** 
+ 1449              		.loc 1 702 16 view .LVU529
+ 1450 015a 1860     		str	r0, [r3]
+ 1451              		.loc 1 706 3 is_stmt 1 view .LVU530
+ 1452 015c 0420     		movs	r0, #4
+ 1453 015e FFF7FEFF 		bl	PwmoutSet
+ 1454              	.LVL158:
+ 707:HANcoder_E407_DS_HTE.c **** 
+ 708:HANcoder_E407_DS_HTE.c ****   /* Update for UnitDelay: '<S118>/UD'
+ 709:HANcoder_E407_DS_HTE.c ****    *
+ 710:HANcoder_E407_DS_HTE.c ****    * Block description for '<S118>/UD':
+ 711:HANcoder_E407_DS_HTE.c ****    *
+ 712:HANcoder_E407_DS_HTE.c ****    *  Store in Global RAM
+ 713:HANcoder_E407_DS_HTE.c ****    */
+ 714:HANcoder_E407_DS_HTE.c ****   rtDWork.UD_DSTATE = rtb_TSamp;
+ 1455              		.loc 1 714 3 view .LVU531
+ 1456              		.loc 1 714 21 is_stmt 0 view .LVU532
+ 1457 0162 9DED027B 		vldr.64	d7, [sp, #8]
+ 715:HANcoder_E407_DS_HTE.c **** 
+ 716:HANcoder_E407_DS_HTE.c ****   /* Update for M-S-Function: '<S123>/Level-2 M-file S-Function' */
+ 717:HANcoder_E407_DS_HTE.c ****   /* update digital output */
+ 718:HANcoder_E407_DS_HTE.c ****   if (IN1 == 0) {
+ 1458              		.loc 1 718 6 view .LVU533
+ 1459 0166 99F80010 		ldrb	r1, [r9]	@ zero_extendqisi2
+ 714:HANcoder_E407_DS_HTE.c **** 
+ 1460              		.loc 1 714 21 view .LVU534
+ 1461 016a 84ED007B 		vstr.64	d7, [r4]
+ 1462              		.loc 1 718 3 is_stmt 1 view .LVU535
+ 1463              		.loc 1 718 6 is_stmt 0 view .LVU536
+ 1464 016e 01B1     		cbz	r1, .L129
+ 719:HANcoder_E407_DS_HTE.c ****     DigoutSet(DIGOUT_PORTE_PIN2, DIGOUT_LOW);
+ 720:HANcoder_E407_DS_HTE.c ****   } else {
+ 721:HANcoder_E407_DS_HTE.c ****     DigoutSet(DIGOUT_PORTE_PIN2, DIGOUT_HIGH);
+ 1465              		.loc 1 721 5 is_stmt 1 view .LVU537
+ 1466 0170 0121     		movs	r1, #1
+ 1467              	.L129:
+ 1468 0172 0820     		movs	r0, #8
+ 1469 0174 FFF7FEFF 		bl	DigoutSet
+ 1470              	.LVL159:
+ 722:HANcoder_E407_DS_HTE.c ****   }
+ 723:HANcoder_E407_DS_HTE.c **** 
+ 724:HANcoder_E407_DS_HTE.c ****   /* Update for M-S-Function: '<S124>/Level-2 M-file S-Function' */
+ 725:HANcoder_E407_DS_HTE.c ****   /* update digital output */
+ 726:HANcoder_E407_DS_HTE.c ****   if (IN2 == 0) {
+ 1471              		.loc 1 726 3 view .LVU538
+ 1472              		.loc 1 726 6 is_stmt 0 view .LVU539
+ 1473 0178 98F80010 		ldrb	r1, [r8]	@ zero_extendqisi2
+ 1474 017c 01B1     		cbz	r1, .L130
+ 727:HANcoder_E407_DS_HTE.c ****     DigoutSet(DIGOUT_PORTE_PIN4, DIGOUT_LOW);
+ 728:HANcoder_E407_DS_HTE.c ****   } else {
+ 729:HANcoder_E407_DS_HTE.c ****     DigoutSet(DIGOUT_PORTE_PIN4, DIGOUT_HIGH);
+ 1475              		.loc 1 729 5 is_stmt 1 view .LVU540
+ 1476 017e 0121     		movs	r1, #1
+ 1477              	.L130:
+ 1478 0180 0920     		movs	r0, #9
+ 1479 0182 FFF7FEFF 		bl	DigoutSet
+ 1480              	.LVL160:
+ 730:HANcoder_E407_DS_HTE.c ****   }
+ 731:HANcoder_E407_DS_HTE.c **** 
+ 732:HANcoder_E407_DS_HTE.c ****   /* Update for M-S-Function: '<S122>/S-Function' incorporates:
+ 733:HANcoder_E407_DS_HTE.c ****    *  Constant: '<S7>/Constant'
+ 734:HANcoder_E407_DS_HTE.c ****    *  Constant: '<S7>/Constant1'
+ 735:HANcoder_E407_DS_HTE.c ****    */
+ 736:HANcoder_E407_DS_HTE.c ****   {
+ 737:HANcoder_E407_DS_HTE.c ****     /* prepare the data */
+ 738:HANcoder_E407_DS_HTE.c ****     canTxData.uint8_T_info[0] = ((uint8_T)55U);
+ 1481              		.loc 1 738 5 view .LVU541
+ 1482              		.loc 1 738 31 is_stmt 0 view .LVU542
+ 1483 0186 294B     		ldr	r3, .L134+84
+ 1484 0188 3722     		movs	r2, #55
+ 1485 018a 1A70     		strb	r2, [r3]
+ 739:HANcoder_E407_DS_HTE.c **** 
+ 740:HANcoder_E407_DS_HTE.c ****     /* send the data */
+ 741:HANcoder_E407_DS_HTE.c ****     CanTransmit(0, 259U, 1, &canTxData.uint8_T_info[0]);
+ 1486              		.loc 1 741 5 is_stmt 1 view .LVU543
+ 1487 018c 40F20311 		movw	r1, #259
+ 1488 0190 0122     		movs	r2, #1
+ 1489 0192 0020     		movs	r0, #0
+ 1490 0194 FFF7FEFF 		bl	CanTransmit
+ 1491              	.LVL161:
+ 742:HANcoder_E407_DS_HTE.c ****   }
+ 743:HANcoder_E407_DS_HTE.c **** 
+ 744:HANcoder_E407_DS_HTE.c ****   /* Update for UnitDelay: '<S121>/Delay Input1'
+ 745:HANcoder_E407_DS_HTE.c ****    *
+ 746:HANcoder_E407_DS_HTE.c ****    * Block description for '<S121>/Delay Input1':
+ 747:HANcoder_E407_DS_HTE.c ****    *
+ 748:HANcoder_E407_DS_HTE.c ****    *  Store in Global RAM
+ 749:HANcoder_E407_DS_HTE.c ****    */
+ 750:HANcoder_E407_DS_HTE.c ****   rtDWork.DelayInput1_DSTATE = EncReset;
+ 1492              		.loc 1 750 3 view .LVU544
+ 1493              		.loc 1 750 30 is_stmt 0 view .LVU545
+ 1494 0198 3378     		ldrb	r3, [r6]	@ zero_extendqisi2
+ 1495 019a 2375     		strb	r3, [r4, #20]
+ 751:HANcoder_E407_DS_HTE.c **** }
+ 1496              		.loc 1 751 1 view .LVU546
+ 1497 019c 0EB0     		add	sp, sp, #56
+ 1498              		.cfi_remember_state
+ 1499              		.cfi_def_cfa_offset 32
+ 1500              		@ sp needed
+ 1501 019e BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 1502              	.LVL162:
+ 1503              	.L133:
+ 1504              		.cfi_restore_state
+ 536:HANcoder_E407_DS_HTE.c ****     } else if (rtb_Sum >= ((uint16_T)0U)) {
+ 1505              		.loc 1 536 7 is_stmt 1 view .LVU547
+ 546:HANcoder_E407_DS_HTE.c **** 
+ 1506              		.loc 1 546 5 view .LVU548
+ 549:HANcoder_E407_DS_HTE.c ****       /* Saturate: '<S106>/Saturation' */
+ 1507              		.loc 1 549 5 view .LVU549
+ 554:HANcoder_E407_DS_HTE.c ****     }
+ 1508              		.loc 1 554 7 view .LVU550
+ 1509 01a2 1A49     		ldr	r1, .L134+52
+ 1510 01a4 40F2FF33 		movw	r3, #1023
+ 1511 01a8 0B80     		strh	r3, [r1]	@ movhi
+ 558:HANcoder_E407_DS_HTE.c ****     rtB.Constant1 = ((uint16_T)1U);
+ 1512              		.loc 1 558 5 view .LVU551
+ 559:HANcoder_E407_DS_HTE.c **** 
+ 1513              		.loc 1 559 5 view .LVU552
+ 558:HANcoder_E407_DS_HTE.c ****     rtB.Constant1 = ((uint16_T)1U);
+ 1514              		.loc 1 558 19 is_stmt 0 view .LVU553
+ 1515 01aa 4FF48033 		mov	r3, #65536
+ 1516 01ae 02EAE272 		and	r2, r2, r2, asr #31
+ 1517              	.LVL163:
+ 558:HANcoder_E407_DS_HTE.c ****     rtB.Constant1 = ((uint16_T)1U);
+ 1518              		.loc 1 558 19 view .LVU554
+ 1519 01b2 2B60     		str	r3, [r5]
+ 566:HANcoder_E407_DS_HTE.c **** 
+ 1520              		.loc 1 566 5 is_stmt 1 view .LVU555
+ 574:HANcoder_E407_DS_HTE.c ****       rtb_DeadZone_0 = 1;
+ 1521              		.loc 1 574 5 view .LVU556
+ 1522              	.LVL164:
+ 589:HANcoder_E407_DS_HTE.c ****       rtb_IntegralGain_e = 1;
+ 1523              		.loc 1 589 5 view .LVU557
+ 1524 01b4 90E7     		b	.L121
+ 1525              	.LVL165:
+ 1526              	.L114:
+ 650:HANcoder_E407_DS_HTE.c **** 
+ 1527              		.loc 1 650 5 view .LVU558
+ 650:HANcoder_E407_DS_HTE.c **** 
+ 1528              		.loc 1 650 20 is_stmt 0 view .LVU559
+ 1529 01b6 003A     		subs	r2, r2, #0
+ 1530              	.LVL166:
+ 650:HANcoder_E407_DS_HTE.c **** 
+ 1531              		.loc 1 650 20 view .LVU560
+ 1532 01b8 18BF     		it	ne
+ 1533 01ba 0122     		movne	r2, #1
+ 650:HANcoder_E407_DS_HTE.c **** 
+ 1534              		.loc 1 650 9 view .LVU561
+ 1535 01bc DFF87890 		ldr	r9, .L134+96
+ 653:HANcoder_E407_DS_HTE.c ****   }
+ 1536              		.loc 1 653 9 view .LVU562
+ 1537 01c0 DFF87880 		ldr	r8, .L134+100
+ 650:HANcoder_E407_DS_HTE.c **** 
+ 1538              		.loc 1 650 20 view .LVU563
+ 1539 01c4 89F80020 		strb	r2, [r9]
+ 653:HANcoder_E407_DS_HTE.c ****   }
+ 1540              		.loc 1 653 5 is_stmt 1 view .LVU564
+ 653:HANcoder_E407_DS_HTE.c ****   }
+ 1541              		.loc 1 653 25 is_stmt 0 view .LVU565
+ 1542 01c8 003B     		subs	r3, r3, #0
+ 1543              	.LVL167:
+ 653:HANcoder_E407_DS_HTE.c ****   }
+ 1544              		.loc 1 653 25 view .LVU566
+ 1545 01ca 18BF     		it	ne
+ 1546 01cc 0123     		movne	r3, #1
+ 1547 01ce 88F80030 		strb	r3, [r8]
+ 1548 01d2 A0E7     		b	.L115
+ 1549              	.L135:
+ 1550 01d4 AFF30080 		.align	3
+ 1551              	.L134:
+ 1552 01d8 00000080 		.word	-2147483648
+ 1553 01dc 65F7953F 		.word	1066792805
+ 1554 01e0 00000000 		.word	.LANCHOR1
+ 1555 01e4 00000000 		.word	.LANCHOR0
+ 1556 01e8 00000000 		.word	.LANCHOR3
+ 1557 01ec 00000000 		.word	.LANCHOR2
+ 1558 01f0 00000000 		.word	.LANCHOR4
+ 1559 01f4 00005940 		.word	1079574528
+ 1560 01f8 00000000 		.word	.LANCHOR8
+ 1561 01fc 00000000 		.word	.LANCHOR11
+ 1562 0200 00000000 		.word	.LANCHOR12
+ 1563 0204 00000000 		.word	.LANCHOR13
+ 1564 0208 1F85EB51 		.word	1374389535
+ 1565 020c 00000000 		.word	.LANCHOR15
+ 1566 0210 00000000 		.word	.LANCHOR17
+ 1567 0214 00000000 		.word	.LANCHOR20
+ 1568 0218 00000000 		.word	.LANCHOR21
+ 1569 021c 00000000 		.word	.LANCHOR22
+ 1570 0220 00000000 		.word	.LANCHOR23
+ 1571 0224 00000000 		.word	.LC0
+ 1572 0228 00000000 		.word	.LANCHOR24
+ 1573 022c 00000000 		.word	.LANCHOR25
+ 1574 0230 00000000 		.word	.LANCHOR14
+ 1575 0234 00000000 		.word	.LANCHOR16
+ 1576 0238 00000000 		.word	.LANCHOR18
+ 1577 023c 00000000 		.word	.LANCHOR19
+ 1578              	.LVL168:
+ 1579              	.L132:
+ 352:HANcoder_E407_DS_HTE.c **** 
+ 1580              		.loc 1 352 5 is_stmt 1 view .LVU567
+ 352:HANcoder_E407_DS_HTE.c **** 
+ 1581              		.loc 1 352 54 is_stmt 0 view .LVU568
+ 1582 0240 2388     		ldrh	r3, [r4]
+ 352:HANcoder_E407_DS_HTE.c **** 
+ 1583              		.loc 1 352 12 view .LVU569
+ 1584 0242 634C     		ldr	r4, .L136+8
+ 352:HANcoder_E407_DS_HTE.c **** 
+ 1585              		.loc 1 352 54 view .LVU570
+ 1586 0244 4BF20B42 		movw	r2, #46091
+ 1587 0248 02FB03F3 		mul	r3, r2, r3
+ 352:HANcoder_E407_DS_HTE.c **** 
+ 1588              		.loc 1 352 64 view .LVU571
+ 1589 024c DB0C     		lsrs	r3, r3, #19
+ 1590              	.LBB40:
+ 1591              	.LBB41:
+ 301:HANcoder_E407_DS_HTE.c ****   return (int32_T)u32_chi >> aShift;
+ 1592              		.loc 1 301 3 view .LVU572
+ 1593 024e 0DF12809 		add	r9, sp, #40
+ 1594 0252 0DF12008 		add	r8, sp, #32
+ 1595 0256 0146     		mov	r1, r0
+ 1596              	.LBE41:
+ 1597              	.LBE40:
+ 352:HANcoder_E407_DS_HTE.c **** 
+ 1598              		.loc 1 352 14 view .LVU573
+ 1599 0258 2380     		strh	r3, [r4]	@ movhi
+ 355:HANcoder_E407_DS_HTE.c **** 
+ 1600              		.loc 1 355 5 is_stmt 1 view .LVU574
+ 1601              	.LVL169:
+ 1602              	.LBB44:
+ 1603              	.LBI40:
+ 297:HANcoder_E407_DS_HTE.c **** {
+ 1604              		.loc 1 297 9 view .LVU575
+ 1605              	.LBB42:
+ 299:HANcoder_E407_DS_HTE.c ****   uint32_T u32_clo;
+ 1606              		.loc 1 299 3 view .LVU576
+ 300:HANcoder_E407_DS_HTE.c ****   mul_wide_s32(a, b, &u32_chi, &u32_clo);
+ 1607              		.loc 1 300 3 view .LVU577
+ 301:HANcoder_E407_DS_HTE.c ****   return (int32_T)u32_chi >> aShift;
+ 1608              		.loc 1 301 3 view .LVU578
+ 1609 025a 4246     		mov	r2, r8
+ 1610 025c 4B46     		mov	r3, r9
+ 1611 025e 5D48     		ldr	r0, .L136+12
+ 1612 0260 FFF7FEFF 		bl	mul_wide_s32
+ 1613              	.LVL170:
+ 302:HANcoder_E407_DS_HTE.c **** }
+ 1614              		.loc 1 302 3 view .LVU579
+ 302:HANcoder_E407_DS_HTE.c **** }
+ 1615              		.loc 1 302 27 is_stmt 0 view .LVU580
+ 1616 0264 089A     		ldr	r2, [sp, #32]
+ 1617              	.LBE42:
+ 1618              	.LBE44:
+ 358:HANcoder_E407_DS_HTE.c **** 
+ 1619              		.loc 1 358 23 view .LVU581
+ 1620 0266 B4F90030 		ldrsh	r3, [r4]
+ 355:HANcoder_E407_DS_HTE.c **** 
+ 1621              		.loc 1 355 14 view .LVU582
+ 1622 026a 5B49     		ldr	r1, .L136+16
+ 361:HANcoder_E407_DS_HTE.c ****          && (rtDWork.Integrator_PrevResetState_a == 1))) {
+ 1623              		.loc 1 361 30 view .LVU583
+ 1624 026c 5B4C     		ldr	r4, .L136+20
+ 1625              	.LBB45:
+ 1626              	.LBB43:
+ 302:HANcoder_E407_DS_HTE.c **** }
+ 1627              		.loc 1 302 27 view .LVU584
+ 1628 026e 5210     		asrs	r2, r2, #1
+ 1629              	.LVL171:
+ 302:HANcoder_E407_DS_HTE.c **** }
+ 1630              		.loc 1 302 27 view .LVU585
+ 1631              	.LBE43:
+ 1632              	.LBE45:
+ 358:HANcoder_E407_DS_HTE.c **** 
+ 1633              		.loc 1 358 23 view .LVU586
+ 1634 0270 9B1A     		subs	r3, r3, r2
+ 355:HANcoder_E407_DS_HTE.c **** 
+ 1635              		.loc 1 355 14 view .LVU587
+ 1636 0272 0A60     		str	r2, [r1]
+ 358:HANcoder_E407_DS_HTE.c **** 
+ 1637              		.loc 1 358 5 is_stmt 1 view .LVU588
+ 358:HANcoder_E407_DS_HTE.c **** 
+ 1638              		.loc 1 358 14 is_stmt 0 view .LVU589
+ 1639 0274 5A4A     		ldr	r2, .L136+24
+ 1640 0276 1360     		str	r3, [r2]
+ 361:HANcoder_E407_DS_HTE.c ****          && (rtDWork.Integrator_PrevResetState_a == 1))) {
+ 1641              		.loc 1 361 5 is_stmt 1 view .LVU590
+ 361:HANcoder_E407_DS_HTE.c ****          && (rtDWork.Integrator_PrevResetState_a == 1))) {
+ 1642              		.loc 1 361 8 is_stmt 0 view .LVU591
+ 1643 0278 3278     		ldrb	r2, [r6]	@ zero_extendqisi2
+ 1644 027a 002A     		cmp	r2, #0
+ 1645 027c 7BD0     		beq	.L97
+ 361:HANcoder_E407_DS_HTE.c ****          && (rtDWork.Integrator_PrevResetState_a == 1))) {
+ 1646              		.loc 1 361 19 discriminator 1 view .LVU592
+ 1647 027e 94F91620 		ldrsb	r2, [r4, #22]
+ 1648 0282 002A     		cmp	r2, #0
+ 1649 0284 7BDD     		ble	.L98
+ 1650              	.L99:
+ 369:HANcoder_E407_DS_HTE.c ****     tmp_6 = (uint32_T)PosError;
+ 1651              		.loc 1 369 5 is_stmt 1 view .LVU593
+ 371:HANcoder_E407_DS_HTE.c **** 
+ 1652              		.loc 1 371 5 is_stmt 0 view .LVU594
+ 1653 0286 4FF0020A 		mov	r10, #2
+ 370:HANcoder_E407_DS_HTE.c ****     sMultiWordMul(&tmp_5, 1, &tmp_6, 1, &tmp_0.chunks[0U], 2);
+ 1654              		.loc 1 370 11 view .LVU595
+ 1655 028a 0593     		str	r3, [sp, #20]
+ 371:HANcoder_E407_DS_HTE.c **** 
+ 1656              		.loc 1 371 5 view .LVU596
+ 1657 028c 0123     		movs	r3, #1
+ 1658 028e 1946     		mov	r1, r3
+ 369:HANcoder_E407_DS_HTE.c ****     tmp_6 = (uint32_T)PosError;
+ 1659              		.loc 1 369 11 view .LVU597
+ 1660 0290 4FF0A04C 		mov	ip, #1342177280
+ 371:HANcoder_E407_DS_HTE.c **** 
+ 1661              		.loc 1 371 5 view .LVU598
+ 1662 0294 05AA     		add	r2, sp, #20
+ 1663 0296 04A8     		add	r0, sp, #16
+ 1664 0298 CDF80080 		str	r8, [sp]
+ 1665 029c CDF804A0 		str	r10, [sp, #4]
+ 369:HANcoder_E407_DS_HTE.c ****     tmp_6 = (uint32_T)PosError;
+ 1666              		.loc 1 369 11 view .LVU599
+ 1667 02a0 CDF810C0 		str	ip, [sp, #16]
+ 370:HANcoder_E407_DS_HTE.c ****     sMultiWordMul(&tmp_5, 1, &tmp_6, 1, &tmp_0.chunks[0U], 2);
+ 1668              		.loc 1 370 5 is_stmt 1 view .LVU600
+ 371:HANcoder_E407_DS_HTE.c **** 
+ 1669              		.loc 1 371 5 view .LVU601
+ 1670 02a4 FFF7FEFF 		bl	sMultiWordMul
+ 1671              	.LVL172:
+ 376:HANcoder_E407_DS_HTE.c ****     tmp_0 = tmp_7;
+ 1672              		.loc 1 376 5 view .LVU602
+ 1673              	.LBB46:
+ 1674              	.LBI46:
+ 103:HANcoder_E407_DS_HTE.c ****                    int32_T n)
+ 1675              		.loc 1 103 6 view .LVU603
+ 1676              	.LBB47:
+ 106:HANcoder_E407_DS_HTE.c ****   int32_T i1;
+ 1677              		.loc 1 106 3 view .LVU604
+ 107:HANcoder_E407_DS_HTE.c ****   int32_T nb;
+ 1678              		.loc 1 107 3 view .LVU605
+ 108:HANcoder_E407_DS_HTE.c ****   int32_T nc;
+ 1679              		.loc 1 108 3 view .LVU606
+ 109:HANcoder_E407_DS_HTE.c ****   uint32_T nr;
+ 1680              		.loc 1 109 3 view .LVU607
+ 110:HANcoder_E407_DS_HTE.c ****   uint32_T u1i;
+ 1681              		.loc 1 110 3 view .LVU608
+ 111:HANcoder_E407_DS_HTE.c ****   uint32_T yi;
+ 1682              		.loc 1 111 3 view .LVU609
+ 112:HANcoder_E407_DS_HTE.c ****   uint32_T ys;
+ 1683              		.loc 1 112 3 view .LVU610
+ 113:HANcoder_E407_DS_HTE.c ****   nb = (int32_T)(n2 >> 5);
+ 1684              		.loc 1 113 3 view .LVU611
+ 114:HANcoder_E407_DS_HTE.c ****   i = 0;
+ 1685              		.loc 1 114 3 view .LVU612
+ 115:HANcoder_E407_DS_HTE.c ****   ys = (u1[n1 - 1] & 2147483648U) != 0U ? MAX_uint32_T : 0U;
+ 1686              		.loc 1 115 3 view .LVU613
+ 116:HANcoder_E407_DS_HTE.c ****   if (nb < n1) {
+ 1687              		.loc 1 116 3 view .LVU614
+ 117:HANcoder_E407_DS_HTE.c ****     nc = n + nb;
+ 1688              		.loc 1 117 3 view .LVU615
+ 118:HANcoder_E407_DS_HTE.c ****     if (nc > n1) {
+ 1689              		.loc 1 118 5 view .LVU616
+ 119:HANcoder_E407_DS_HTE.c ****       nc = n1;
+ 1690              		.loc 1 119 5 view .LVU617
+ 123:HANcoder_E407_DS_HTE.c ****     if (nr > 0U) {
+ 1691              		.loc 1 123 5 view .LVU618
+ 124:HANcoder_E407_DS_HTE.c ****       u1i = u1[nb];
+ 1692              		.loc 1 124 5 view .LVU619
+ 125:HANcoder_E407_DS_HTE.c ****       for (i1 = nb + 1; i1 < nc; i1++) {
+ 1693              		.loc 1 125 7 view .LVU620
+ 126:HANcoder_E407_DS_HTE.c ****         yi = u1i >> nr;
+ 1694              		.loc 1 126 7 view .LVU621
+ 126:HANcoder_E407_DS_HTE.c ****         yi = u1i >> nr;
+ 1695              		.loc 1 126 25 view .LVU622
+ 127:HANcoder_E407_DS_HTE.c ****         u1i = u1[i1];
+ 1696              		.loc 1 127 9 view .LVU623
+ 128:HANcoder_E407_DS_HTE.c ****         y[i] = u1i << (32U - nr) | yi;
+ 1697              		.loc 1 128 9 view .LVU624
+ 129:HANcoder_E407_DS_HTE.c ****         i++;
+ 1698              		.loc 1 129 9 view .LVU625
+ 127:HANcoder_E407_DS_HTE.c ****         u1i = u1[i1];
+ 1699              		.loc 1 127 12 is_stmt 0 view .LVU626
+ 1700 02a8 089B     		ldr	r3, [sp, #32]
+ 129:HANcoder_E407_DS_HTE.c ****         i++;
+ 1701              		.loc 1 129 20 view .LVU627
+ 1702 02aa 0999     		ldr	r1, [sp, #36]
+ 1703              	.LBE47:
+ 1704              	.LBE46:
+ 377:HANcoder_E407_DS_HTE.c ****     sMultiWordMul(&rtDWork.Integrator_DSTATE.chunks[0U], 2, &tmp_7.chunks[0U], 2,
+ 1705              		.loc 1 377 11 view .LVU628
+ 1706 02ac 4D4A     		ldr	r2, .L136+28
+ 378:HANcoder_E407_DS_HTE.c ****                   &tmp_2.chunks[0U], 4);
+ 1707              		.loc 1 378 5 view .LVU629
+ 1708 02ae CDF80090 		str	r9, [sp]
+ 1709              	.LBB49:
+ 1710              	.LBB48:
+ 127:HANcoder_E407_DS_HTE.c ****         u1i = u1[i1];
+ 1711              		.loc 1 127 12 view .LVU630
+ 1712 02b2 DB0E     		lsrs	r3, r3, #27
+ 1713              	.LVL173:
+ 129:HANcoder_E407_DS_HTE.c ****         i++;
+ 1714              		.loc 1 129 34 view .LVU631
+ 1715 02b4 43EA4119 		orr	r9, r3, r1, lsl #5
+ 1716              	.LVL174:
+ 130:HANcoder_E407_DS_HTE.c ****       }
+ 1717              		.loc 1 130 9 is_stmt 1 view .LVU632
+ 126:HANcoder_E407_DS_HTE.c ****         yi = u1i >> nr;
+ 1718              		.loc 1 126 34 view .LVU633
+ 126:HANcoder_E407_DS_HTE.c ****         yi = u1i >> nr;
+ 1719              		.loc 1 126 25 view .LVU634
+ 133:HANcoder_E407_DS_HTE.c ****       i++;
+ 1720              		.loc 1 133 7 view .LVU635
+ 134:HANcoder_E407_DS_HTE.c ****     } else {
+ 1721              		.loc 1 134 7 view .LVU636
+ 143:HANcoder_E407_DS_HTE.c ****     y[i] = ys;
+ 1722              		.loc 1 143 9 view .LVU637
+ 143:HANcoder_E407_DS_HTE.c ****     y[i] = ys;
+ 1723              		.loc 1 143 9 is_stmt 0 view .LVU638
+ 1724              	.LBE48:
+ 1725              	.LBE49:
+ 377:HANcoder_E407_DS_HTE.c ****     sMultiWordMul(&rtDWork.Integrator_DSTATE.chunks[0U], 2, &tmp_7.chunks[0U], 2,
+ 1726              		.loc 1 377 5 is_stmt 1 view .LVU639
+ 377:HANcoder_E407_DS_HTE.c ****     sMultiWordMul(&rtDWork.Integrator_DSTATE.chunks[0U], 2, &tmp_7.chunks[0U], 2,
+ 1727              		.loc 1 377 11 is_stmt 0 view .LVU640
+ 1728 02b8 92E80300 		ldm	r2, {r0, r1}
+ 378:HANcoder_E407_DS_HTE.c ****                   &tmp_2.chunks[0U], 4);
+ 1729              		.loc 1 378 5 view .LVU641
+ 1730 02bc 0423     		movs	r3, #4
+ 1731 02be 0193     		str	r3, [sp, #4]
+ 377:HANcoder_E407_DS_HTE.c ****     sMultiWordMul(&rtDWork.Integrator_DSTATE.chunks[0U], 2, &tmp_7.chunks[0U], 2,
+ 1732              		.loc 1 377 11 view .LVU642
+ 1733 02c0 88E80300 		stm	r8, {r0, r1}
+ 1734              	.LVL175:
+ 378:HANcoder_E407_DS_HTE.c ****                   &tmp_2.chunks[0U], 4);
+ 1735              		.loc 1 378 5 is_stmt 1 view .LVU643
+ 1736 02c4 5346     		mov	r3, r10
+ 1737 02c6 4848     		ldr	r0, .L136+32
+ 1738 02c8 5146     		mov	r1, r10
+ 1739 02ca FFF7FEFF 		bl	sMultiWordMul
+ 1740              	.LVL176:
+ 380:HANcoder_E407_DS_HTE.c ****     u0 = (int16_T)((int16_T)MultiWord2sLong(&tmp.chunks[0U]) + (int16_T)
+ 1741              		.loc 1 380 5 view .LVU644
+ 1742              	.LBB50:
+ 1743              	.LBI50:
+ 103:HANcoder_E407_DS_HTE.c ****                    int32_T n)
+ 1744              		.loc 1 103 6 view .LVU645
+ 1745              	.LBB51:
+ 106:HANcoder_E407_DS_HTE.c ****   int32_T i1;
+ 1746              		.loc 1 106 3 view .LVU646
+ 107:HANcoder_E407_DS_HTE.c ****   int32_T nb;
+ 1747              		.loc 1 107 3 view .LVU647
+ 108:HANcoder_E407_DS_HTE.c ****   int32_T nc;
+ 1748              		.loc 1 108 3 view .LVU648
+ 109:HANcoder_E407_DS_HTE.c ****   uint32_T nr;
+ 1749              		.loc 1 109 3 view .LVU649
+ 110:HANcoder_E407_DS_HTE.c ****   uint32_T u1i;
+ 1750              		.loc 1 110 3 view .LVU650
+ 111:HANcoder_E407_DS_HTE.c ****   uint32_T yi;
+ 1751              		.loc 1 111 3 view .LVU651
+ 112:HANcoder_E407_DS_HTE.c ****   uint32_T ys;
+ 1752              		.loc 1 112 3 view .LVU652
+ 113:HANcoder_E407_DS_HTE.c ****   nb = (int32_T)(n2 >> 5);
+ 1753              		.loc 1 113 3 view .LVU653
+ 114:HANcoder_E407_DS_HTE.c ****   i = 0;
+ 1754              		.loc 1 114 3 view .LVU654
+ 115:HANcoder_E407_DS_HTE.c ****   ys = (u1[n1 - 1] & 2147483648U) != 0U ? MAX_uint32_T : 0U;
+ 1755              		.loc 1 115 3 view .LVU655
+ 116:HANcoder_E407_DS_HTE.c ****   if (nb < n1) {
+ 1756              		.loc 1 116 3 view .LVU656
+ 117:HANcoder_E407_DS_HTE.c ****     nc = n + nb;
+ 1757              		.loc 1 117 3 view .LVU657
+ 118:HANcoder_E407_DS_HTE.c ****     if (nc > n1) {
+ 1758              		.loc 1 118 5 view .LVU658
+ 119:HANcoder_E407_DS_HTE.c ****       nc = n1;
+ 1759              		.loc 1 119 5 view .LVU659
+ 123:HANcoder_E407_DS_HTE.c ****     if (nr > 0U) {
+ 1760              		.loc 1 123 5 view .LVU660
+ 124:HANcoder_E407_DS_HTE.c ****       u1i = u1[nb];
+ 1761              		.loc 1 124 5 view .LVU661
+ 125:HANcoder_E407_DS_HTE.c ****       for (i1 = nb + 1; i1 < nc; i1++) {
+ 1762              		.loc 1 125 7 view .LVU662
+ 126:HANcoder_E407_DS_HTE.c ****         yi = u1i >> nr;
+ 1763              		.loc 1 126 7 view .LVU663
+ 126:HANcoder_E407_DS_HTE.c ****         yi = u1i >> nr;
+ 1764              		.loc 1 126 25 view .LVU664
+ 127:HANcoder_E407_DS_HTE.c ****         u1i = u1[i1];
+ 1765              		.loc 1 127 9 view .LVU665
+ 128:HANcoder_E407_DS_HTE.c ****         y[i] = u1i << (32U - nr) | yi;
+ 1766              		.loc 1 128 9 view .LVU666
+ 129:HANcoder_E407_DS_HTE.c ****         i++;
+ 1767              		.loc 1 129 9 view .LVU667
+ 130:HANcoder_E407_DS_HTE.c ****       }
+ 1768              		.loc 1 130 9 view .LVU668
+ 126:HANcoder_E407_DS_HTE.c ****         yi = u1i >> nr;
+ 1769              		.loc 1 126 34 view .LVU669
+ 126:HANcoder_E407_DS_HTE.c ****         yi = u1i >> nr;
+ 1770              		.loc 1 126 25 view .LVU670
+ 133:HANcoder_E407_DS_HTE.c ****       i++;
+ 1771              		.loc 1 133 7 view .LVU671
+ 134:HANcoder_E407_DS_HTE.c ****     } else {
+ 1772              		.loc 1 134 7 view .LVU672
+ 143:HANcoder_E407_DS_HTE.c ****     y[i] = ys;
+ 1773              		.loc 1 143 9 view .LVU673
+ 144:HANcoder_E407_DS_HTE.c ****     i++;
+ 1774              		.loc 1 144 5 view .LVU674
+ 145:HANcoder_E407_DS_HTE.c ****   }
+ 1775              		.loc 1 145 5 view .LVU675
+ 143:HANcoder_E407_DS_HTE.c ****     y[i] = ys;
+ 1776              		.loc 1 143 9 view .LVU676
+ 144:HANcoder_E407_DS_HTE.c ****     i++;
+ 1777              		.loc 1 144 5 view .LVU677
+ 145:HANcoder_E407_DS_HTE.c ****   }
+ 1778              		.loc 1 145 5 view .LVU678
+ 143:HANcoder_E407_DS_HTE.c ****     y[i] = ys;
+ 1779              		.loc 1 143 9 view .LVU679
+ 143:HANcoder_E407_DS_HTE.c ****     y[i] = ys;
+ 1780              		.loc 1 143 9 is_stmt 0 view .LVU680
+ 1781              	.LBE51:
+ 1782              	.LBE50:
+ 381:HANcoder_E407_DS_HTE.c ****                    MultiWord2sLong(&tmp_1.chunks[0U]));
+ 1783              		.loc 1 381 5 is_stmt 1 view .LVU681
+ 100:HANcoder_E407_DS_HTE.c **** }
+ 1784              		.loc 1 100 3 view .LVU682
+ 100:HANcoder_E407_DS_HTE.c **** }
+ 1785              		.loc 1 100 3 view .LVU683
+ 1786              	.LBB53:
+ 1787              	.LBB52:
+ 129:HANcoder_E407_DS_HTE.c ****         i++;
+ 1788              		.loc 1 129 20 is_stmt 0 view .LVU684
+ 1789 02ce 0D9B     		ldr	r3, [sp, #52]
+ 127:HANcoder_E407_DS_HTE.c ****         u1i = u1[i1];
+ 1790              		.loc 1 127 12 view .LVU685
+ 1791 02d0 0C9A     		ldr	r2, [sp, #48]
+ 129:HANcoder_E407_DS_HTE.c ****         i++;
+ 1792              		.loc 1 129 20 view .LVU686
+ 1793 02d2 5B02     		lsls	r3, r3, #9
+ 129:HANcoder_E407_DS_HTE.c ****         i++;
+ 1794              		.loc 1 129 34 view .LVU687
+ 1795 02d4 43EAD253 		orr	r3, r3, r2, lsr #23
+ 1796              	.LVL177:
+ 129:HANcoder_E407_DS_HTE.c ****         i++;
+ 1797              		.loc 1 129 34 view .LVU688
+ 1798              	.LBE52:
+ 1799              	.LBE53:
+ 381:HANcoder_E407_DS_HTE.c ****                    MultiWord2sLong(&tmp_1.chunks[0U]));
+ 1800              		.loc 1 381 62 view .LVU689
+ 1801 02d8 4B44     		add	r3, r3, r9
+ 1802              	.LVL178:
+ 381:HANcoder_E407_DS_HTE.c ****                    MultiWord2sLong(&tmp_1.chunks[0U]));
+ 1803              		.loc 1 381 8 view .LVU690
+ 1804 02da 1AB2     		sxth	r2, r3
+ 1805              	.LVL179:
+ 385:HANcoder_E407_DS_HTE.c ****       /* Saturate: '<S55>/Saturation' */
+ 1806              		.loc 1 385 5 is_stmt 1 view .LVU691
+ 385:HANcoder_E407_DS_HTE.c ****       /* Saturate: '<S55>/Saturation' */
+ 1807              		.loc 1 385 8 is_stmt 0 view .LVU692
+ 1808 02dc B2F5806F 		cmp	r2, #1024
+ 381:HANcoder_E407_DS_HTE.c ****                    MultiWord2sLong(&tmp_1.chunks[0U]));
+ 1809              		.loc 1 381 62 view .LVU693
+ 1810 02e0 9BB2     		uxth	r3, r3
+ 385:HANcoder_E407_DS_HTE.c ****       /* Saturate: '<S55>/Saturation' */
+ 1811              		.loc 1 385 8 view .LVU694
+ 1812 02e2 52DB     		blt	.L100
+ 387:HANcoder_E407_DS_HTE.c ****     } else if (u0 < (-1023)) {
+ 1813              		.loc 1 387 7 is_stmt 1 view .LVU695
+ 387:HANcoder_E407_DS_HTE.c ****     } else if (u0 < (-1023)) {
+ 1814              		.loc 1 387 17 is_stmt 0 view .LVU696
+ 1815 02e4 414A     		ldr	r2, .L136+36
+ 1816              	.LVL180:
+ 387:HANcoder_E407_DS_HTE.c ****     } else if (u0 < (-1023)) {
+ 1817              		.loc 1 387 17 view .LVU697
+ 1818 02e6 40F2FF33 		movw	r3, #1023
+ 1819              	.LVL181:
+ 387:HANcoder_E407_DS_HTE.c ****     } else if (u0 < (-1023)) {
+ 1820              		.loc 1 387 17 view .LVU698
+ 1821 02ea 1380     		strh	r3, [r2]	@ movhi
+ 399:HANcoder_E407_DS_HTE.c ****       /* Abs: '<S12>/Abs' */
+ 1822              		.loc 1 399 5 is_stmt 1 view .LVU699
+ 404:HANcoder_E407_DS_HTE.c ****     }
+ 1823              		.loc 1 404 7 view .LVU700
+ 404:HANcoder_E407_DS_HTE.c ****     }
+ 1824              		.loc 1 404 15 is_stmt 0 view .LVU701
+ 1825 02ec AB80     		strh	r3, [r5, #4]	@ movhi
+ 415:HANcoder_E407_DS_HTE.c ****       rtb_fixforDTpropagationissue = true;
+ 1826              		.loc 1 415 5 is_stmt 1 view .LVU702
+ 404:HANcoder_E407_DS_HTE.c ****     }
+ 1827              		.loc 1 404 15 is_stmt 0 view .LVU703
+ 1828 02ee 0122     		movs	r2, #1
+ 1829 02f0 0023     		movs	r3, #0
+ 1830              	.L101:
+ 454:HANcoder_E407_DS_HTE.c **** 
+ 1831              		.loc 1 454 7 is_stmt 1 view .LVU704
+ 454:HANcoder_E407_DS_HTE.c **** 
+ 1832              		.loc 1 454 19 is_stmt 0 view .LVU705
+ 1833 02f2 EA80     		strh	r2, [r5, #6]	@ movhi
+ 457:HANcoder_E407_DS_HTE.c ****     }
+ 1834              		.loc 1 457 7 is_stmt 1 view .LVU706
+ 457:HANcoder_E407_DS_HTE.c ****     }
+ 1835              		.loc 1 457 19 is_stmt 0 view .LVU707
+ 1836 02f4 2B81     		strh	r3, [r5, #8]	@ movhi
+ 1837              	.L122:
+ 463:HANcoder_E407_DS_HTE.c **** 
+ 1838              		.loc 1 463 5 is_stmt 1 view .LVU708
+ 1839 02f6 0123     		movs	r3, #1
+ 1840 02f8 0221     		movs	r1, #2
+ 1841 02fa CDF80080 		str	r8, [sp]
+ 1842 02fe 05AA     		add	r2, sp, #20
+ 1843 0300 04A8     		add	r0, sp, #16
+ 1844 0302 0191     		str	r1, [sp, #4]
+ 1845 0304 1946     		mov	r1, r3
+ 1846 0306 FFF7FEFF 		bl	sMultiWordMul
+ 1847              	.LVL182:
+ 466:HANcoder_E407_DS_HTE.c ****                  &tmp_3.chunks[0U], 2);
+ 1848              		.loc 1 466 5 view .LVU709
+ 1849              	.LBB54:
+ 1850              	.LBI54:
+ 236:HANcoder_E407_DS_HTE.c ****                   int32_T n)
+ 1851              		.loc 1 236 6 view .LVU710
+ 1852              	.LBB55:
+ 243:HANcoder_E407_DS_HTE.c ****     u1i = u1[i];
+ 1853              		.loc 1 243 15 view .LVU711
+ 244:HANcoder_E407_DS_HTE.c ****     yi = (u1i + u2[i]) + carry;
+ 1854              		.loc 1 244 5 view .LVU712
+ 245:HANcoder_E407_DS_HTE.c ****     y[i] = yi;
+ 1855              		.loc 1 245 5 view .LVU713
+ 1856 030a A268     		ldr	r2, [r4, #8]
+ 1857 030c 089B     		ldr	r3, [sp, #32]
+ 1858              	.LVL183:
+ 246:HANcoder_E407_DS_HTE.c ****     carry = carry != 0U ? (uint32_T)(yi <= u1i) : (uint32_T)(yi < u1i);
+ 1859              		.loc 1 246 5 view .LVU714
+ 247:HANcoder_E407_DS_HTE.c ****   }
+ 1860              		.loc 1 247 5 view .LVU715
+ 243:HANcoder_E407_DS_HTE.c ****     u1i = u1[i];
+ 1861              		.loc 1 243 22 view .LVU716
+ 243:HANcoder_E407_DS_HTE.c ****     u1i = u1[i];
+ 1862              		.loc 1 243 15 view .LVU717
+ 244:HANcoder_E407_DS_HTE.c ****     yi = (u1i + u2[i]) + carry;
+ 1863              		.loc 1 244 5 view .LVU718
+ 245:HANcoder_E407_DS_HTE.c ****     y[i] = yi;
+ 1864              		.loc 1 245 5 view .LVU719
+ 1865              	.LBE55:
+ 1866              	.LBE54:
+ 488:HANcoder_E407_DS_HTE.c **** 
+ 1867              		.loc 1 488 34 is_stmt 0 view .LVU720
+ 1868 030e 3868     		ldr	r0, [r7]
+ 469:HANcoder_E407_DS_HTE.c ****   }
+ 1869              		.loc 1 469 43 view .LVU721
+ 1870 0310 3778     		ldrb	r7, [r6]	@ zero_extendqisi2
+ 469:HANcoder_E407_DS_HTE.c ****   }
+ 1871              		.loc 1 469 41 view .LVU722
+ 1872 0312 A775     		strb	r7, [r4, #22]
+ 1873              	.LBB58:
+ 1874              	.LBB56:
+ 247:HANcoder_E407_DS_HTE.c ****   }
+ 1875              		.loc 1 247 51 view .LVU723
+ 1876 0314 9B18     		adds	r3, r3, r2
+ 1877              	.LVL184:
+ 247:HANcoder_E407_DS_HTE.c ****   }
+ 1878              		.loc 1 247 51 view .LVU724
+ 1879              	.LBE56:
+ 1880              	.LBE58:
+ 468:HANcoder_E407_DS_HTE.c ****     rtDWork.Integrator_PrevResetState_a = (int8_T)EncReset;
+ 1881              		.loc 1 468 31 view .LVU725
+ 1882 0316 A360     		str	r3, [r4, #8]
+ 1883              	.LBB59:
+ 1884              	.LBB57:
+ 245:HANcoder_E407_DS_HTE.c ****     y[i] = yi;
+ 1885              		.loc 1 245 15 view .LVU726
+ 1886 0318 099A     		ldr	r2, [sp, #36]
+ 1887 031a E368     		ldr	r3, [r4, #12]
+ 1888              	.LVL185:
+ 245:HANcoder_E407_DS_HTE.c ****     y[i] = yi;
+ 1889              		.loc 1 245 8 view .LVU727
+ 1890 031c 43EB0203 		adc	r3, r3, r2
+ 1891              	.LVL186:
+ 246:HANcoder_E407_DS_HTE.c ****     carry = carry != 0U ? (uint32_T)(yi <= u1i) : (uint32_T)(yi < u1i);
+ 1892              		.loc 1 246 5 is_stmt 1 view .LVU728
+ 247:HANcoder_E407_DS_HTE.c ****   }
+ 1893              		.loc 1 247 5 view .LVU729
+ 243:HANcoder_E407_DS_HTE.c ****     u1i = u1[i];
+ 1894              		.loc 1 243 22 view .LVU730
+ 243:HANcoder_E407_DS_HTE.c ****     u1i = u1[i];
+ 1895              		.loc 1 243 15 view .LVU731
+ 243:HANcoder_E407_DS_HTE.c ****     u1i = u1[i];
+ 1896              		.loc 1 243 15 is_stmt 0 view .LVU732
+ 1897              	.LBE57:
+ 1898              	.LBE59:
+ 468:HANcoder_E407_DS_HTE.c ****     rtDWork.Integrator_PrevResetState_a = (int8_T)EncReset;
+ 1899              		.loc 1 468 5 is_stmt 1 view .LVU733
+ 488:HANcoder_E407_DS_HTE.c **** 
+ 1900              		.loc 1 488 34 is_stmt 0 view .LVU734
+ 1901 0320 0028     		cmp	r0, #0
+ 1902 0322 B8BF     		it	lt
+ 1903 0324 4042     		rsblt	r0, r0, #0
+ 468:HANcoder_E407_DS_HTE.c ****     rtDWork.Integrator_PrevResetState_a = (int8_T)EncReset;
+ 1904              		.loc 1 468 31 view .LVU735
+ 1905 0326 E360     		str	r3, [r4, #12]
+ 469:HANcoder_E407_DS_HTE.c ****   }
+ 1906              		.loc 1 469 5 is_stmt 1 view .LVU736
+ 475:HANcoder_E407_DS_HTE.c ****     tmp_4 = -EncCount;
+ 1907              		.loc 1 475 3 view .LVU737
+ 1908              	.LVL187:
+ 488:HANcoder_E407_DS_HTE.c **** 
+ 1909              		.loc 1 488 3 view .LVU738
+ 488:HANcoder_E407_DS_HTE.c **** 
+ 1910              		.loc 1 488 34 is_stmt 0 view .LVU739
+ 1911 0328 FFF7FEFF 		bl	__aeabi_i2d
+ 1912              	.LVL188:
+ 488:HANcoder_E407_DS_HTE.c **** 
+ 1913              		.loc 1 488 13 view .LVU740
+ 1914 032c 304B     		ldr	r3, .L136+40
+ 1915 032e 0022     		movs	r2, #0
+ 1916 0330 FFF7FEFF 		bl	__aeabi_dmul
+ 1917              	.LVL189:
+ 1918 0334 0246     		mov	r2, r0
+ 1919 0336 0B46     		mov	r3, r1
+ 1920 0338 CDE90223 		strd	r2, [sp, #8]
+ 1921              	.LVL190:
+ 502:HANcoder_E407_DS_HTE.c **** 
+ 1922              		.loc 1 502 3 is_stmt 1 view .LVU741
+ 502:HANcoder_E407_DS_HTE.c **** 
+ 1923              		.loc 1 502 20 is_stmt 0 view .LVU742
+ 1924 033c D4E90023 		ldrd	r2, [r4]
+ 1925              	.LVL191:
+ 502:HANcoder_E407_DS_HTE.c **** 
+ 1926              		.loc 1 502 20 view .LVU743
+ 1927 0340 FFF7FEFF 		bl	__aeabi_dsub
+ 1928              	.LVL192:
+ 502:HANcoder_E407_DS_HTE.c **** 
+ 1929              		.loc 1 502 41 view .LVU744
+ 1930 0344 20A3     		adr	r3, .L136
+ 1931 0346 D3E90023 		ldrd	r2, [r3]
+ 1932 034a FFF7FEFF 		bl	__aeabi_dmul
+ 1933              	.LVL193:
+ 502:HANcoder_E407_DS_HTE.c **** 
+ 1934              		.loc 1 502 7 view .LVU745
+ 1935 034e 294B     		ldr	r3, .L136+44
+ 502:HANcoder_E407_DS_HTE.c **** 
+ 1936              		.loc 1 502 41 view .LVU746
+ 1937 0350 8046     		mov	r8, r0
+ 1938 0352 8946     		mov	r9, r1
+ 1939              	.LVL194:
+ 502:HANcoder_E407_DS_HTE.c **** 
+ 1940              		.loc 1 502 7 view .LVU747
+ 1941 0354 C3E90089 		strd	r8, [r3]
+ 513:HANcoder_E407_DS_HTE.c ****     RPMSetpoint = HANtuneOverride;
+ 1942              		.loc 1 513 3 is_stmt 1 view .LVU748
+ 513:HANcoder_E407_DS_HTE.c ****     RPMSetpoint = HANtuneOverride;
+ 1943              		.loc 1 513 6 is_stmt 0 view .LVU749
+ 1944 0358 002F     		cmp	r7, #0
+ 1945 035a 3FF487AE 		beq	.L123
+ 1946              	.LVL195:
+ 1947              	.L108:
+ 621:HANcoder_E407_DS_HTE.c ****     rtb_Sum = rtB.Switch3;
+ 1948              		.loc 1 621 5 is_stmt 1 view .LVU750
+ 621:HANcoder_E407_DS_HTE.c ****     rtb_Sum = rtB.Switch3;
+ 1949              		.loc 1 621 14 is_stmt 0 view .LVU751
+ 1950 035e DFF89CA0 		ldr	r10, .L136+52
+ 1951 0362 AB88     		ldrh	r3, [r5, #4]
+ 1952 0364 AAF80030 		strh	r3, [r10]	@ movhi
+ 622:HANcoder_E407_DS_HTE.c ****     rtb_DeadZone = rtB.Switch2;
+ 1953              		.loc 1 622 5 is_stmt 1 view .LVU752
+ 622:HANcoder_E407_DS_HTE.c ****     rtb_DeadZone = rtB.Switch2;
+ 1954              		.loc 1 622 13 is_stmt 0 view .LVU753
+ 1955 0368 2A89     		ldrh	r2, [r5, #8]
+ 1956              	.LVL196:
+ 623:HANcoder_E407_DS_HTE.c ****   } else {
+ 1957              		.loc 1 623 5 is_stmt 1 view .LVU754
+ 623:HANcoder_E407_DS_HTE.c ****   } else {
+ 1958              		.loc 1 623 18 is_stmt 0 view .LVU755
+ 1959 036a EB88     		ldrh	r3, [r5, #6]
+ 1960              	.LVL197:
+ 623:HANcoder_E407_DS_HTE.c ****   } else {
+ 1961              		.loc 1 623 18 view .LVU756
+ 1962 036c C3E6     		b	.L113
+ 1963              	.LVL198:
+ 1964              	.L131:
+ 338:HANcoder_E407_DS_HTE.c ****   }
+ 1965              		.loc 1 338 5 is_stmt 1 view .LVU757
+ 1966 036e 0120     		movs	r0, #1
+ 1967 0370 FFF7FEFF 		bl	QuadEncResetCounter
+ 1968              	.LVL199:
+ 1969 0374 52E6     		b	.L95
+ 1970              	.L97:
+ 362:HANcoder_E407_DS_HTE.c ****       rtDWork.Integrator_DSTATE = rtConstP.Integrator_IC;
+ 1971              		.loc 1 362 10 is_stmt 0 view .LVU758
+ 1972 0376 94F91620 		ldrsb	r2, [r4, #22]
+ 1973 037a 012A     		cmp	r2, #1
+ 1974 037c 83D1     		bne	.L99
+ 1975              	.L98:
+ 363:HANcoder_E407_DS_HTE.c ****     }
+ 1976              		.loc 1 363 7 is_stmt 1 view .LVU759
+ 363:HANcoder_E407_DS_HTE.c ****     }
+ 1977              		.loc 1 363 33 is_stmt 0 view .LVU760
+ 1978 037e 1E49     		ldr	r1, .L136+48
+ 1979 0380 194A     		ldr	r2, .L136+32
+ 1980 0382 03C9     		ldm	r1, {r0, r1}
+ 1981 0384 82E80300 		stm	r2, {r0, r1}
+ 1982 0388 7DE7     		b	.L99
+ 1983              	.LVL200:
+ 1984              	.L100:
+ 388:HANcoder_E407_DS_HTE.c ****       /* Saturate: '<S55>/Saturation' */
+ 1985              		.loc 1 388 12 is_stmt 1 view .LVU761
+ 388:HANcoder_E407_DS_HTE.c ****       /* Saturate: '<S55>/Saturation' */
+ 1986              		.loc 1 388 15 is_stmt 0 view .LVU762
+ 1987 038a 12F5806F 		cmn	r2, #1024
+ 1988 038e 4FF60141 		movw	r1, #64513
+ 1989 0392 07DC     		bgt	.L102
+ 390:HANcoder_E407_DS_HTE.c ****     } else {
+ 1990              		.loc 1 390 7 is_stmt 1 view .LVU763
+ 390:HANcoder_E407_DS_HTE.c ****     } else {
+ 1991              		.loc 1 390 17 is_stmt 0 view .LVU764
+ 1992 0394 154B     		ldr	r3, .L136+36
+ 1993 0396 1980     		strh	r1, [r3]	@ movhi
+ 399:HANcoder_E407_DS_HTE.c ****       /* Abs: '<S12>/Abs' */
+ 1994              		.loc 1 399 5 is_stmt 1 view .LVU765
+ 390:HANcoder_E407_DS_HTE.c ****     } else {
+ 1995              		.loc 1 390 17 is_stmt 0 view .LVU766
+ 1996 0398 40F2FF33 		movw	r3, #1023
+ 1997              	.L103:
+ 401:HANcoder_E407_DS_HTE.c ****     } else {
+ 1998              		.loc 1 401 7 is_stmt 1 view .LVU767
+ 401:HANcoder_E407_DS_HTE.c ****     } else {
+ 1999              		.loc 1 401 15 is_stmt 0 view .LVU768
+ 2000 039c AB80     		strh	r3, [r5, #4]	@ movhi
+ 415:HANcoder_E407_DS_HTE.c ****       rtb_fixforDTpropagationissue = true;
+ 2001              		.loc 1 415 5 is_stmt 1 view .LVU769
+ 418:HANcoder_E407_DS_HTE.c ****     }
+ 2002              		.loc 1 418 7 view .LVU770
+ 2003              	.LVL201:
+ 429:HANcoder_E407_DS_HTE.c ****       rtb_RelationalOperator = true;
+ 2004              		.loc 1 429 5 view .LVU771
+ 401:HANcoder_E407_DS_HTE.c ****     } else {
+ 2005              		.loc 1 401 15 is_stmt 0 view .LVU772
+ 2006 039e 0022     		movs	r2, #0
+ 2007              	.LVL202:
+ 401:HANcoder_E407_DS_HTE.c ****     } else {
+ 2008              		.loc 1 401 15 view .LVU773
+ 2009 03a0 0123     		movs	r3, #1
+ 2010 03a2 A6E7     		b	.L101
+ 2011              	.LVL203:
+ 2012              	.L102:
+ 393:HANcoder_E407_DS_HTE.c ****     }
+ 2013              		.loc 1 393 7 is_stmt 1 view .LVU774
+ 393:HANcoder_E407_DS_HTE.c ****     }
+ 2014              		.loc 1 393 17 is_stmt 0 view .LVU775
+ 2015 03a4 1149     		ldr	r1, .L136+36
+ 399:HANcoder_E407_DS_HTE.c ****       /* Abs: '<S12>/Abs' */
+ 2016              		.loc 1 399 8 view .LVU776
+ 2017 03a6 002A     		cmp	r2, #0
+ 393:HANcoder_E407_DS_HTE.c ****     }
+ 2018              		.loc 1 393 17 view .LVU777
+ 2019 03a8 0A80     		strh	r2, [r1]	@ movhi
+ 399:HANcoder_E407_DS_HTE.c ****       /* Abs: '<S12>/Abs' */
+ 2020              		.loc 1 399 5 is_stmt 1 view .LVU778
+ 399:HANcoder_E407_DS_HTE.c ****       /* Abs: '<S12>/Abs' */
+ 2021              		.loc 1 399 8 is_stmt 0 view .LVU779
+ 2022 03aa 02DA     		bge	.L104
+ 401:HANcoder_E407_DS_HTE.c ****     } else {
+ 2023              		.loc 1 401 17 view .LVU780
+ 2024 03ac 5B42     		rsbs	r3, r3, #0
+ 2025 03ae 9BB2     		uxth	r3, r3
+ 2026 03b0 F4E7     		b	.L103
+ 2027              	.L104:
+ 404:HANcoder_E407_DS_HTE.c ****     }
+ 2028              		.loc 1 404 7 is_stmt 1 view .LVU781
+ 404:HANcoder_E407_DS_HTE.c ****     }
+ 2029              		.loc 1 404 15 is_stmt 0 view .LVU782
+ 2030 03b2 AB80     		strh	r3, [r5, #4]	@ movhi
+ 415:HANcoder_E407_DS_HTE.c ****       rtb_fixforDTpropagationissue = true;
+ 2031              		.loc 1 415 5 is_stmt 1 view .LVU783
+ 415:HANcoder_E407_DS_HTE.c ****       rtb_fixforDTpropagationissue = true;
+ 2032              		.loc 1 415 8 is_stmt 0 view .LVU784
+ 2033 03b4 02D0     		beq	.L105
+ 2034 03b6 0023     		movs	r3, #0
+ 2035 03b8 0122     		movs	r2, #1
+ 2036              	.LVL204:
+ 415:HANcoder_E407_DS_HTE.c ****       rtb_fixforDTpropagationissue = true;
+ 2037              		.loc 1 415 8 view .LVU785
+ 2038 03ba 9AE7     		b	.L101
+ 2039              	.LVL205:
+ 2040              	.L105:
+ 418:HANcoder_E407_DS_HTE.c ****     }
+ 2041              		.loc 1 418 7 is_stmt 1 view .LVU786
+ 429:HANcoder_E407_DS_HTE.c ****       rtb_RelationalOperator = true;
+ 2042              		.loc 1 429 5 view .LVU787
+ 442:HANcoder_E407_DS_HTE.c ****       rtb_Sum = false;
+ 2043              		.loc 1 442 5 view .LVU788
+ 443:HANcoder_E407_DS_HTE.c **** 
+ 2044              		.loc 1 443 7 view .LVU789
+ 448:HANcoder_E407_DS_HTE.c **** 
+ 2045              		.loc 1 448 7 view .LVU790
+ 448:HANcoder_E407_DS_HTE.c **** 
+ 2046              		.loc 1 448 19 is_stmt 0 view .LVU791
+ 2047 03bc EA80     		strh	r2, [r5, #6]	@ movhi
+ 451:HANcoder_E407_DS_HTE.c ****     } else {
+ 2048              		.loc 1 451 7 is_stmt 1 view .LVU792
+ 451:HANcoder_E407_DS_HTE.c ****     } else {
+ 2049              		.loc 1 451 19 is_stmt 0 view .LVU793
+ 2050 03be 2A81     		strh	r2, [r5, #8]	@ movhi
+ 2051 03c0 99E7     		b	.L122
+ 2052              	.L137:
+ 2053 03c2 00BFAFF3 		.align	3
+ 2053      0080
+ 2054              	.L136:
+ 2055 03c8 00000080 		.word	-2147483648
+ 2056 03cc 65F7953F 		.word	1066792805
+ 2057 03d0 00000000 		.word	.LANCHOR5
+ 2058 03d4 8230E641 		.word	1105604738
+ 2059 03d8 00000000 		.word	.LANCHOR6
+ 2060 03dc 00000000 		.word	.LANCHOR8
+ 2061 03e0 00000000 		.word	.LANCHOR7
+ 2062 03e4 00000000 		.word	.LANCHOR9
+ 2063 03e8 08000000 		.word	.LANCHOR8+8
+ 2064 03ec 00000000 		.word	.LANCHOR10
+ 2065 03f0 00005940 		.word	1079574528
+ 2066 03f4 00000000 		.word	.LANCHOR11
+ 2067 03f8 00000000 		.word	rtConstP
+ 2068 03fc 00000000 		.word	.LANCHOR16
+ 2069              		.cfi_endproc
+ 2070              	.LFE120:
+ 2072              		.section	.rodata.HANcoder_E407_DS_HTE_initialize.str1.4,"aMS",%progbits,1
+ 2073              		.align	2
+ 2074              	.LC1:
+ 2075 0000 48414E63 		.ascii	"HANcoder_E407_DS_HTE.c\000"
+ 2075      6F646572 
+ 2075      5F453430 
+ 2075      375F4453 
+ 2075      5F485445 
+ 2076              		.section	.text.HANcoder_E407_DS_HTE_initialize,"ax",%progbits
+ 2077              		.align	1
+ 2078              		.p2align 2,,3
+ 2079              		.global	HANcoder_E407_DS_HTE_initialize
+ 2080              		.syntax unified
+ 2081              		.thumb
+ 2082              		.thumb_func
+ 2084              	HANcoder_E407_DS_HTE_initialize:
+ 2085              	.LFB121:
+ 752:HANcoder_E407_DS_HTE.c **** 
+ 753:HANcoder_E407_DS_HTE.c **** /* Model initialize function */
+ 754:HANcoder_E407_DS_HTE.c **** void HANcoder_E407_DS_HTE_initialize(void)
+ 755:HANcoder_E407_DS_HTE.c **** {
+ 2086              		.loc 1 755 1 is_stmt 1 view -0
+ 2087              		.cfi_startproc
+ 2088              		@ args = 0, pretend = 0, frame = 16
+ 2089              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2090              	.LBB60:
+ 756:HANcoder_E407_DS_HTE.c ****   {
+ 757:HANcoder_E407_DS_HTE.c ****     /* user code (Start function Header) */
+ 758:HANcoder_E407_DS_HTE.c ****     uint8_t canResult1;
+ 2091              		.loc 1 758 5 view .LVU795
+ 759:HANcoder_E407_DS_HTE.c ****     tCanFilter canFilter1;
+ 2092              		.loc 1 759 5 view .LVU796
+ 760:HANcoder_E407_DS_HTE.c **** 
+ 761:HANcoder_E407_DS_HTE.c ****     /* user code (Start function Body) */
+ 762:HANcoder_E407_DS_HTE.c **** 
+ 763:HANcoder_E407_DS_HTE.c ****     /* initialize the CAN driver. */
+ 764:HANcoder_E407_DS_HTE.c ****     CanInit(64, 8);
+ 2093              		.loc 1 764 5 view .LVU797
+ 2094              	.LBE60:
+ 755:HANcoder_E407_DS_HTE.c ****   {
+ 2095              		.loc 1 755 1 is_stmt 0 view .LVU798
+ 2096 0000 00B5     		push	{lr}
+ 2097              		.cfi_def_cfa_offset 4
+ 2098              		.cfi_offset 14, -4
+ 2099              	.LBB61:
+ 2100              		.loc 1 764 5 view .LVU799
+ 2101 0002 0821     		movs	r1, #8
+ 2102              	.LBE61:
+ 755:HANcoder_E407_DS_HTE.c ****   {
+ 2103              		.loc 1 755 1 view .LVU800
+ 2104 0004 85B0     		sub	sp, sp, #20
+ 2105              		.cfi_def_cfa_offset 24
+ 2106              	.LBB62:
+ 2107              		.loc 1 764 5 view .LVU801
+ 2108 0006 4020     		movs	r0, #64
+ 2109 0008 FFF7FEFF 		bl	CanInit
+ 2110              	.LVL206:
+ 765:HANcoder_E407_DS_HTE.c **** 
+ 766:HANcoder_E407_DS_HTE.c ****     /* initialize the CAN I/O module for channel 1 */
+ 767:HANcoder_E407_DS_HTE.c ****     CanIoInit(0);
+ 2111              		.loc 1 767 5 is_stmt 1 view .LVU802
+ 2112 000c 0020     		movs	r0, #0
+ 2113 000e FFF7FEFF 		bl	CanIoInit
+ 2114              	.LVL207:
+ 768:HANcoder_E407_DS_HTE.c **** 
+ 769:HANcoder_E407_DS_HTE.c ****     /* Start for M-S-Function: '<S116>/Level-2 M-file S-Function' */
+ 770:HANcoder_E407_DS_HTE.c **** 
+ 771:HANcoder_E407_DS_HTE.c ****     /* configure the analog input for filtered inputs */
+ 772:HANcoder_E407_DS_HTE.c ****     AninConfigure(ANIN_PORTC_PIN0,0);
+ 2115              		.loc 1 772 5 view .LVU803
+ 2116 0012 0021     		movs	r1, #0
+ 2117 0014 0820     		movs	r0, #8
+ 2118 0016 FFF7FEFF 		bl	AninConfigure
+ 2119              	.LVL208:
+ 773:HANcoder_E407_DS_HTE.c **** 
+ 774:HANcoder_E407_DS_HTE.c ****     /* Start for M-S-Function: '<S119>/Level-2 M-file S-Function' */
+ 775:HANcoder_E407_DS_HTE.c **** 
+ 776:HANcoder_E407_DS_HTE.c ****     /* configure the quadrature encoder module */
+ 777:HANcoder_E407_DS_HTE.c ****     QuadEncConfigure(QUADENC_TIM3_PA6_PB5, QUADENC_CFG_PULLUP);
+ 2120              		.loc 1 777 5 view .LVU804
+ 2121 001a 0121     		movs	r1, #1
+ 2122 001c 0846     		mov	r0, r1
+ 2123 001e FFF7FEFF 		bl	QuadEncConfigure
+ 2124              	.LVL209:
+ 778:HANcoder_E407_DS_HTE.c **** 
+ 779:HANcoder_E407_DS_HTE.c ****     /* Start for M-S-Function: '<S123>/Level-2 M-file S-Function' */
+ 780:HANcoder_E407_DS_HTE.c **** 
+ 781:HANcoder_E407_DS_HTE.c ****     /* configure the digital output */
+ 782:HANcoder_E407_DS_HTE.c ****     DigoutConfigure(DIGOUT_PORTE_PIN2, DIGOUT_CFG_PUSHPULL);
+ 2125              		.loc 1 782 5 view .LVU805
+ 2126 0022 0121     		movs	r1, #1
+ 2127 0024 0820     		movs	r0, #8
+ 2128 0026 FFF7FEFF 		bl	DigoutConfigure
+ 2129              	.LVL210:
+ 783:HANcoder_E407_DS_HTE.c **** 
+ 784:HANcoder_E407_DS_HTE.c ****     /* Start for M-S-Function: '<S124>/Level-2 M-file S-Function' */
+ 785:HANcoder_E407_DS_HTE.c **** 
+ 786:HANcoder_E407_DS_HTE.c ****     /* configure the digital output */
+ 787:HANcoder_E407_DS_HTE.c ****     DigoutConfigure(DIGOUT_PORTE_PIN4, DIGOUT_CFG_PUSHPULL);
+ 2130              		.loc 1 787 5 view .LVU806
+ 2131 002a 0121     		movs	r1, #1
+ 2132 002c 0920     		movs	r0, #9
+ 2133 002e FFF7FEFF 		bl	DigoutConfigure
+ 2134              	.LVL211:
+ 788:HANcoder_E407_DS_HTE.c **** 
+ 789:HANcoder_E407_DS_HTE.c ****     /* Start for S-Function (sfcn_pwmout_init): '<S126>/S-Function' */
+ 790:HANcoder_E407_DS_HTE.c **** 
+ 791:HANcoder_E407_DS_HTE.c ****     /* initialize the PWM module and register the callback handler */
+ 792:HANcoder_E407_DS_HTE.c ****     PwmoutInit(PWMOUT_MODULE_TIM2, 10253, PWMOUT_EDGE_ALIGNMENT);
+ 2135              		.loc 1 792 5 view .LVU807
+ 2136 0032 0022     		movs	r2, #0
+ 2137 0034 42F60D01 		movw	r1, #10253
+ 2138 0038 0120     		movs	r0, #1
+ 2139 003a FFF7FEFF 		bl	PwmoutInit
+ 2140              	.LVL212:
+ 793:HANcoder_E407_DS_HTE.c ****     PwmoutRegisterPeriodCompleteCallback(PWMOUT_MODULE_TIM2,
+ 2141              		.loc 1 793 5 view .LVU808
+ 2142 003e 1F49     		ldr	r1, .L144
+ 2143 0040 0120     		movs	r0, #1
+ 2144 0042 FFF7FEFF 		bl	PwmoutRegisterPeriodCompleteCallback
+ 2145              	.LVL213:
+ 794:HANcoder_E407_DS_HTE.c ****       PwmoutIRQ_PWMOUT_MODULE_TIM2);
+ 795:HANcoder_E407_DS_HTE.c **** 
+ 796:HANcoder_E407_DS_HTE.c ****     /* configures channel 1 */
+ 797:HANcoder_E407_DS_HTE.c ****     PwmoutConfigure(PWMOUT_TIM2_PIN_PA5, PWMOUT_ACTIVE_HIGH,
+ 2146              		.loc 1 797 5 view .LVU809
+ 2147 0046 0022     		movs	r2, #0
+ 2148 0048 1146     		mov	r1, r2
+ 2149 004a 0420     		movs	r0, #4
+ 2150 004c FFF7FEFF 		bl	PwmoutConfigure
+ 2151              	.LVL214:
+ 798:HANcoder_E407_DS_HTE.c ****                     PWMOUT_INVERTED_OUTPUT_OFF);
+ 799:HANcoder_E407_DS_HTE.c **** 
+ 800:HANcoder_E407_DS_HTE.c ****     /* Start for M-S-Function: '<S117>/S-Function' incorporates:
+ 801:HANcoder_E407_DS_HTE.c ****      *  Constant: '<S6>/Constant'
+ 802:HANcoder_E407_DS_HTE.c ****      */
+ 803:HANcoder_E407_DS_HTE.c **** 
+ 804:HANcoder_E407_DS_HTE.c ****     /* register a CAN storage buffer for the message with this ID */
+ 805:HANcoder_E407_DS_HTE.c ****     CanIoCreateMessageReceivedStorage(0, 1094U);
+ 2152              		.loc 1 805 5 view .LVU810
+ 2153 0050 40F24641 		movw	r1, #1094
+ 2154 0054 0020     		movs	r0, #0
+ 2155 0056 FFF7FEFF 		bl	CanIoCreateMessageReceivedStorage
+ 2156              	.LVL215:
+ 806:HANcoder_E407_DS_HTE.c **** 
+ 807:HANcoder_E407_DS_HTE.c ****     /* Start for M-S-Function: '<S3>/Level-2 M-file S-Function' */
+ 808:HANcoder_E407_DS_HTE.c **** 
+ 809:HANcoder_E407_DS_HTE.c ****     /* configure the stack size for the task that executes the model */
+ 810:HANcoder_E407_DS_HTE.c ****     AppCtrlTaskSetStackSize((configMINIMAL_STACK_SIZE*sizeof(portBASE_TYPE)) +
+ 2157              		.loc 1 810 5 view .LVU811
+ 2158 005a 4FF41970 		mov	r0, #612
+ 2159 005e FFF7FEFF 		bl	AppCtrlTaskSetStackSize
+ 2160              	.LVL216:
+ 811:HANcoder_E407_DS_HTE.c ****       100);
+ 812:HANcoder_E407_DS_HTE.c **** 
+ 813:HANcoder_E407_DS_HTE.c ****     /* configure the sample time of the model in microseconds */
+ 814:HANcoder_E407_DS_HTE.c ****     AppCtrlTaskSetPeriod(10000);
+ 2161              		.loc 1 814 5 view .LVU812
+ 2162 0062 42F21070 		movw	r0, #10000
+ 2163 0066 FFF7FEFF 		bl	AppCtrlTaskSetPeriod
+ 2164              	.LVL217:
+ 815:HANcoder_E407_DS_HTE.c **** 
+ 816:HANcoder_E407_DS_HTE.c ****     /* Run the ADC conversions ten times faster than the Simulink model */
+ 817:HANcoder_E407_DS_HTE.c ****     ADCconversionTaskSetPeriod(10000/10);
+ 2165              		.loc 1 817 5 view .LVU813
+ 2166 006a 4FF47A70 		mov	r0, #1000
+ 2167 006e FFF7FEFF 		bl	ADCconversionTaskSetPeriod
+ 2168              	.LVL218:
+ 818:HANcoder_E407_DS_HTE.c **** 
+ 819:HANcoder_E407_DS_HTE.c ****     /* Start for M-S-Function: '<S4>/Level-2 M-file S-Function' */
+ 820:HANcoder_E407_DS_HTE.c **** 
+ 821:HANcoder_E407_DS_HTE.c ****     /* store the CAN controller's filter configuration */
+ 822:HANcoder_E407_DS_HTE.c ****     canFilter1.mask = 0x00000000;
+ 2169              		.loc 1 822 5 view .LVU814
+ 2170              		.loc 1 822 21 is_stmt 0 view .LVU815
+ 2171 0072 0020     		movs	r0, #0
+ 823:HANcoder_E407_DS_HTE.c ****     canFilter1.code = 0x00000000;
+ 824:HANcoder_E407_DS_HTE.c ****     canFilter1.mode = CAN_FILTER_MODE_STDID_ONLY;
+ 825:HANcoder_E407_DS_HTE.c **** 
+ 826:HANcoder_E407_DS_HTE.c ****     /* connect and synchronize the CAN bus */
+ 827:HANcoder_E407_DS_HTE.c ****     canResult1 = CanConnect(0, 1000000, &canFilter1);
+ 2172              		.loc 1 827 18 view .LVU816
+ 2173 0074 1249     		ldr	r1, .L144+4
+ 824:HANcoder_E407_DS_HTE.c **** 
+ 2174              		.loc 1 824 21 view .LVU817
+ 2175 0076 8DF80C00 		strb	r0, [sp, #12]
+ 2176              		.loc 1 827 18 view .LVU818
+ 2177 007a 01AA     		add	r2, sp, #4
+ 823:HANcoder_E407_DS_HTE.c ****     canFilter1.code = 0x00000000;
+ 2178              		.loc 1 823 21 view .LVU819
+ 2179 007c CDE90100 		strd	r0, r0, [sp, #4]
+ 824:HANcoder_E407_DS_HTE.c **** 
+ 2180              		.loc 1 824 5 is_stmt 1 view .LVU820
+ 2181              		.loc 1 827 5 view .LVU821
+ 2182              		.loc 1 827 18 is_stmt 0 view .LVU822
+ 2183 0080 FFF7FEFF 		bl	CanConnect
+ 2184              	.LVL219:
+ 828:HANcoder_E407_DS_HTE.c ****     configASSERT(canResult1 == TRUE);
+ 2185              		.loc 1 828 5 is_stmt 1 view .LVU823
+ 2186 0084 0128     		cmp	r0, #1
+ 2187 0086 04D0     		beq	.L139
+ 2188              		.loc 1 828 5 discriminator 2 view .LVU824
+ 2189 0088 0E48     		ldr	r0, .L144+8
+ 2190              	.LVL220:
+ 2191              		.loc 1 828 5 is_stmt 0 discriminator 2 view .LVU825
+ 2192 008a 4FF44F71 		mov	r1, #828
+ 2193 008e FFF7FEFF 		bl	AssertFailure
+ 2194              	.LVL221:
+ 2195              	.L139:
+ 829:HANcoder_E407_DS_HTE.c **** 
+ 830:HANcoder_E407_DS_HTE.c ****     /* Start for M-S-Function: '<S9>/Level-2 M-file S-Function' */
+ 831:HANcoder_E407_DS_HTE.c **** 
+ 832:HANcoder_E407_DS_HTE.c ****     /* initialize the measurement and calibration interface */
+ 833:HANcoder_E407_DS_HTE.c ****     MacCanInit(0, 1637, 1638);
+ 2196              		.loc 1 833 5 is_stmt 1 view .LVU826
+ 2197 0092 40F26662 		movw	r2, #1638
+ 2198 0096 40F26561 		movw	r1, #1637
+ 2199 009a 0020     		movs	r0, #0
+ 2200 009c FFF7FEFF 		bl	MacCanInit
+ 2201              	.LVL222:
+ 834:HANcoder_E407_DS_HTE.c ****     MacInit();
+ 2202              		.loc 1 834 5 view .LVU827
+ 2203 00a0 FFF7FEFF 		bl	MacInit
+ 2204              	.LVL223:
+ 835:HANcoder_E407_DS_HTE.c **** 
+ 836:HANcoder_E407_DS_HTE.c ****     /* Start for M-S-Function: '<S10>/Level-2 M-file S-Function' */
+ 837:HANcoder_E407_DS_HTE.c **** 
+ 838:HANcoder_E407_DS_HTE.c ****     /* initialize the measurement and calibration interface */
+ 839:HANcoder_E407_DS_HTE.c ****     MacUsbComInit();
+ 2205              		.loc 1 839 5 view .LVU828
+ 2206 00a4 FFF7FEFF 		bl	MacUsbComInit
+ 2207              	.LVL224:
+ 840:HANcoder_E407_DS_HTE.c ****     MacInit();
+ 2208              		.loc 1 840 5 view .LVU829
+ 2209 00a8 FFF7FEFF 		bl	MacInit
+ 2210              	.LVL225:
+ 2211              	.LBE62:
+ 841:HANcoder_E407_DS_HTE.c ****   }
+ 842:HANcoder_E407_DS_HTE.c **** 
+ 843:HANcoder_E407_DS_HTE.c ****   /* SystemInitialize for Enabled SubSystem: '<S2>/Position Control' */
+ 844:HANcoder_E407_DS_HTE.c ****   /* InitializeConditions for DiscreteIntegrator: '<S48>/Integrator' */
+ 845:HANcoder_E407_DS_HTE.c ****   rtDWork.Integrator_PrevResetState_a = 2;
+ 2212              		.loc 1 845 3 view .LVU830
+ 2213              		.loc 1 845 39 is_stmt 0 view .LVU831
+ 2214 00ac 064B     		ldr	r3, .L144+12
+ 2215 00ae 0222     		movs	r2, #2
+ 2216 00b0 9A75     		strb	r2, [r3, #22]
+ 846:HANcoder_E407_DS_HTE.c **** 
+ 847:HANcoder_E407_DS_HTE.c ****   /* End of SystemInitialize for SubSystem: '<S2>/Position Control' */
+ 848:HANcoder_E407_DS_HTE.c **** 
+ 849:HANcoder_E407_DS_HTE.c ****   /* SystemInitialize for Enabled SubSystem: '<S2>/Speed Control' */
+ 850:HANcoder_E407_DS_HTE.c ****   /* InitializeConditions for DiscreteIntegrator: '<S99>/Integrator' */
+ 851:HANcoder_E407_DS_HTE.c ****   rtDWork.Integrator_PrevResetState = 2;
+ 2217              		.loc 1 851 3 is_stmt 1 view .LVU832
+ 2218              		.loc 1 851 37 is_stmt 0 view .LVU833
+ 2219 00b2 5A75     		strb	r2, [r3, #21]
+ 852:HANcoder_E407_DS_HTE.c **** 
+ 853:HANcoder_E407_DS_HTE.c ****   /* End of SystemInitialize for SubSystem: '<S2>/Speed Control' */
+ 854:HANcoder_E407_DS_HTE.c **** }
+ 2220              		.loc 1 854 1 view .LVU834
+ 2221 00b4 05B0     		add	sp, sp, #20
+ 2222              		.cfi_def_cfa_offset 4
+ 2223              		@ sp needed
+ 2224 00b6 5DF804FB 		ldr	pc, [sp], #4
+ 2225              	.L145:
+ 2226 00ba 00BF     		.align	2
+ 2227              	.L144:
+ 2228 00bc 00000000 		.word	PwmoutIRQ_PWMOUT_MODULE_TIM2
+ 2229 00c0 40420F00 		.word	1000000
+ 2230 00c4 00000000 		.word	.LC1
+ 2231 00c8 00000000 		.word	.LANCHOR8
+ 2232              		.cfi_endproc
+ 2233              	.LFE121:
+ 2235              		.global	rtDWork
+ 2236              		.global	rtB
+ 2237              		.global	System_select
+ 2238              		.global	HANtuneOverride
+ 2239              		.global	IN2
+ 2240              		.global	IN1
+ 2241              		.global	DIRFault
+ 2242              		.global	EncReset
+ 2243              		.global	CANreceive
+ 2244              		.global	SI_CPUload
+ 2245              		.global	PosPIDOut
+ 2246              		.global	PotDeg
+ 2247              		.global	RPMError
+ 2248              		.global	RpmPIDOut
+ 2249              		.global	RPMSetpoint
+ 2250              		.global	MotorPWM
+ 2251              		.global	PotVal
+ 2252              		.global	PosError
+ 2253              		.global	RotorPos
+ 2254              		.global	EncCount
+ 2255              		.global	SI_FreeStack
+ 2256              		.global	SI_FreeHeap
+ 2257              		.global	RPM
+ 2258              		.section	.bss.CANreceive,"aw",%nobits
+ 2259              		.set	.LANCHOR21,. + 0
+ 2262              	CANreceive:
+ 2263 0000 00       		.space	1
+ 2264              		.section	.bss.DIRFault,"aw",%nobits
+ 2265              		.set	.LANCHOR17,. + 0
+ 2268              	DIRFault:
+ 2269 0000 00       		.space	1
+ 2270              		.section	.bss.EncCount,"aw",%nobits
+ 2271              		.align	2
+ 2272              		.set	.LANCHOR2,. + 0
+ 2275              	EncCount:
+ 2276 0000 00000000 		.space	4
+ 2277              		.section	.bss.EncReset,"aw",%nobits
+ 2278              		.set	.LANCHOR4,. + 0
+ 2281              	EncReset:
+ 2282 0000 00       		.space	1
+ 2283              		.section	.bss.IN1,"aw",%nobits
+ 2284              		.set	.LANCHOR18,. + 0
+ 2287              	IN1:
+ 2288 0000 00       		.space	1
+ 2289              		.section	.bss.IN2,"aw",%nobits
+ 2290              		.set	.LANCHOR19,. + 0
+ 2293              	IN2:
+ 2294 0000 00       		.space	1
+ 2295              		.section	.bss.MotorPWM,"aw",%nobits
+ 2296              		.align	1
+ 2297              		.set	.LANCHOR16,. + 0
+ 2300              	MotorPWM:
+ 2301 0000 0000     		.space	2
+ 2302              		.section	.bss.PosError,"aw",%nobits
+ 2303              		.align	2
+ 2304              		.set	.LANCHOR7,. + 0
+ 2307              	PosError:
+ 2308 0000 00000000 		.space	4
+ 2309              		.section	.bss.PosPIDOut,"aw",%nobits
+ 2310              		.align	1
+ 2311              		.set	.LANCHOR10,. + 0
+ 2314              	PosPIDOut:
+ 2315 0000 0000     		.space	2
+ 2316              		.section	.bss.PotDeg,"aw",%nobits
+ 2317              		.align	1
+ 2318              		.set	.LANCHOR5,. + 0
+ 2321              	PotDeg:
+ 2322 0000 0000     		.space	2
+ 2323              		.section	.bss.PotVal,"aw",%nobits
+ 2324              		.align	1
+ 2325              		.set	.LANCHOR0,. + 0
+ 2328              	PotVal:
+ 2329 0000 0000     		.space	2
+ 2330              		.section	.bss.RPM,"aw",%nobits
+ 2331              		.align	3
+ 2332              		.set	.LANCHOR11,. + 0
+ 2335              	RPM:
+ 2336 0000 00000000 		.space	8
+ 2336      00000000 
+ 2337              		.section	.bss.RPMError,"aw",%nobits
+ 2338              		.align	1
+ 2339              		.set	.LANCHOR14,. + 0
+ 2342              	RPMError:
+ 2343 0000 0000     		.space	2
+ 2344              		.section	.bss.RPMSetpoint,"aw",%nobits
+ 2345              		.align	1
+ 2346              		.set	.LANCHOR13,. + 0
+ 2349              	RPMSetpoint:
+ 2350 0000 0000     		.space	2
+ 2351              		.section	.bss.RotorPos,"aw",%nobits
+ 2352              		.align	2
+ 2353              		.set	.LANCHOR6,. + 0
+ 2356              	RotorPos:
+ 2357 0000 00000000 		.space	4
+ 2358              		.section	.bss.RpmPIDOut,"aw",%nobits
+ 2359              		.align	1
+ 2360              		.set	.LANCHOR15,. + 0
+ 2363              	RpmPIDOut:
+ 2364 0000 0000     		.space	2
+ 2365              		.section	.bss.SI_CPUload,"aw",%nobits
+ 2366              		.set	.LANCHOR22,. + 0
+ 2369              	SI_CPUload:
+ 2370 0000 00       		.space	1
+ 2371              		.section	.bss.SI_FreeHeap,"aw",%nobits
+ 2372              		.align	2
+ 2373              		.set	.LANCHOR23,. + 0
+ 2376              	SI_FreeHeap:
+ 2377 0000 00000000 		.space	4
+ 2378              		.section	.bss.SI_FreeStack,"aw",%nobits
+ 2379              		.align	2
+ 2380              		.set	.LANCHOR24,. + 0
+ 2383              	SI_FreeStack:
+ 2384 0000 00000000 		.space	4
+ 2385              		.section	.bss.canRxData_0_1094U,"aw",%nobits
+ 2386              		.align	2
+ 2387              		.set	.LANCHOR20,. + 0
+ 2390              	canRxData_0_1094U:
+ 2391 0000 00000000 		.space	8
+ 2391      00000000 
+ 2392              		.section	.bss.canTxData,"aw",%nobits
+ 2393              		.align	2
+ 2394              		.set	.LANCHOR25,. + 0
+ 2397              	canTxData:
+ 2398 0000 00000000 		.space	8
+ 2398      00000000 
+ 2399              		.section	.bss.rtB,"aw",%nobits
+ 2400              		.align	2
+ 2401              		.set	.LANCHOR1,. + 0
+ 2404              	rtB:
+ 2405 0000 00000000 		.space	12
+ 2405      00000000 
+ 2405      00000000 
+ 2406              		.section	.bss.rtDWork,"aw",%nobits
+ 2407              		.align	3
+ 2408              		.set	.LANCHOR8,. + 0
+ 2411              	rtDWork:
+ 2412 0000 00000000 		.space	24
+ 2412      00000000 
+ 2412      00000000 
+ 2412      00000000 
+ 2412      00000000 
+ 2413              		.section	.data.HANtuneOverride,"aw"
+ 2414              		.align	1
+ 2415              		.set	.LANCHOR12,. + 0
+ 2418              	HANtuneOverride:
+ 2419 0000 0000     		.space	2
+ 2420              		.section	.data.System_select,"aw"
+ 2421              		.set	.LANCHOR3,. + 0
+ 2424              	System_select:
+ 2425 0000 00       		.space	1
+ 2426              		.section	.rodata.tmp_7.0,"a"
+ 2427              		.align	2
+ 2428              		.set	.LANCHOR9,. + 0
+ 2431              	tmp_7.0:
+ 2432 0000 7B14AE47 		.word	1202590843
+ 2433 0004 E17A1400 		.word	1342177
+ 2434              		.text
+ 2435              	.Letext0:
+ 2436              		.file 2 "rtwtypes.h"
+ 2437              		.file 3 "c:\\program files (x86)\\gnu arm embedded toolchain\\10 2021.10\\arm-none-eabi\\include\\
+ 2438              		.file 4 "c:\\program files (x86)\\gnu arm embedded toolchain\\10 2021.10\\arm-none-eabi\\include\\
+ 2439              		.file 5 "../blockset/rtw/STM32/inc/STM32_E407/pwmout.h"
+ 2440              		.file 6 "../blockset/rtw/STM32/inc/STM32_E407/quadencoder.h"
+ 2441              		.file 7 "../blockset/rtw/STM32/inc/STM32_E407/digout.h"
+ 2442              		.file 8 "../blockset/rtw/STM32/inc/STM32_E407/can.h"
+ 2443              		.file 9 "c:\\program files (x86)\\gnu arm embedded toolchain\\10 2021.10\\lib\\gcc\\arm-none-eabi\
+ 2444              		.file 10 "HANcoder_E407_DS_HTE_types.h"
+ 2445              		.file 11 "multiword_types.h"
+ 2446              		.file 12 "HANcoder_E407_DS_HTE.h"
+ 2447              		.file 13 "../blockset/rtw/STM32/inc/STM32_E407/canio.h"
+ 2448              		.file 14 "../blockset/rtw/STM32/inc/STM32_E407/anin.h"
+ 2449              		.file 15 "../blockset/rtw/STM32/inc/app.h"
+ 2450              		.file 16 "../blockset/rtw/STM32/inc/STM32_E407/FreeRTOSConfig.h"
+ 2451              		.file 17 "../blockset/rtw/STM32/inc/STM32_E407/mac.h"
+ 2452              		.file 18 "c:\\program files (x86)\\gnu arm embedded toolchain\\10 2021.10\\arm-none-eabi\\include\
+ 2453              		.file 19 "../blockset/rtw/STM32/inc/os.h"
+ 2454              		.file 20 "<built-in>"
+DEFINED SYMBOLS
+                            *ABS*:00000000 HANcoder_E407_DS_HTE.c
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:19     .text.PwmoutIRQ_PWMOUT_MODULE_TIM2:00000000 $t
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:26     .text.PwmoutIRQ_PWMOUT_MODULE_TIM2:00000000 PwmoutIRQ_PWMOUT_MODULE_TIM2
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:40     .text.ByteSwap_x:00000000 $t
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:47     .text.ByteSwap_x:00000000 ByteSwap_x
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:125    .text.MultiWord2sLong:00000000 $t
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:132    .text.MultiWord2sLong:00000000 MultiWord2sLong
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:150    .text.sMultiWordShr:00000000 $t
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:157    .text.sMultiWordShr:00000000 sMultiWordShr
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:387    .text.sMultiWordMul:00000000 $t
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:394    .text.sMultiWordMul:00000000 sMultiWordMul
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:775    .text.MultiWordAdd:00000000 $t
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:782    .text.MultiWordAdd:00000000 MultiWordAdd
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:872    .text.mul_wide_s32:00000000 $t
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:879    .text.mul_wide_s32:00000000 mul_wide_s32
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:1034   .text.mul_s32_hiSR:00000000 $t
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:1041   .text.mul_s32_hiSR:00000000 mul_s32_hiSR
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:1086   .rodata.HANcoder_E407_DS_HTE_step.str1.4:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:1090   .text.HANcoder_E407_DS_HTE_step:00000000 $t
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:1097   .text.HANcoder_E407_DS_HTE_step:00000000 HANcoder_E407_DS_HTE_step
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:1552   .text.HANcoder_E407_DS_HTE_step:000001d8 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:1582   .text.HANcoder_E407_DS_HTE_step:00000240 $t
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2055   .text.HANcoder_E407_DS_HTE_step:000003c8 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2073   .rodata.HANcoder_E407_DS_HTE_initialize.str1.4:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2077   .text.HANcoder_E407_DS_HTE_initialize:00000000 $t
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2084   .text.HANcoder_E407_DS_HTE_initialize:00000000 HANcoder_E407_DS_HTE_initialize
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2228   .text.HANcoder_E407_DS_HTE_initialize:000000bc $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2411   .bss.rtDWork:00000000 rtDWork
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2404   .bss.rtB:00000000 rtB
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2424   .data.System_select:00000000 System_select
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2418   .data.HANtuneOverride:00000000 HANtuneOverride
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2293   .bss.IN2:00000000 IN2
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2287   .bss.IN1:00000000 IN1
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2268   .bss.DIRFault:00000000 DIRFault
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2281   .bss.EncReset:00000000 EncReset
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2262   .bss.CANreceive:00000000 CANreceive
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2369   .bss.SI_CPUload:00000000 SI_CPUload
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2314   .bss.PosPIDOut:00000000 PosPIDOut
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2321   .bss.PotDeg:00000000 PotDeg
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2342   .bss.RPMError:00000000 RPMError
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2363   .bss.RpmPIDOut:00000000 RpmPIDOut
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2349   .bss.RPMSetpoint:00000000 RPMSetpoint
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2300   .bss.MotorPWM:00000000 MotorPWM
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2328   .bss.PotVal:00000000 PotVal
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2307   .bss.PosError:00000000 PosError
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2356   .bss.RotorPos:00000000 RotorPos
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2275   .bss.EncCount:00000000 EncCount
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2383   .bss.SI_FreeStack:00000000 SI_FreeStack
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2376   .bss.SI_FreeHeap:00000000 SI_FreeHeap
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2335   .bss.RPM:00000000 RPM
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2263   .bss.CANreceive:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2269   .bss.DIRFault:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2271   .bss.EncCount:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2282   .bss.EncReset:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2288   .bss.IN1:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2294   .bss.IN2:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2296   .bss.MotorPWM:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2303   .bss.PosError:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2310   .bss.PosPIDOut:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2317   .bss.PotDeg:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2324   .bss.PotVal:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2331   .bss.RPM:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2338   .bss.RPMError:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2345   .bss.RPMSetpoint:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2352   .bss.RotorPos:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2359   .bss.RpmPIDOut:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2370   .bss.SI_CPUload:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2372   .bss.SI_FreeHeap:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2379   .bss.SI_FreeStack:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2386   .bss.canRxData_0_1094U:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2390   .bss.canRxData_0_1094U:00000000 canRxData_0_1094U
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2393   .bss.canTxData:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2397   .bss.canTxData:00000000 canTxData
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2400   .bss.rtB:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2407   .bss.rtDWork:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2414   .data.HANtuneOverride:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2425   .data.System_select:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2427   .rodata.tmp_7.0:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\cciNlS7V.s:2431   .rodata.tmp_7.0:00000000 tmp_7.0
+
+UNDEFINED SYMBOLS
+memset
+__aeabi_i2d
+__aeabi_dmul
+__aeabi_dsub
+__aeabi_ui2d
+__aeabi_d2iz
+AninGet
+QuadEncGetCounter
+floor
+CanIoGetMessage
+OsGetCpuLoad
+OsGetFreeHeapSize
+OsGetTaskFreeStackSize
+PwmoutSet
+DigoutSet
+CanTransmit
+QuadEncResetCounter
+rtConstP
+CanInit
+CanIoInit
+AninConfigure
+QuadEncConfigure
+DigoutConfigure
+PwmoutInit
+PwmoutRegisterPeriodCompleteCallback
+PwmoutConfigure
+CanIoCreateMessageReceivedStorage
+AppCtrlTaskSetStackSize
+AppCtrlTaskSetPeriod
+ADCconversionTaskSetPeriod
+CanConnect
+AssertFailure
+MacCanInit
+MacInit
+MacUsbComInit

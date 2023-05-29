@@ -1,0 +1,19 @@
+    Direction
+    
+        actioni
+    
+        actionp
+    
+        HANtuneOverride
+    
+    motor_rpm
+Error
+SI_FreeStack
+SI_FreeHeap
+speed_demand_per
+pulse_per_second
+encoder_output
+PWM
+SI_CPUload
+LedValue
+direction
