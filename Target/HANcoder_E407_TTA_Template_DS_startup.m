@@ -181,6 +181,9 @@ TM_Type_bc1(end+1) = COMP;
 TM_Reset_Var_bc1_2 = TM_Reset_Var_bc1 +2;
 TM_Data_bc1(end+1) = TM_Reset_Var_bc1_2;
 TM_Type_bc1(end+1) = COMP;
+TM_Reset_Board_bc1      = TM_Reset_Var_bc1_2   + COMP_duration;	% COMP Reset Board
+TM_Data_bc1(end+1)  = TM_Reset_Board_bc1;
+TM_Type_bc1(end+1)  = COMP;
 
 % bc 2
 TM_Data_bc2 = TM_Data_bc0(1:4);
@@ -205,6 +208,15 @@ TM_SteerControl = TM_InverseKinematics + COMP_duration;
 TM_Data_bc2(end+1) = TM_SteerControl;
 TM_Type_bc2(end+1) = COMP;
 
+TM_Reset_Var_bc2   = TM_Data_bc2(end) + COMP_duration;
+TM_Data_bc2(end+1) = TM_Reset_Var_bc2;
+TM_Type_bc2(end+1) = COMP;
+TM_Reset_Var_bc2_2 = TM_Reset_Var_bc2 +2;
+TM_Data_bc2(end+1) = TM_Reset_Var_bc2_2;
+TM_Type_bc2(end+1) = COMP;
+TM_Reset_Board_bc2 = TM_Reset_Var_bc2_2   + COMP_duration;	% COMP Reset Board
+TM_Data_bc2(end+1) = TM_Reset_Board_bc2;
+TM_Type_bc2(end+1) = COMP;
 
 % matrix scheduling constants
 basic_cycle_duration_bc0 = TM_Reset_Board   + COMP_duration; % cycle duration in NTU
