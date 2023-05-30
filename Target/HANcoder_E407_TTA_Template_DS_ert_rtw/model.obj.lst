@@ -311,13 +311,13 @@
  146              		.section	.rodata.kXcpStationId,"a"
  147              		.align	2
  150              	kXcpStationId:
- 151 0000 48414E63 		.ascii	"HANcoder_E407_TTA_Template_DS_softwareID_v1_230523_"
+ 151 0000 48414E63 		.ascii	"HANcoder_E407_TTA_Template_DS_softwareID_v1_300523_"
  151      6F646572 
  151      5F453430 
  151      375F5454 
  151      415F5465 
- 152 0033 32303333 		.ascii	"203302"
- 152      3032
+ 152 0033 32303138 		.ascii	"201833"
+ 152      3333
  153              		.text
  154              	.Letext0:
  155              		.file 2 "../blockset/rtw/STM32/inc/xcp_cfg.h"
@@ -329,21 +329,21 @@
  161              		.file 8 "../blockset/rtw/STM32/inc/os.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 model.c
-C:\Users\joeri\AppData\Local\Temp\ccJANMwS.s:19     .text.ModelBootCroMsgReceived:00000000 $t
-C:\Users\joeri\AppData\Local\Temp\ccJANMwS.s:25     .text.ModelBootCroMsgReceived:00000000 ModelBootCroMsgReceived
-C:\Users\joeri\AppData\Local\Temp\ccJANMwS.s:62     .text.ModelInit:00000000 $t
-C:\Users\joeri\AppData\Local\Temp\ccJANMwS.s:69     .text.ModelInit:00000000 ModelInit
-C:\Users\joeri\AppData\Local\Temp\ccJANMwS.s:100    .text.ModelInit:00000018 $d
-C:\Users\joeri\AppData\Local\Temp\ccJANMwS.s:105    .text.ModelStep:00000000 $t
-C:\Users\joeri\AppData\Local\Temp\ccJANMwS.s:112    .text.ModelStep:00000000 ModelStep
-C:\Users\joeri\AppData\Local\Temp\ccJANMwS.s:144    .rodata.kXcpEventCycle:00000000 kXcpEventCycle
-C:\Users\joeri\AppData\Local\Temp\ccJANMwS.s:150    .rodata.kXcpStationId:00000000 kXcpStationId
-C:\Users\joeri\AppData\Local\Temp\ccJANMwS.s:133    .data.kXcpStationIdLengthVariable:00000000 kXcpStationIdLengthVariable
-C:\Users\joeri\AppData\Local\Temp\ccJANMwS.s:138    .data.nrFilteredADCchannels:00000000 nrFilteredADCchannels
-C:\Users\joeri\AppData\Local\Temp\ccJANMwS.s:130    .data.kXcpStationIdLengthVariable:00000000 $d
-C:\Users\joeri\AppData\Local\Temp\ccJANMwS.s:139    .data.nrFilteredADCchannels:00000000 $d
-C:\Users\joeri\AppData\Local\Temp\ccJANMwS.s:141    .rodata.kXcpEventCycle:00000000 $d
-C:\Users\joeri\AppData\Local\Temp\ccJANMwS.s:147    .rodata.kXcpStationId:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\ccagSRZG.s:19     .text.ModelBootCroMsgReceived:00000000 $t
+C:\Users\joeri\AppData\Local\Temp\ccagSRZG.s:25     .text.ModelBootCroMsgReceived:00000000 ModelBootCroMsgReceived
+C:\Users\joeri\AppData\Local\Temp\ccagSRZG.s:62     .text.ModelInit:00000000 $t
+C:\Users\joeri\AppData\Local\Temp\ccagSRZG.s:69     .text.ModelInit:00000000 ModelInit
+C:\Users\joeri\AppData\Local\Temp\ccagSRZG.s:100    .text.ModelInit:00000018 $d
+C:\Users\joeri\AppData\Local\Temp\ccagSRZG.s:105    .text.ModelStep:00000000 $t
+C:\Users\joeri\AppData\Local\Temp\ccagSRZG.s:112    .text.ModelStep:00000000 ModelStep
+C:\Users\joeri\AppData\Local\Temp\ccagSRZG.s:144    .rodata.kXcpEventCycle:00000000 kXcpEventCycle
+C:\Users\joeri\AppData\Local\Temp\ccagSRZG.s:150    .rodata.kXcpStationId:00000000 kXcpStationId
+C:\Users\joeri\AppData\Local\Temp\ccagSRZG.s:133    .data.kXcpStationIdLengthVariable:00000000 kXcpStationIdLengthVariable
+C:\Users\joeri\AppData\Local\Temp\ccagSRZG.s:138    .data.nrFilteredADCchannels:00000000 nrFilteredADCchannels
+C:\Users\joeri\AppData\Local\Temp\ccagSRZG.s:130    .data.kXcpStationIdLengthVariable:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\ccagSRZG.s:139    .data.nrFilteredADCchannels:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\ccagSRZG.s:141    .rodata.kXcpEventCycle:00000000 $d
+C:\Users\joeri\AppData\Local\Temp\ccagSRZG.s:147    .rodata.kXcpStationId:00000000 $d
 
 UNDEFINED SYMBOLS
 OsSystemReset

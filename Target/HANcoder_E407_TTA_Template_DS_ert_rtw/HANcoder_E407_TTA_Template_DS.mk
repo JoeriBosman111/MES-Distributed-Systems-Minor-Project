@@ -69,10 +69,10 @@ COMPILER_TOOL_CHAIN = default
 MODEL                = HANcoder_E407_TTA_Template_DS
 MODULES              = HANcoder_E407_TTA_Template_DS_data.c
 MAKEFILE             = HANcoder_E407_TTA_Template_DS.mk
-MATLAB_ROOT          = C:\Program Files\MATLAB\R2022a
-ALT_MATLAB_ROOT      = C:\PROGRA~1\MATLAB\R2022a
-MATLAB_BIN           = C:\Program Files\MATLAB\R2022a\bin
-ALT_MATLAB_BIN       = C:\PROGRA~1\MATLAB\R2022a\bin
+MATLAB_ROOT          = C:\Program Files\MATLAB\R2023a
+ALT_MATLAB_ROOT      = C:\PROGRA~1\MATLAB\R2023a
+MATLAB_BIN           = C:\Program Files\MATLAB\R2023a\bin
+ALT_MATLAB_BIN       = C:\PROGRA~1\MATLAB\R2023a\bin
 S_FUNCTIONS          = 
 S_FUNCTIONS_LIB      = 
 NUMST                = 1
@@ -199,8 +199,8 @@ HANcoder_INCLUDES = \
 
 # Additional includes
 ADD_INCLUDES = \
-	-I"C:\HANcoder-STM32-Target-v1.0-Beta\HANcoder-STM32-Target-v1.0\Target" \
-	-I"C:\HANcoder-STM32-Target-v1.0-Beta\HANcoder-STM32-Target-v1.0\Target\HANcoder_E407_TTA_Template_DS_ert_rtw" \
+	-I"C:\Users\joeri\MATLAB\Projects\MES_DS_MP\Target" \
+	-I"C:\Users\joeri\MATLAB\Projects\MES_DS_MP\Target\HANcoder_E407_TTA_Template_DS_ert_rtw" \
 	-I"$(MATLAB_ROOT)\extern\include" \
 	-I"$(MATLAB_ROOT)\simulink\include" \
 	-I"$(MATLAB_ROOT)\rtw\c\src" \

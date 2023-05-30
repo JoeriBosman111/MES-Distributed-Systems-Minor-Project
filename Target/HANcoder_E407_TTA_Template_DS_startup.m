@@ -45,7 +45,7 @@ Trailer2_Board2 = 6;
 Trailer2_Board3 = 7;
 
 % COMMunication Model
-COMM_Period = 80; % original is 40 ticks
+COMM_Period = 100; % original is 40 ticks
 % COMM_PHASE
 % CAN1
 % init
@@ -252,7 +252,7 @@ max_desync = 15;
 min_desync = (-1)*max_desync;
 
 % Initialization
-idle_time_init = basic_cycle_duration_bc0 + basic_cycle_duration_bc1; % time waiting by Board 1 before becoming Master
+idle_time_init = basic_cycle_duration_bc0 + basic_cycle_duration_bc1 + basic_cycle_duration_bc2; % time waiting by Board 1 before becoming Master
 
 
 %% Parameters
