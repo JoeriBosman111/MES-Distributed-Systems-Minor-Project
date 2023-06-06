@@ -44,6 +44,14 @@ Trailer2_Board1 = 5;
 Trailer2_Board2 = 6;
 Trailer2_Board3 = 7;
 
+% Kinematic Model Constants
+DeltaC = 30;
+L0b = 2;
+L0f = 6;
+L1f = 8;
+V1 = -1;
+V2 = -2;
+
 % COMMunication Model
 COMM_Period = 100; % original is 40 ticks
 % COMM_PHASE
