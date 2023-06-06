@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'HANcoder_E407_TTA_Template_DS'.
  *
- * Model version                  : 10.9
+ * Model version                  : 10.24
  * Simulink Coder version         : 9.9 (R2023a) 19-Nov-2022
- * C/C++ source code generated on : Tue May 30 20:20:17 2023
+ * C/C++ source code generated on : Tue Jun  6 14:53:45 2023
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -264,21 +264,22 @@ extern void TTASystem_Init(rtB_TTASystem *localB, const rtC_TTASystem *localC,
   rtDW_TTASystem *localDW);
 extern void TTASystem_Reset(rtDW_TTASystem *localDW);
 extern void TTASystem_Disable(rtB_TTASystem *localB, rtDW_TTASystem *localDW);
-extern void TTASystem(const real_T *rtd_Board_ID, uint16_T *rtd_Local_Ticks,
-                      real_T *rtd_Master_ID, msg_buffer_type *rtd_Msg_Rx_CAN1,
-                      msg_buffer_type *rtd_Msg_Rx_CAN2, uint16_T
-                      *rtd_Msg_Rx_Ticks_CAN1, uint16_T *rtd_Msg_Rx_Ticks_CAN2,
-                      msg_buffer_type *rtd_Msg_Tx_CAN1, msg_buffer_type
-                      *rtd_Msg_Tx_CAN2, boolean_T *rtd_New_Msg_Ready_CAN1,
-                      boolean_T *rtd_New_Msg_Ready_CAN2, uint32_T *rtd_RxID_CAN1,
-                      uint32_T *rtd_RxID_CAN2, uint8_T *rtd_Rx_State_CAN1,
-                      uint8_T *rtd_Rx_State_CAN2, boolean_T *rtd_Toggle_Pin_A0,
-                      real_T *rtd_Toggle_Pin_D12, real_T *rtd_Toggle_Pin_D13,
-                      real_T *rtd_Toggle_Pin_D8, real_T *rtd_Toggle_Pin_D9,
-                      real_T *rtd_Trailer_ID, uint32_T *rtd_TxID_CAN1, uint32_T *
-                      rtd_TxID_CAN2, real_T *rtd_Tx_msg_count_CAN1, real_T
-                      *rtd_Tx_msg_count_CAN2, rtB_TTASystem *localB, const
-                      rtC_TTASystem *localC, rtDW_TTASystem *localDW);
+extern void TTASystem(RT_MODEL * const rtM, const real_T *rtd_Board_ID, uint16_T
+                      *rtd_Local_Ticks, real_T *rtd_Master_ID, msg_buffer_type
+                      *rtd_Msg_Rx_CAN1, msg_buffer_type *rtd_Msg_Rx_CAN2,
+                      uint16_T *rtd_Msg_Rx_Ticks_CAN1, uint16_T
+                      *rtd_Msg_Rx_Ticks_CAN2, msg_buffer_type *rtd_Msg_Tx_CAN1,
+                      msg_buffer_type *rtd_Msg_Tx_CAN2, boolean_T
+                      *rtd_New_Msg_Ready_CAN1, boolean_T *rtd_New_Msg_Ready_CAN2,
+                      uint32_T *rtd_RxID_CAN1, uint32_T *rtd_RxID_CAN2, uint8_T *
+                      rtd_Rx_State_CAN1, uint8_T *rtd_Rx_State_CAN2, boolean_T
+                      *rtd_Toggle_Pin_A0, real_T *rtd_Toggle_Pin_D12, real_T
+                      *rtd_Toggle_Pin_D13, real_T *rtd_Toggle_Pin_D8, real_T
+                      *rtd_Toggle_Pin_D9, real_T *rtd_Trailer_ID, uint32_T
+                      *rtd_TxID_CAN1, uint32_T *rtd_TxID_CAN2, real_T
+                      *rtd_Tx_msg_count_CAN1, real_T *rtd_Tx_msg_count_CAN2,
+                      rtB_TTASystem *localB, const rtC_TTASystem *localC,
+                      rtDW_TTASystem *localDW);
 
 #endif                 /* RTW_HEADER_HANcoder_E407_TTA_Template_DS_private_h_ */
 

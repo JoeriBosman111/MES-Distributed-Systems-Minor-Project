@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'HANcoder_E407_TTA_Template_DS'.
  *
- * Model version                  : 10.9
+ * Model version                  : 10.24
  * Simulink Coder version         : 9.9 (R2023a) 19-Nov-2022
- * C/C++ source code generated on : Tue May 30 20:20:17 2023
+ * C/C++ source code generated on : Tue Jun  6 14:53:45 2023
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
