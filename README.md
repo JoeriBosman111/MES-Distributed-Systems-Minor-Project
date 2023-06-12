@@ -9,3 +9,16 @@ In the "Target" folder the \_startup.m and .slx files can be found. For easiest 
 
 - Version V6 allows for complete system with two trailers, but is untested!
 
+# Board setup:
+- 9 (or 6) Olimex STM32-E407 microcontrollers
+- 2 CAN bus channels @ 500 Kb/s
+- 1 Potentiometer per FCU (Trailer or tractor)
+  - Connected to all nodes @ A1
+- 
+
+# V52 Settings
+- Hardware granularity: 1 MHz
+- Local clock granularity: 1 KHz
+- Boards eligeble for (time) master role: ID 1, 2 and 3 (All tractor boards)
+- 
+
