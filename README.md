@@ -4,7 +4,7 @@ Git Repository for all MES DS Minor Project Files
 This repository contains a complete HANCoder folder. All software iterations are saved and appended with \_Vn, where _n_ is the iteration based on chronological order.
 In the "Target" folder the \_startup.m and .slx files can be found. For easiest implementation of this software, the entire repository is to be cloned onto the local drive or the computer, and open the desired file using MATLAB 2023a or later. 
 
-A video presentation the functionality of the system can be found in folder _Videos_
+A video presenting the functionality of the system can be found in folder _Videos_.
 
 ## Latest Version: V52
 !!! V52 only allows for tractor and trailer 1 !!!
