@@ -34,8 +34,8 @@ The software consists of two parts: 1) The .m file which includes the temporal s
 To build and flash the, the Simulink Embedded Coder app is required. When enabled, this app provides the function to 'build and deploy' the software on the stm32 target. 
 
 ## V52 Settings
-- Hardware granularity: 1 MHz
-- Local clock granularity: 1 KHz
+- Hardware frequency: 1 MHz
+- Local clock frequency: 1 KHz
 - Boards eligable for entry Matrix Cycle: trailer 1 and tractor
 - Boards eligable for (time) master role: All tractor boards
 - Number of Basic Cycles: 3
