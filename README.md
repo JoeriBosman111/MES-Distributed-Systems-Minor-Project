@@ -9,6 +9,7 @@ In the "Target" folder the \_startup.m and .slx files can be found. For easiest 
 
 - Version V6 allows for complete system with two trailers, but is untested!
 
+# Using the hardware and software
 ## Board setup:
 - 9 (or 6) Olimex STM32-E407 microcontrollers
 - 2 CAN bus channels @ 500 Kb/s
@@ -22,6 +23,11 @@ Board ID's are determined by digital pins pulled HIGH (5V)
 |ID 1 (D2)|ID 4 (D4)|ID 7 (D2,D3,D4)|
 |ID 2 (D3)|ID 5 (D2,D4)|ID 8 (D5)|
 |ID 3 (D2,D3)|ID 6 (D3,D4)|ID 9 (D2,D5)|
+
+## Using and flashing the software
+The software is developed using MATLAB Simulink, and is based upon the TTA TTCAN template by Diego López. Follow this link to find the repository of the TTA template: https://github.com/pineapplezex/HANCoder_TTA.git
+
+The software consists of two parts: 1) The .m file which includes the temporal settings, TTA schedule definition, Board ID's and CAN message ID's; 2) The Simulink model which implements HANCoder blocks to create the main software model of the system. 
 
 ## V52 Settings
 - Hardware granularity: 1 MHz
