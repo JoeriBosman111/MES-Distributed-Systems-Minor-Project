@@ -27,7 +27,9 @@ Board ID's are determined by digital pins pulled HIGH (5V)
 ## Using and flashing the software
 The software is developed using MATLAB Simulink, and is based upon the TTA TTCAN template by Diego López. Follow this link to find the repository of the TTA template: https://github.com/pineapplezex/HANCoder_TTA.git
 
-The software consists of two parts: 1) The .m file which includes the temporal settings, TTA schedule definition, Board ID's and CAN message ID's; 2) The Simulink model which implements HANCoder blocks to create the main software model of the system. 
+The software consists of two parts: 1) The .m file which includes the temporal settings, TTA schedule definition, Board ID's and CAN message ID's; 2) The Simulink model which implements HANCoder blocks to create the main software model of the system. The software works as a bundle, and the .m file should always have the same name as the .slx file, appended with \_startup.
+
+To build and flash the, the Simulink Embedded Coder app is required. When enabled, this app provides the function to 'build and deploy' the software on the stm32 target. 
 
 ## V52 Settings
 - Hardware granularity: 1 MHz
